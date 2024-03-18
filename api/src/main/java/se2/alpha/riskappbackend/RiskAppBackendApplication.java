@@ -18,6 +18,6 @@ public class RiskAppBackendApplication {
 
 	@Bean
 	public CommandLineRunner commandLineRunner() {
-		return args -> logger.info("API has successfully started and is available at http://localhost:8080/health");
+		return args -> logger.info("API has successfully started and is available at http://localhost:8080/api/v1/swagger-ui.html");
 	}
 }
