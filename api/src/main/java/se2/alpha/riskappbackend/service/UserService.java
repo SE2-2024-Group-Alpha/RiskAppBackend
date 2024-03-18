@@ -3,7 +3,7 @@ package se2.alpha.riskappbackend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import se2.alpha.riskappbackend.model.User;
+import se2.alpha.riskappbackend.model.db.User;
 import se2.alpha.riskappbackend.repository.UserRepository;
 
 import java.util.List;

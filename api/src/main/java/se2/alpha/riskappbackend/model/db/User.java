@@ -1,4 +1,4 @@
-package se2.alpha.riskappbackend.model;
+package se2.alpha.riskappbackend.model.db;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

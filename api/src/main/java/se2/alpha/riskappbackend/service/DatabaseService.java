@@ -17,9 +17,6 @@ public class DatabaseService {
     private static final Logger logger = LoggerFactory.getLogger(DatabaseService.class);
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private DataSource dataSource;
 
     @PostConstruct

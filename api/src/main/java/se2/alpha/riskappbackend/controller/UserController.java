@@ -4,7 +4,7 @@ package se2.alpha.riskappbackend.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import se2.alpha.riskappbackend.model.User;
+import se2.alpha.riskappbackend.model.db.User;
 import se2.alpha.riskappbackend.service.UserService;
 
 import java.util.List;
