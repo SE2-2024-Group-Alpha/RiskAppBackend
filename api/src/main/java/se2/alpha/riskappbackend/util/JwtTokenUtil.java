@@ -28,6 +28,11 @@ public class JwtTokenUtil {
         return generateToken(new HashMap<>(), userDetails);
     }
 
+    public boolean validateToken(String token, UserDetails userDetails) {
+        final String username = extractUserName(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userName = extractUserName(token);
         return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);

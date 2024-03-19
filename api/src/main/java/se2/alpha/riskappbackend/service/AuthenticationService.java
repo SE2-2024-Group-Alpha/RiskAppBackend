@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import se2.alpha.riskappbackend.model.JwtAuthenticationResponse;
 import se2.alpha.riskappbackend.model.SignInRequest;
 import se2.alpha.riskappbackend.model.SignUpRequest;
 
+import se2.alpha.riskappbackend.model.ValidateTokenRequest;
 import se2.alpha.riskappbackend.repository.UserRepository;
 
 import se2.alpha.riskappbackend.util.JwtTokenUtil;
@@ -24,7 +26,7 @@ public class AuthenticationService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenUtil jwtjwtTokenUtil;
+    private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
 
     public JwtAuthenticationResponse signup(SignUpRequest request) {
@@ -33,7 +35,7 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER).build();
         userRepository.save(user);
-        var jwt = jwtjwtTokenUtil.generateToken(user);
+        var jwt = jwtTokenUtil.generateToken(user);
         return JwtAuthenticationResponse.builder().token(jwt).build();
     }
 
@@ -42,7 +44,21 @@ public class AuthenticationService {
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         var user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
-        var jwt = jwtjwtTokenUtil.generateToken(user);
+        var jwt = jwtTokenUtil.generateToken(user);
         return JwtAuthenticationResponse.builder().token(jwt).build();
+    }
+
+    public boolean validateToken(ValidateTokenRequest request) {
+        try {
+            String token = request.getToken();
+            String username = jwtTokenUtil.extractUserName(token);
+
+            UserDetails userDetails = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+            return jwtTokenUtil.validateToken(token, userDetails);
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import se2.alpha.riskappbackend.model.JwtAuthenticationResponse;
 import se2.alpha.riskappbackend.model.SignInRequest;
 import se2.alpha.riskappbackend.model.SignUpRequest;
+import se2.alpha.riskappbackend.model.ValidateTokenRequest;
 import se2.alpha.riskappbackend.service.AuthenticationService;
 
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -41,6 +42,16 @@ public class AuthenticationController {
             return ResponseEntity.ok(signinResponse);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Wrong Credentials!");
+        }
+    }
+
+    @PostMapping("/validate")
+    public ResponseEntity<?> validateToken(@RequestBody ValidateTokenRequest request) {
+        try {
+            var validated = authenticationService.validateToken(request);
+            return ResponseEntity.ok(validated);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("");
         }
     }
 }
