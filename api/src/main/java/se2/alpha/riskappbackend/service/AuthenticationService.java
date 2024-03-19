@@ -29,7 +29,7 @@ public class AuthenticationService {
 
     public JwtAuthenticationResponse signup(SignUpRequest request) {
         var user = User.builder()
-                .username(request.getName())
+                .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER).build();
         userRepository.save(user);
@@ -39,8 +39,8 @@ public class AuthenticationService {
 
     public JwtAuthenticationResponse signin(SignInRequest request) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getName(), request.getPassword()));
-        var user = userRepository.findByUsername(request.getName())
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        var user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
         var jwt = jwtjwtTokenUtil.generateToken(user);
         return JwtAuthenticationResponse.builder().token(jwt).build();
