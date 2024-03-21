@@ -1,11 +1,14 @@
 package se2.alpha.riskappbackend.model.websocket;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.List;
 
 @AllArgsConstructor
-public class UserSyncWebsocketMessage extends GameWebsocketMessage {
+@Getter
+public class UserSyncWebsocketMessage implements IGameWebsocketMessage {
+    private final CustomWebsocketMessageType type = CustomWebsocketMessageType.GAME;
     private final GameWebsocketMessageAction action = GameWebsocketMessageAction.SYNC_USERS;
     private List<String> userNames;
 }
