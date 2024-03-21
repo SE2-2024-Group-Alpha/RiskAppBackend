@@ -1,4 +1,4 @@
-package se2.alpha.riskappbackend.model;
+package se2.alpha.riskappbackend.model.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ValidateTokenRequest {
-    private String token;
+public class SignInRequest {
+    private String username;
+    private String password;
 }

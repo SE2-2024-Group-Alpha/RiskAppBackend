@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 import se2.alpha.riskappbackend.entity.User;
 import se2.alpha.riskappbackend.entity.Role;
 
-import se2.alpha.riskappbackend.model.JwtAuthenticationResponse;
-import se2.alpha.riskappbackend.model.SignInRequest;
-import se2.alpha.riskappbackend.model.SignUpRequest;
+import se2.alpha.riskappbackend.model.auth.JwtAuthenticationResponse;
+import se2.alpha.riskappbackend.model.auth.SignInRequest;
+import se2.alpha.riskappbackend.model.auth.SignUpRequest;
 
-import se2.alpha.riskappbackend.model.ValidateTokenRequest;
+import se2.alpha.riskappbackend.model.auth.ValidateTokenRequest;
 import se2.alpha.riskappbackend.repository.UserRepository;
 
 import se2.alpha.riskappbackend.util.JwtTokenUtil;

@@ -1,4 +1,4 @@
-package se2.alpha.riskappbackend.model;
+package se2.alpha.riskappbackend.model.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

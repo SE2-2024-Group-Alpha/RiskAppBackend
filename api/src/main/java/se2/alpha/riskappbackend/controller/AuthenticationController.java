@@ -9,13 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import se2.alpha.riskappbackend.model.JwtAuthenticationResponse;
-import se2.alpha.riskappbackend.model.SignInRequest;
-import se2.alpha.riskappbackend.model.SignUpRequest;
-import se2.alpha.riskappbackend.model.ValidateTokenRequest;
+import se2.alpha.riskappbackend.model.auth.SignInRequest;
+import se2.alpha.riskappbackend.model.auth.SignUpRequest;
+import se2.alpha.riskappbackend.model.auth.ValidateTokenRequest;
 import se2.alpha.riskappbackend.service.AuthenticationService;
-
-import java.sql.SQLIntegrityConstraintViolationException;
 
 @RestController
 @RequestMapping("/auth")
