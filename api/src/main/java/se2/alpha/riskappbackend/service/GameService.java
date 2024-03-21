@@ -14,13 +14,12 @@ import java.util.*;
 public class GameService {
 
     private static final Logger logger = LoggerFactory.getLogger(GameService.class);
-    private Map<UUID, GameSession> gameSessions;
+    private final Map<UUID, GameSession> gameSessions;
 
-    @PostConstruct
-    public void init() {
-        gameSessions = new HashMap<>();
+    public GameService() {
+        this.gameSessions = new HashMap<>();
         var test = new GameSession("Test Game");
-        gameSessions.put(test.getSessionId(), test);
+        this.gameSessions.put(test.getSessionId(), test);
     }
 
     public List<GameSession> getJoinableSessions() {
@@ -33,9 +32,10 @@ public class GameService {
         return newSession.getSessionId();
     }
 
-    public void joinSessions(UUID sessionId, WebSocketSession userSession) {
+    public GameSession joinSessions(UUID sessionId, WebSocketSession userSession) {
         GameSession session = gameSessions.get(sessionId);
         session.join(userSession);
+        return session;
     }
 
     public void leaveSessions(UUID sessionId, WebSocketSession userSession) {
