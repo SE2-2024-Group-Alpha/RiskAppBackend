@@ -1,11 +1,11 @@
 package se2.alpha.riskappbackend.model.game;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class GameSession {
     @Getter
@@ -43,5 +43,17 @@ public class GameSession {
     public void leave(WebSocketSession userSession) {
         userSessions.remove(userSession.getId());
         users--;
+    }
+
+    @JsonIgnore
+    public List<String> getUserNames() {
+        return userSessions.values().stream()
+                .map(session -> Objects.requireNonNull(session.getPrincipal()).getName())
+                .collect(Collectors.toList());
+    }
+
+    @JsonIgnore
+    public Map<String, WebSocketSession> getUserSessions() {
+        return Collections.unmodifiableMap(userSessions);
     }
 }

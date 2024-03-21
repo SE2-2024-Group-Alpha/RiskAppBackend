@@ -1,12 +1,9 @@
 package se2.alpha.riskappbackend.websocket;
 
 import com.google.gson.Gson;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import se2.alpha.riskappbackend.model.game.GameSession;
@@ -23,6 +20,21 @@ public class GameWebSocketHandler {
         this.gameService = gameService;
     }
 
+    private void sendMessageToAll(GameSession gameSession, IGameWebsocketMessage message) {
+        String messageContent = gson.toJson(message);
+        TextMessage textMessage = new TextMessage(messageContent);
+
+        for (WebSocketSession session : gameSession.getUserSessions().values()) {
+            try {
+                if (session.isOpen()) {
+                    session.sendMessage(textMessage);
+                }
+            } catch (Exception e) {
+                logger.error("Error sending message to WebSocketSession: " + e.getMessage());
+            }
+        }
+    }
+
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
         IGameWebsocketMessage gameWebsocketMessage = gson.fromJson((String) message.getPayload(), GameWebsocketMessage.class);
         logger.info("Received Game Message with Action: " + gameWebsocketMessage.getAction());
@@ -34,6 +46,8 @@ public class GameWebSocketHandler {
     public void handleJoin(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
         JoinWebsocketMessage joinWebsocketMessage = gson.fromJson((String) message.getPayload(), JoinWebsocketMessage.class);
         GameSession gameSession = gameService.joinSessions(joinWebsocketMessage.getGameSessionId(), session);
+        UserSyncWebsocketMessage userSyncWebsocketMessage = new UserSyncWebsocketMessage(gameSession.getUserNames());
+        sendMessageToAll(gameSession, userSyncWebsocketMessage);
     }
 
 }

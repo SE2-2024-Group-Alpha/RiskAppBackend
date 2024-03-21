@@ -5,6 +5,7 @@ import lombok.Getter;
 import java.util.UUID;
 
 @Getter
-public class JoinWebsocketMessage extends GameWebsocketMessage{
+public class JoinWebsocketMessage extends GameWebsocketMessage {
+    private final GameWebsocketMessageAction action = GameWebsocketMessageAction.JOIN;
     private UUID gameSessionId;
 }
