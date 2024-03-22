@@ -4,7 +4,7 @@ package se2.alpha.riskappbackend.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import se2.alpha.riskappbackend.model.db.User;
+import se2.alpha.riskappbackend.entity.User;
 import se2.alpha.riskappbackend.service.UserService;
 
 import java.util.List;
@@ -30,30 +30,31 @@ public class UserController {
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+//        return userService.getUserById(id)
+//                .map(ResponseEntity::ok)
+//                .orElse(ResponseEntity.notFound().build());
+//    }
+//
+//    @PutMapping("/{id}")
+//    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+//        return userService.getUserById(id)
+//                .map(existingUser -> {
+//                    user.setId(id);
+//                    return ResponseEntity.ok(userService.saveUser(user));
+//                })
+//                .orElse(ResponseEntity.notFound().build());
+//    }
+//
+    @DeleteMapping()
+    public ResponseEntity<Void> deleteAllUser() {
+        var allUsers = userService.getAllUsers();
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return userService.getUserById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        return userService.getUserById(id)
-                .map(existingUser -> {
-                    user.setId(id);
-                    return ResponseEntity.ok(userService.saveUser(user));
-                })
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        if (userService.getUserById(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
+        for (var user: allUsers ) {
+            userService.deleteUser(user.getId());
         }
-        userService.deleteUser(id);
-        return ResponseEntity.ok().build();
+        return null;
     }
 }
