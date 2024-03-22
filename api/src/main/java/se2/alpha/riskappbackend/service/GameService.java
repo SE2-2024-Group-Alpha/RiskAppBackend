@@ -42,4 +42,8 @@ public class GameService {
         GameSession session = gameSessions.get(sessionId);
         session.leave(userSession);
     }
+
+    public GameSession getGameSessionById(UUID sessionId){
+        return gameSessions.get(sessionId);
+    }
 }

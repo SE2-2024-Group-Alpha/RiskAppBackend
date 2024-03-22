@@ -7,8 +7,11 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import se2.alpha.riskappbackend.model.game.GameSession;
+import se2.alpha.riskappbackend.model.game.UserState;
 import se2.alpha.riskappbackend.model.websocket.*;
 import se2.alpha.riskappbackend.service.GameService;
+
+import java.util.Objects;
 
 public class GameWebSocketHandler {
 
@@ -40,13 +43,24 @@ public class GameWebSocketHandler {
         logger.info("Received Game Message with Action: " + gameWebsocketMessage.getAction());
         switch (gameWebsocketMessage.getAction()){
             case JOIN -> handleJoin(session, message);
+            case USER_READY -> handleUserReady(session, message);
         }
     }
 
     public void handleJoin(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
         JoinWebsocketMessage joinWebsocketMessage = gson.fromJson((String) message.getPayload(), JoinWebsocketMessage.class);
         GameSession gameSession = gameService.joinSessions(joinWebsocketMessage.getGameSessionId(), session);
-        UserSyncWebsocketMessage userSyncWebsocketMessage = new UserSyncWebsocketMessage(gameSession.getUserNames());
+        UserSyncWebsocketMessage userSyncWebsocketMessage = new UserSyncWebsocketMessage(gameSession.getReadyUsers());
+        sendMessageToAll(gameSession, userSyncWebsocketMessage);
+    }
+
+    public void handleUserReady(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+        UserReadyWebsocketMessage userReadyWebsocketMessage = gson.fromJson((String) message.getPayload(), UserReadyWebsocketMessage.class);
+        GameSession gameSession = gameService.getGameSessionById(userReadyWebsocketMessage.getGameSessionId());
+        String userName = Objects.requireNonNull(session.getPrincipal()).getName();
+        UserState currentState = gameSession.getUserState(userName);
+        currentState.setIsReady(userReadyWebsocketMessage.getIsReady());
+        UserSyncWebsocketMessage userSyncWebsocketMessage = new UserSyncWebsocketMessage(gameSession.getReadyUsers());
         sendMessageToAll(gameSession, userSyncWebsocketMessage);
     }
 }

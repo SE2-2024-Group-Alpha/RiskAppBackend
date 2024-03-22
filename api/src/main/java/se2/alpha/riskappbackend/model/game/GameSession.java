@@ -3,9 +3,9 @@ package se2.alpha.riskappbackend.model.game;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import org.springframework.web.socket.WebSocketSession;
+import se2.alpha.riskappbackend.entity.User;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class GameSession {
     @Getter
@@ -16,43 +16,63 @@ public class GameSession {
     private Integer users;
     @Getter
     private GameState state;
-    private final Map<String, WebSocketSession> userSessions;
+    private final Map<String, UserState> userStates;
 
     public GameSession(String name) {
         this.name = name;
         this.sessionId = UUID.randomUUID();
-        this.userSessions = new HashMap<>();
+        this.userStates = new HashMap<>();
         this.state = GameState.Lobby;
         users = 0;
     }
 
-    public GameSession(String name, WebSocketSession userSession) {
-        this.name = name;
-        this.sessionId = UUID.randomUUID();
-        this.userSessions = new HashMap<>();
-        this.userSessions.put(userSession.getId(), userSession);
-        this.state = GameState.Lobby;
-        users = 1;
-    }
+//    public GameSession(String name, WebSocketSession userSession) {
+//        this.name = name;
+//        this.sessionId = UUID.randomUUID();
+//        this.userSessions = new HashMap<>();
+//        this.userSessions.put(userSession.getId(), userSession);
+//        this.state = GameState.Lobby;
+//        users = 1;
+//    }
 
     public void join(WebSocketSession userSession) {
         String userName = Objects.requireNonNull(userSession.getPrincipal()).getName();
-        userSessions.put(userName, userSession);
-        users = userSessions.size();
+        UserState userState = new UserState(userSession, false);
+        userStates.put(userName, userState);
+        users = userStates.size();
     }
 
     public void leave(WebSocketSession userSession) {
-        userSessions.remove(userSession.getId());
-        users = userSessions.size();
+        userStates.remove(userSession.getId());
+        users = userStates.size();
     }
 
     @JsonIgnore
     public List<String> getUserNames() {
-        return userSessions.keySet().stream().toList();
+        return userStates.keySet().stream().toList();
     }
 
     @JsonIgnore
     public Map<String, WebSocketSession> getUserSessions() {
+        Map<String, WebSocketSession> userSessions = new HashMap<>();
+        userStates.forEach((userName, userState) -> userSessions.put(userName, userState.getUserSession()));
         return Collections.unmodifiableMap(userSessions);
+    }
+
+    @JsonIgnore
+    public Map<String, Boolean> getReadyUsers() {
+        Map<String, Boolean> userSessions = new HashMap<>();
+        userStates.forEach((userName, userState) -> userSessions.put(userName, userState.getIsReady()));
+        return Collections.unmodifiableMap(userSessions);
+    }
+
+//    @JsonIgnore
+//    public void updateUserState(String userName, UserState userState){
+//        userStates.put(userName, userState);
+//    }
+
+    @JsonIgnore
+    public UserState getUserState(String userName){
+        return userStates.get(userName);
     }
 }
