@@ -10,5 +10,5 @@ import java.util.Map;
 public class UserSyncWebsocketMessage implements IGameWebsocketMessage {
     private final CustomWebsocketMessageType type = CustomWebsocketMessageType.GAME;
     private final GameWebsocketMessageAction action = GameWebsocketMessageAction.USER_SYNC;
-    private Map<String, Boolean> userNames;
+    private Map<String, Boolean> userStates;
 }
