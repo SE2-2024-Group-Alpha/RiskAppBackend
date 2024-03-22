@@ -49,5 +49,4 @@ public class GameWebSocketHandler {
         UserSyncWebsocketMessage userSyncWebsocketMessage = new UserSyncWebsocketMessage(gameSession.getUserNames());
         sendMessageToAll(gameSession, userSyncWebsocketMessage);
     }
-
 }
