@@ -36,20 +36,19 @@ public class GameSession {
     }
 
     public void join(WebSocketSession userSession) {
-        userSessions.put(userSession.getId(), userSession);
-        users++;
+        String userName = Objects.requireNonNull(userSession.getPrincipal()).getName();
+        userSessions.put(userName, userSession);
+        users = userSessions.size();
     }
 
     public void leave(WebSocketSession userSession) {
         userSessions.remove(userSession.getId());
-        users--;
+        users = userSessions.size();
     }
 
     @JsonIgnore
     public List<String> getUserNames() {
-        return userSessions.values().stream()
-                .map(session -> Objects.requireNonNull(session.getPrincipal()).getName())
-                .collect(Collectors.toList());
+        return userSessions.keySet().stream().toList();
     }
 
     @JsonIgnore
