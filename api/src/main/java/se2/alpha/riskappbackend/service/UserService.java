@@ -2,8 +2,11 @@ package se2.alpha.riskappbackend.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import se2.alpha.riskappbackend.model.db.User;
+import se2.alpha.riskappbackend.entity.User;
 import se2.alpha.riskappbackend.repository.UserRepository;
 
 import java.util.List;
@@ -31,7 +34,17 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    public void deleteUser(Integer id) {
+        userRepository.deleteById(Long.valueOf(id));
+    }
+
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) {
+                return userRepository.findByUsername(username)
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            }
+        };
     }
 }
