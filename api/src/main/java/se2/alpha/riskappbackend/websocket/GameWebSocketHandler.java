@@ -51,14 +51,14 @@ public class GameWebSocketHandler {
 //    TODO CHECK IF THIS WORKS!!!!
     private void handleUserLeave(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
         UserLeaveWebsocketMessage userLeaveWebsocketMessage = gson.fromJson((String) message.getPayload(), UserLeaveWebsocketMessage.class);
-        GameSession gameSession = gameService.leaveSessions(userLeaveWebsocketMessage.getGameSessionId(), session);
+        GameSession gameSession = gameService.leaveSession(userLeaveWebsocketMessage.getGameSessionId(), session);
         UserSyncWebsocketMessage userSyncWebsocketMessage = new UserSyncWebsocketMessage(gameSession.getReadyUsers());
         sendMessageToAll(gameSession, userSyncWebsocketMessage);
     }
 
     public void handleJoin(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
         JoinWebsocketMessage joinWebsocketMessage = gson.fromJson((String) message.getPayload(), JoinWebsocketMessage.class);
-        GameSession gameSession = gameService.joinSessions(joinWebsocketMessage.getGameSessionId(), session);
+        GameSession gameSession = gameService.joinSession(joinWebsocketMessage.getGameSessionId(), session);
         UserSyncWebsocketMessage userSyncWebsocketMessage = new UserSyncWebsocketMessage(gameSession.getReadyUsers());
         sendMessageToAll(gameSession, userSyncWebsocketMessage);
     }

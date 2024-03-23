@@ -1,6 +1,5 @@
 package se2.alpha.riskappbackend.service;
 
-import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -26,19 +25,19 @@ public class GameService {
         return new ArrayList<GameSession>(gameSessions.values());
     }
 
-    public UUID createNewSessions(String name) {
+    public UUID createNewSession(String name) {
         GameSession newSession = new GameSession(name);
         gameSessions.put(newSession.getSessionId(), newSession);
         return newSession.getSessionId();
     }
 
-    public GameSession joinSessions(UUID sessionId, WebSocketSession userSession) {
+    public GameSession joinSession(UUID sessionId, WebSocketSession userSession) {
         GameSession session = gameSessions.get(sessionId);
         session.join(userSession);
         return session;
     }
 
-    public GameSession leaveSessions(UUID sessionId, WebSocketSession userSession) {
+    public GameSession leaveSession(UUID sessionId, WebSocketSession userSession) {
         GameSession session = gameSessions.get(sessionId);
         session.leave(userSession);
         return session;
