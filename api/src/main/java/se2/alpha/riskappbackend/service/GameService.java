@@ -38,9 +38,10 @@ public class GameService {
         return session;
     }
 
-    public void leaveSessions(UUID sessionId, WebSocketSession userSession) {
+    public GameSession leaveSessions(UUID sessionId, WebSocketSession userSession) {
         GameSession session = gameSessions.get(sessionId);
         session.leave(userSession);
+        return session;
     }
 
     public GameSession getGameSessionById(UUID sessionId){

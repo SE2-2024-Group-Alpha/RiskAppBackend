@@ -43,7 +43,7 @@ public class GameSession {
     }
 
     public void leave(WebSocketSession userSession) {
-        userStates.remove(userSession.getId());
+        userStates.remove(Objects.requireNonNull(userSession.getPrincipal()).getName());
         users = userStates.size();
     }
 

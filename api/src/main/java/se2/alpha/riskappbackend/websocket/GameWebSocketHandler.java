@@ -44,7 +44,16 @@ public class GameWebSocketHandler {
         switch (gameWebsocketMessage.getAction()){
             case JOIN -> handleJoin(session, message);
             case USER_READY -> handleUserReady(session, message);
+            case USER_LEAVE -> handleUserLeave(session, message);
         }
+    }
+
+//    TODO CHECK IF THIS WORKS!!!!
+    private void handleUserLeave(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+        UserLeaveWebsocketMessage userLeaveWebsocketMessage = gson.fromJson((String) message.getPayload(), UserLeaveWebsocketMessage.class);
+        GameSession gameSession = gameService.leaveSessions(userLeaveWebsocketMessage.getGameSessionId(), session);
+        UserSyncWebsocketMessage userSyncWebsocketMessage = new UserSyncWebsocketMessage(gameSession.getReadyUsers());
+        sendMessageToAll(gameSession, userSyncWebsocketMessage);
     }
 
     public void handleJoin(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
