@@ -3,7 +3,6 @@ package se2.alpha.riskappbackend.model.game;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import org.springframework.web.socket.WebSocketSession;
-import se2.alpha.riskappbackend.entity.User;
 
 import java.util.*;
 
@@ -22,7 +21,7 @@ public class GameSession {
         this.name = name;
         this.sessionId = UUID.randomUUID();
         this.userStates = new HashMap<>();
-        this.state = GameState.Lobby;
+        this.state = GameState.LOBBY;
         users = 0;
     }
 
