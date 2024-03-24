@@ -74,4 +74,8 @@ public class GameSession {
     public UserState getUserState(String userName){
         return userStates.get(userName);
     }
+
+    public boolean isEmpty() {
+        return userStates.isEmpty();
+    }
 }
