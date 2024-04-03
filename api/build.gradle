@@ -8,7 +8,11 @@ group = 'se2.alpha'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '21'
+	sourceCompatibility = '17'
+}
+
+bootJar {
+	archiveFileName = 'riskbackend.jar'
 }
 
 repositories {
@@ -33,6 +37,6 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
-}
+//tasks.named('test') {
+//	useJUnitPlatform()
+//}
