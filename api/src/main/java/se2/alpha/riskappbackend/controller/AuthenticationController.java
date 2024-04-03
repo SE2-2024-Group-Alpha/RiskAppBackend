@@ -14,6 +14,8 @@ import se2.alpha.riskappbackend.model.auth.SignUpRequest;
 import se2.alpha.riskappbackend.model.auth.ValidateTokenRequest;
 import se2.alpha.riskappbackend.service.AuthenticationService;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -42,13 +44,24 @@ public class AuthenticationController {
         }
     }
 
+//    @PostMapping("/validate")
+//    public ResponseEntity<?> validateToken(@RequestBody ValidateTokenRequest request) {
+//        try {
+//            var validated = authenticationService.validateToken(request);
+//            return ResponseEntity.ok(validated);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body("");
+//        }
+//    }
     @PostMapping("/validate")
     public ResponseEntity<?> validateToken(@RequestBody ValidateTokenRequest request) {
         try {
             var validated = authenticationService.validateToken(request);
             return ResponseEntity.ok(validated);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("");
+            // Modify this part to return a structured error message
+            return ResponseEntity.badRequest().body(Map.of("error", "Invalid Token!"));
         }
     }
+
 }
