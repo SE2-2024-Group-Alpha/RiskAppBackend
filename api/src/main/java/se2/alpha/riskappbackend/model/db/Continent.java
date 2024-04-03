@@ -5,9 +5,9 @@ import java.util.ArrayList;
 public class Continent extends Area{
     private ArrayList<Country> countries;
 
-    public Continent(String name, Player owner, ArrayList<Country> countries) {
+    public Continent(String name, Player owner) {
         super(name, owner);
-        this.countries = countries;
+        this.countries = new ArrayList<Country>();
     }
 
     public Continent() {
@@ -20,5 +20,10 @@ public class Continent extends Area{
 
     public void setCountries(ArrayList<Country> countries) {
         this.countries = countries;
+    }
+
+    public void addCountry(Country c)
+    {
+        countries.add(c);
     }
 }
