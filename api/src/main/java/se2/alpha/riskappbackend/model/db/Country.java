@@ -4,10 +4,14 @@ import java.util.ArrayList;
 
 public class Country extends Area{
     private ArrayList<Country> attackableCountries;
+    private Continent continent;
+    private ArrayList<Troop> army;
 
-    public Country(String name, Player owner, ArrayList<Country> attackableCountries) {
+    public Country(String name, Player owner, Continent continent) {
         super(name, owner);
-        this.attackableCountries = attackableCountries;
+        this.continent = continent;
+        this.continent.addCountry(this);
+        army = new ArrayList<Troop>();
     }
 
     public Country() {
@@ -20,5 +24,17 @@ public class Country extends Area{
 
     public void setAttackableCountries(ArrayList<Country> attackableCountries) {
         this.attackableCountries = attackableCountries;
+    }
+
+    public void addArmy(Troop t)
+    {
+        army.add(t);
+        t.setLocation(this);
+    }
+
+    public void removeArmy(Troop t)
+    {
+        army.remove(t);
+        t.setLocation(null);
     }
 }
