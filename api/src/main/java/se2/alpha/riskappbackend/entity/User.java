@@ -24,7 +24,8 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-    private Integer score;
+
+    private Integer score; // adding score to db model
 
 
     @Override

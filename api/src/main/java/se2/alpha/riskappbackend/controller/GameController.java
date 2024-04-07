@@ -28,5 +28,6 @@ public class GameController {
     public ResponseEntity<?> createLobby(@RequestBody CreateLobbyRequest request) {
         UUID sessionId = gameService.createNewSession(request.getLobbyName());
         return ResponseEntity.ok(new CreateLobbyResponse(sessionId));
+        
     }
 }
