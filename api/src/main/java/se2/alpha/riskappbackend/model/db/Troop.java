@@ -5,10 +5,12 @@ import java.util.ArrayList;
 public class Troop {
     private TroopType type;
     private Country location;
+    private Player owner;
 
-    public Troop(TroopType type, Country location) {
+    public Troop(TroopType type, Country location, Player owner) {
         this.type = type;
         this.location = location;
+        this.owner = owner;
     }
 
     public Troop() {
@@ -28,5 +30,13 @@ public class Troop {
 
     public void setLocation(Country location) {
         this.location = location;
+    }
+
+    public Player getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
     }
 }

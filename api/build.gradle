@@ -11,6 +11,10 @@ java {
 	sourceCompatibility = '17'
 }
 
+bootJar {
+	archiveFileName = 'riskbackend.jar'
+}
+
 repositories {
 	mavenCentral()
 }
