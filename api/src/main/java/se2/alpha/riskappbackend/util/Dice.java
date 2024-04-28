@@ -4,15 +4,22 @@ import java.util.Random;
 
 public class Dice {
 
-        private static final int NUM_SIDES = 6;
+
+       private  static final int NUM_SIDES = 6;
         private Random random;
 
         public Dice() {
             random = new Random();
         }
 
+    // In your Dice class
+    public int getNumSides() {
+        return NUM_SIDES;
+    }
 
-        public int roll() {
+
+
+    public int roll() {
             return random.nextInt(NUM_SIDES) + 1;
         }
 
