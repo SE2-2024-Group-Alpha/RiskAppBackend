@@ -12,6 +12,7 @@ public class Country extends Area{
         this.continent = continent;
         this.continent.addCountry(this);
         army = new ArrayList<Troop>();
+        attackableCountries = new ArrayList<Country>();
     }
 
     public Country() {
