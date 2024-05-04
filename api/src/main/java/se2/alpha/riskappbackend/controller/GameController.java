@@ -10,6 +10,7 @@ import se2.alpha.riskappbackend.model.db.Continent;
 import se2.alpha.riskappbackend.model.db.Country;
 import se2.alpha.riskappbackend.model.db.RiskCard;
 import se2.alpha.riskappbackend.model.db.RiskCardType;
+import se2.alpha.riskappbackend.model.db.RiskController;
 import se2.alpha.riskappbackend.model.db.Troop;
 import se2.alpha.riskappbackend.model.db.TroopType;
 import se2.alpha.riskappbackend.model.game.CreateLobbyRequest;
@@ -41,16 +42,27 @@ public class GameController {
 
     @GetMapping("/riskcard")
     public ResponseEntity<?> getNewRiskCard() {
-        return ResponseEntity.ok(new RiskCard(RiskCardType.ARTILLERY, new Country("Austria", null, new Continent("Europe", null))));
+        RiskController riskController = new RiskController();
+        try {
+            RiskCard riskCard = riskController.getNewRiskCard();
+            return ResponseEntity.ok(riskCard);
+        }
+        catch(Exception ex)
+        {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 
     @GetMapping("/riskcard/player/{id}")
     public ResponseEntity<?> getAllRiskCardsByPlayer(@PathVariable("id") String id) {
-        ArrayList<RiskCard> riskCards = new ArrayList<RiskCard>();
-        riskCards.add(new RiskCard(RiskCardType.ARTILLERY, new Country("Austria", null, new Continent("Europe", null))));
-        riskCards.add(new RiskCard(RiskCardType.CAVALRY, new Country("India", null, new Continent("Europe", null))));
-        riskCards.add(new RiskCard(RiskCardType.INFANTRY, new Country("Australia", null, new Continent("Europe", null))));
-        riskCards.add(new RiskCard(RiskCardType.JOKER, null));
-        return ResponseEntity.ok(riskCards);
+        RiskController riskController = new RiskController();
+        try {
+            ArrayList<RiskCard> riskCards = riskController.getRiskCardsByPlayer(id);
+            return ResponseEntity.ok(riskCards);
+        }
+        catch(Exception ex)
+        {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 }

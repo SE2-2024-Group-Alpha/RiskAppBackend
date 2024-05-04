@@ -31,4 +31,11 @@ public class Board {
     public void setCards(ArrayList<RiskCard> cards) {
         this.cards = cards;
     }
+
+    public RiskCard getNewRiskCard() throws Exception
+    {
+        if(cards.isEmpty())
+            throw new Exception("No available risk cards anymore");
+        return cards.remove(0);
+    }
 }
