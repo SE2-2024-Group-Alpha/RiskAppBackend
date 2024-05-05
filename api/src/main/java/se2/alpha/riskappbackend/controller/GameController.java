@@ -40,11 +40,11 @@ public class GameController {
         
     }
 
-    @GetMapping("/riskcard")
-    public ResponseEntity<?> getNewRiskCard() {
+    @GetMapping("/riskcard/player/{id}")
+    public ResponseEntity<?> getNewRiskCard(@PathVariable("id") String id) {
         RiskController riskController = new RiskController();
         try {
-            RiskCard riskCard = riskController.getNewRiskCard();
+            RiskCard riskCard = riskController.getNewRiskCard(id);
             return ResponseEntity.ok(riskCard);
         }
         catch(Exception ex)
@@ -53,7 +53,7 @@ public class GameController {
         }
     }
 
-    @GetMapping("/riskcard/player/{id}")
+    @GetMapping("/player/{id}/riskcards")
     public ResponseEntity<?> getAllRiskCardsByPlayer(@PathVariable("id") String id) {
         RiskController riskController = new RiskController();
         try {

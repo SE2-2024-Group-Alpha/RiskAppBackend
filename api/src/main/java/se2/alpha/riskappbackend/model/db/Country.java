@@ -2,6 +2,9 @@ package se2.alpha.riskappbackend.model.db;
 
 import java.util.ArrayList;
 
+import lombok.Getter;
+
+@Getter
 public class Country extends Area{
     private ArrayList<Country> attackableCountries;
     private Continent continent;
@@ -17,10 +20,6 @@ public class Country extends Area{
 
     public Country() {
         super();
-    }
-
-    public ArrayList<Country> getAttackableCountries() {
-        return attackableCountries;
     }
 
     public void setAttackableCountries(ArrayList<Country> attackableCountries) {
