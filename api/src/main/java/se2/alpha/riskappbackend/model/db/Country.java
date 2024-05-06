@@ -37,4 +37,23 @@ public class Country extends Area{
         army.remove(t);
         t.setLocation(null);
     }
+
+    public void addAttackableCountry(Country country)
+    {
+        attackableCountries.add(country);
+    }
+
+    @Override
+    public Object clone() {
+        try {
+            Country cloned = (Country) super.clone();
+            cloned.attackableCountries = new ArrayList<>();
+            for (Country country : this.attackableCountries) {
+                cloned.attackableCountries.add((Country) country.clone());
+            }
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

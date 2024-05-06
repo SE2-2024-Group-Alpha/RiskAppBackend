@@ -1,5 +1,6 @@
 package se2.alpha.riskappbackend.model.db;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -9,7 +10,7 @@ import lombok.Getter;
 public class Player {
     private String id;
     private String name;
-    private String color;
+    private Color color;
     private ArrayList<Troop> army;
     private ArrayList<RiskCard> cards;
     private boolean eliminated;
@@ -23,7 +24,7 @@ public class Player {
     private static final int TROOPSFORFIFTHTRADE = 12;
     private static final int TROOPSFORSIXTHTRADE = 15;
 
-    public Player(String id, String name, String color, ArrayList<Troop> army, ArrayList<RiskCard> cards) {
+    public Player(String id, String name, Color color, ArrayList<Troop> army, ArrayList<RiskCard> cards) {
         this.id = id;
         this.name = name;
         this.color = color;
@@ -33,7 +34,7 @@ public class Player {
         controlledCountries = new ArrayList<Country>();
     }
 
-    public Player(String id, String name, String color) {
+    public Player(String id, String name, Color color) {
         this.id = id;
         this.name = name;
         this.color = color;
@@ -54,7 +55,7 @@ public class Player {
         this.name = name;
     }
 
-    public void setColor(String color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 
