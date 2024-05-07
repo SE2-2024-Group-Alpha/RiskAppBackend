@@ -30,6 +30,11 @@ public class User implements UserDetails {
 
     private Integer score; // adding score to db model
 
+    private Integer wins = 0; // Number of wins
+    private Integer losses = 0; // Number of losses
+    private Integer gamesPlayed = 0; // Number of games played
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
