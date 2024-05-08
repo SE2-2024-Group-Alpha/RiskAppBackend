@@ -32,37 +32,63 @@ public class RiskController {
         this.board = board;
     }
 
-    public RiskCard getNewRiskCard(String id) throws Exception
+    public RiskCard getNewRiskCard(String playerId) throws Exception
     {
-        Player player = getPlayerById(id);
+        Player player = getPlayerById(playerId);
         RiskCard riskCard = board.getNewRiskCard();
         player.addRiskCard(riskCard);
         return riskCard;
     }
 
-    public ArrayList<RiskCard> getRiskCardsByPlayer(String id) throws Exception
+    public ArrayList<RiskCard> getRiskCardsByPlayer(String playerId) throws Exception
     {
         for(Player player : players)
         {
-            if(player.getId().equals(id))
+            if(player.getId().equals(playerId))
                 return player.getCards();
         }
         throw new Exception("no player with this id found");
     }
 
-    public boolean canPlayerTradeRiskCards(String id) throws Exception
+    public boolean canPlayerTradeRiskCards(String playerId) throws Exception
     {
-        Player player = getPlayerById(id);
+        Player player = getPlayerById(playerId);
         return !player.canTradeRiskCards().equals(TradeType.NONE);
     }
 
-    public void tradeRiskCards(String id) throws Exception
+    public void tradeRiskCards(String playerId) throws Exception
     {
-        Player player = getPlayerById(id);
+        Player player = getPlayerById(playerId);
         TradeType tradeType = player.canTradeRiskCards();
         if(tradeType.equals(TradeType.NONE))
             throw new Exception("Player cannot trade any risk cards");
         player.tradeRiskCards();
+    }
+
+    public void moveTroops(String playerId, Country moveFromCountry, Country moveToCountry, int cntTroops) throws Exception {
+        Player player = getPlayerById(playerId);
+        if(!player.equals(moveFromCountry.getOwner()) || !player.equals(moveToCountry.getOwner()))
+            throw new Exception("countries must be owned by player");
+        if(moveFromCountry.getNumberOfTroops() <= cntTroops)
+            throw new Exception("not enough troops in this country to move from");
+        if(!moveFromCountry.getAttackableCountries().contains(moveToCountry))
+            throw new Exception("moving troops between those 2 countries not allowed");
+
+        moveFromCountry.removeArmy(cntTroops);
+        moveToCountry.addArmy(cntTroops);
+    }
+
+    public void getNewTroops(String playerId) throws Exception
+    {
+        int cntNewTroops = 0;
+        Player player = getPlayerById(playerId);
+        cntNewTroops = player.getControlledCountries().size() / 3;
+        cntNewTroops += player.getControlledContinents().size() * 5;
+
+        if(cntNewTroops < 3)
+            cntNewTroops = 3;
+
+        player.addArmy(cntNewTroops);
     }
 
     private Player getPlayerById(String id) throws Exception
@@ -82,11 +108,11 @@ public class RiskController {
         if(!attackingCountry.getAttackableCountries().contains(defendingCountry))
             throw new Exception("Cannot attack this country");
 
-        if(attackingCountry.getArmy().size() < 2)
+        if(attackingCountry.getNumberOfTroops() < 2)
             throw new Exception("Attacking Country must have at least 2 troops");
 
-        int[] attackerRolls = Dice.rollMultipleTimes(attackingCountry.getArmy().size());
-        int[] defenderRolls = Dice.rollMultipleTimes(defendingCountry.getArmy().size());
+        Integer[] attackerRolls = Dice.rollMultipleTimes((Integer) attackingCountry.getNumberOfTroops());
+        Integer[] defenderRolls = Dice.rollMultipleTimes((Integer) defendingCountry.getNumberOfTroops());
 
         for(int i = 0; i < defenderRolls.length; i++)
         {
@@ -108,22 +134,18 @@ public class RiskController {
     {
         processLosses(player, country, losses);
 
-        if(country.getArmy().isEmpty()) {
-            country.setOwner(null);
-            if(country.getContinent().getOwner().equals(player))
-                country.getContinent().setOwner(null);
+        if(country.getNumberOfTroops() == 0) {
+            player.loseControlOverCountry(country);
+            if(player.equals(country.getContinent().getOwner()))
+                player.loseControlOverContinent(country.getContinent());
         }
 
-        return country.getArmy().isEmpty();
+        return country.getNumberOfTroops() == 0;
     }
 
     private static void processLosses(Player player, Country country, int losses) {
-        ArrayList<Troop> troops = country.getArmy();
-        for(int i = 0; i < losses; i ++)
-        {
-            country.removeArmy(troops.get(i));
-            player.removeArmy(troops.get(i));
-        }
+            country.removeArmy(losses);
+            player.removeArmy(losses);
     }
 
     private void processAttacker(Player player, Country attackingCountry, Country defendingCountry, int losses, boolean attackSuccessful)
@@ -131,22 +153,21 @@ public class RiskController {
         processLosses(player, attackingCountry, losses);
         if(attackSuccessful)
         {
-            if(attackingCountry.getArmy().size() > 1) {
-                Troop t = attackingCountry.getArmy().get(0);
-                attackingCountry.removeArmy(t);
-                defendingCountry.addArmy(t);
-                defendingCountry.setOwner(player);
+            if(attackingCountry.getNumberOfTroops() > 1) {
+                defendingCountry.addArmy(attackingCountry.getNumberOfTroops() - 1);
+                attackingCountry.removeArmy(attackingCountry.getNumberOfTroops() - 1);
+                player.controlCountry(defendingCountry);
             }
 
             if(isContinentOwnedByPlayer(defendingCountry.getContinent(), player))
-                defendingCountry.getContinent().setOwner(player);
+                player.controlContinent(defendingCountry.getContinent());
         }
     }
     private boolean isContinentOwnedByPlayer(Continent continent, Player player)
     {
         for(Country country : continent.getCountries())
         {
-            if (!country.getOwner().equals(player)) {
+            if (!player.equals(country.getOwner())) {
                 return false;
             }
         }

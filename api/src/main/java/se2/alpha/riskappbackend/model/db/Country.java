@@ -8,13 +8,12 @@ import lombok.Getter;
 public class Country extends Area{
     private ArrayList<Country> attackableCountries;
     private Continent continent;
-    private ArrayList<Troop> army;
+    private int numberOfTroops;
 
     public Country(String name, Player owner, Continent continent) {
         super(name, owner);
         this.continent = continent;
-        this.continent.addCountry(this);
-        army = new ArrayList<Troop>();
+        numberOfTroops = 0;
         attackableCountries = new ArrayList<Country>();
     }
 
@@ -26,34 +25,18 @@ public class Country extends Area{
         this.attackableCountries = attackableCountries;
     }
 
-    public void addArmy(Troop t)
+    public void addArmy(int newTroops)
     {
-        army.add(t);
-        t.setLocation(this);
+        numberOfTroops += newTroops;
     }
 
-    public void removeArmy(Troop t)
+    public void removeArmy(int removedTroops)
     {
-        army.remove(t);
-        t.setLocation(null);
+        numberOfTroops -= removedTroops;
     }
 
     public void addAttackableCountry(Country country)
     {
         attackableCountries.add(country);
-    }
-
-    @Override
-    public Object clone() {
-        try {
-            Country cloned = (Country) super.clone();
-            cloned.attackableCountries = new ArrayList<>();
-            for (Country country : this.attackableCountries) {
-                cloned.attackableCountries.add((Country) country.clone());
-            }
-            return cloned;
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

@@ -204,7 +204,7 @@ public class PlayerTest {
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.tradeRiskCards();
-        assertEquals(4, player.getArmy().size());
+        assertEquals(4, player.getFreeNumberOfTroops());
     }
 
     @Test
@@ -214,7 +214,7 @@ public class PlayerTest {
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.tradeRiskCards();
-        assertEquals(6, player.getArmy().size());
+        assertEquals(6, player.getFreeNumberOfTroops());
     }
     @Test
     void testNewTroopsForThirdTrade() throws Exception {
@@ -223,7 +223,7 @@ public class PlayerTest {
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.tradeRiskCards();
-        assertEquals(8, player.getArmy().size());
+        assertEquals(8, player.getFreeNumberOfTroops());
     }
     @Test
     void testNewTroopsForFourthTrade() throws Exception {
@@ -232,7 +232,7 @@ public class PlayerTest {
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.tradeRiskCards();
-        assertEquals(10, player.getArmy().size());
+        assertEquals(10, player.getFreeNumberOfTroops());
     }
     @Test
     void testNewTroopsForFifthTrade() throws Exception {
@@ -241,7 +241,7 @@ public class PlayerTest {
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.tradeRiskCards();
-        assertEquals(12, player.getArmy().size());
+        assertEquals(12, player.getFreeNumberOfTroops());
     }
     @Test
     void testNewTroopsForSixthTrade() throws Exception {
@@ -250,7 +250,7 @@ public class PlayerTest {
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.tradeRiskCards();
-        assertEquals(15, player.getArmy().size());
+        assertEquals(15, player.getFreeNumberOfTroops());
     }
     @Test
     void testNewTroopsForSeventhTrade() throws Exception {
@@ -259,7 +259,7 @@ public class PlayerTest {
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.tradeRiskCards();
-        assertEquals(20, player.getArmy().size());
+        assertEquals(20, player.getFreeNumberOfTroops());
     }
     @Test
     void testNewTroopsForEightTrade() throws Exception {
@@ -268,6 +268,6 @@ public class PlayerTest {
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.tradeRiskCards();
-        assertEquals(25, player.getArmy().size());
+        assertEquals(25, player.getFreeNumberOfTroops());
     }
 }

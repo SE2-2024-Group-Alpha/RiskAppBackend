@@ -11,10 +11,11 @@ public class Player {
     private String id;
     private String name;
     private Color color;
-    private ArrayList<Troop> army;
     private ArrayList<RiskCard> cards;
     private boolean eliminated;
     private int cntRiskCardsTraded;
+    private int totalNumberOfTroops;
+    private int freeNumberOfTroops;
     private ArrayList<Country> controlledCountries;
     private ArrayList<Continent> controlledContinents;
     private static final int TROOPSFORFIRSTTRADE = 4;
@@ -24,29 +25,19 @@ public class Player {
     private static final int TROOPSFORFIFTHTRADE = 12;
     private static final int TROOPSFORSIXTHTRADE = 15;
 
-    public Player(String id, String name, Color color, ArrayList<Troop> army, ArrayList<RiskCard> cards) {
-        this.id = id;
-        this.name = name;
-        this.color = color;
-        this.army = army;
-        this.cards = cards;
-        controlledContinents = new ArrayList<Continent>();
-        controlledCountries = new ArrayList<Country>();
-    }
-
-    public Player(String id, String name, Color color) {
+    public Player(String id, String name, Color color, int numberOfTroops) {
         this.id = id;
         this.name = name;
         this.color = color;
         cards = new ArrayList<RiskCard>();
-        army = new ArrayList<Troop>();
         controlledContinents = new ArrayList<Continent>();
         controlledCountries = new ArrayList<Country>();
+        freeNumberOfTroops = numberOfTroops;
+        totalNumberOfTroops = numberOfTroops;
     }
 
     public Player() {
         cards = new ArrayList<RiskCard>();
-        army = new ArrayList<Troop>();
         controlledContinents = new ArrayList<Continent>();
         controlledCountries = new ArrayList<Country>();
     }
@@ -59,10 +50,6 @@ public class Player {
         this.color = color;
     }
 
-    public void setArmy(ArrayList<Troop> army) {
-        this.army = army;
-    }
-
     public void setCards(ArrayList<RiskCard> cards) {
         this.cards = cards;
     }
@@ -72,16 +59,15 @@ public class Player {
         this.cntRiskCardsTraded = cntRiskCardsTraded;
     }
 
-    public void addArmy(Troop troop)
+    public void addArmy(int numberOfTroops)
     {
-        army.add(troop);
-        troop.setOwner(this);
+        freeNumberOfTroops += numberOfTroops;
+        totalNumberOfTroops += numberOfTroops;
     }
 
-    public void removeArmy(Troop troop)
+    public void removeArmy(int numberOfTroops)
     {
-        army.remove(troop);
-        troop.setOwner(null);
+        totalNumberOfTroops -= numberOfTroops;
     }
 
     public void addRiskCard(RiskCard card)
@@ -108,6 +94,8 @@ public class Player {
     {
         controlledCountries.remove(c);
         c.setOwner(null);
+        if(controlledCountries.isEmpty())
+            eliminated = true;
     }
 
     public void controlContinent(Continent c)
@@ -245,31 +233,33 @@ public class Player {
 
     private void getTroopsForTrade()
     {
-        int cntNewTroops = getNumberOfNewTroopsForTrade();
-        for(int i = 0; i < cntNewTroops; i++)
-        {
-            army.add(new Troop(TroopType.INFANTRY, null, this));
+        if(cntRiskCardsTraded == 1) {
+            totalNumberOfTroops += TROOPSFORFIRSTTRADE;
+            freeNumberOfTroops += TROOPSFORFIRSTTRADE;
         }
-    }
-
-    private int getNumberOfNewTroopsForTrade()
-    {
-        int cntNewTroops = 0;
-        if(cntRiskCardsTraded == 1)
-            cntNewTroops = TROOPSFORFIRSTTRADE;
-        if(cntRiskCardsTraded == 2)
-            cntNewTroops = TROOPSFORSECONDTRADE;
-        if(cntRiskCardsTraded == 3)
-            cntNewTroops = TROOPSFORTHIRDTRADE;
-        if(cntRiskCardsTraded == 4)
-            cntNewTroops = TROOPSFORFOURTHTRADE;
-        if(cntRiskCardsTraded == 5)
-            cntNewTroops = TROOPSFORFIFTHTRADE;
-        if(cntRiskCardsTraded == 6)
-            cntNewTroops = TROOPSFORSIXTHTRADE;
-        if(cntRiskCardsTraded > 6)
-            cntNewTroops = TROOPSFORSIXTHTRADE + (cntRiskCardsTraded - 6) * 5;
-
-        return cntNewTroops;
+        if(cntRiskCardsTraded == 2) {
+            totalNumberOfTroops += TROOPSFORSECONDTRADE;
+            freeNumberOfTroops += TROOPSFORSECONDTRADE;
+        }
+        if(cntRiskCardsTraded == 3) {
+            totalNumberOfTroops += TROOPSFORTHIRDTRADE;
+            freeNumberOfTroops += TROOPSFORTHIRDTRADE;
+        }
+        if(cntRiskCardsTraded == 4) {
+            totalNumberOfTroops += TROOPSFORFOURTHTRADE;
+            freeNumberOfTroops += TROOPSFORFOURTHTRADE;
+        }
+        if(cntRiskCardsTraded == 5) {
+            totalNumberOfTroops += TROOPSFORFIFTHTRADE;
+            freeNumberOfTroops += TROOPSFORFIFTHTRADE;
+        }
+        if(cntRiskCardsTraded == 6) {
+            totalNumberOfTroops += TROOPSFORSIXTHTRADE;
+            freeNumberOfTroops += TROOPSFORSIXTHTRADE;
+        }
+        if(cntRiskCardsTraded > 6) {
+            totalNumberOfTroops += TROOPSFORSIXTHTRADE + (cntRiskCardsTraded - 6) * 5;
+            freeNumberOfTroops += TROOPSFORSIXTHTRADE + (cntRiskCardsTraded - 6) * 5;
+        }
     }
 }

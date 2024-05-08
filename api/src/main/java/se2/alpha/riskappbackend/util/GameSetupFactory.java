@@ -1,5 +1,6 @@
 package se2.alpha.riskappbackend.util;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,24 +14,23 @@ public class GameSetupFactory {
     private static ArrayList<Continent> continents;
     private static ArrayList<RiskCard> riskCards;
     public static ArrayList<Continent> getContinents() throws Exception {
-        if(continents == null)
-            setupContinents();
-        return (ArrayList<Continent>) continents.clone();
+        setupContinents();
+        return continents;
     }
 
     public static ArrayList<RiskCard> getRiskCards() throws Exception {
-        if(riskCards == null)
-            setupRiskCards();
-        return (ArrayList<RiskCard>) riskCards.clone();
+        setupRiskCards();
+        return riskCards;
     }
     private static void setupContinents() throws Exception
     {
         HashMap<String, TerritoryNode> territories = Territories.getAllTerritories();
+        continents = new ArrayList<Continent>();
         for (Map.Entry<String, TerritoryNode> entry : territories.entrySet()) {
             String territoryName = entry.getKey();
             TerritoryNode territoryNode = entry.getValue();
-            if(isNewContinent(territoryName))
-                continents.add(new Continent(territoryName, null));
+            if(isNewContinent(territoryNode.getContinent()))
+                continents.add(new Continent(territoryNode.getContinent(), null));
             setupCountry(territoryNode, territoryName);
         }
 
@@ -58,9 +58,9 @@ public class GameSetupFactory {
         for(Continent continent : continents)
         {
             if(continent.getName().equals(name))
-                return true;
+                return false;
         }
-        return false;
+        return true;
     }
 
     private static Continent getContinentByName(String name) throws Exception
@@ -74,6 +74,7 @@ public class GameSetupFactory {
     }
 
     private static void setupRiskCards() throws Exception {
+        riskCards = new ArrayList<RiskCard>();
         if(continents == null)
             setupContinents();
         ArrayList<Country> countries = getAllCountries();
@@ -87,6 +88,16 @@ public class GameSetupFactory {
             else
                 riskCards.add(setuInfantryRiskCard(countries.get(i)));
         }
+
+        setupJokerRiskCards();
+    }
+
+    private static void setupJokerRiskCards()
+    {
+        riskCards.add(new RiskCard(RiskCardType.JOKER, null));
+        riskCards.add(new RiskCard(RiskCardType.JOKER, null));
+        riskCards.add(new RiskCard(RiskCardType.JOKER, null));
+        riskCards.add(new RiskCard(RiskCardType.JOKER, null));
     }
     private static RiskCard setupArtilleryRiskCard(Country country)
     {

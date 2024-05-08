@@ -26,18 +26,4 @@ public class Continent extends Area{
     {
         countries.add(c);
     }
-
-    @Override
-    public Object clone() {
-        try {
-            Continent cloned = (Continent) super.clone();
-            cloned.countries = new ArrayList<>();
-            for (Country country : this.countries) {
-                cloned.countries.add((Country) country.clone());
-            }
-            return cloned;
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
