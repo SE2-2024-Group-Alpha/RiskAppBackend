@@ -1,24 +1,71 @@
 package se2.alpha.riskappbackend.util;
 
-import java.lang.reflect.Array;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import se2.alpha.riskappbackend.model.db.Board;
 import se2.alpha.riskappbackend.model.db.Continent;
 import se2.alpha.riskappbackend.model.db.Country;
+import se2.alpha.riskappbackend.model.db.Player;
 import se2.alpha.riskappbackend.model.db.RiskCard;
 import se2.alpha.riskappbackend.model.db.RiskCardType;
+import se2.alpha.riskappbackend.model.db.RiskController;
 
 public class GameSetupFactory {
     private static ArrayList<Continent> continents;
     private static ArrayList<RiskCard> riskCards;
-    public static ArrayList<Continent> getContinents() throws Exception {
+    private static int NUMBEROFTROOPSTHREEPLAYERGAME = 35;
+    private static int NUMBEROFTROOPSFOURPLAYERGAME = 30;
+    private static int NUMBEROFTROOPSFIVEPLAYERGAME = 25;
+    private static int NUMBEROFTROOPSSIXPLAYERGAME = 20;
+
+    public static RiskController setupThreePlayerGame(String player1Id, String player2Id, String player3Id) throws Exception {
+        ArrayList<Player> players = new ArrayList<Player>();
+        players.add(new Player(player1Id, "", Color.BLUE, NUMBEROFTROOPSTHREEPLAYERGAME));
+        players.add(new Player(player2Id, "", Color.RED, NUMBEROFTROOPSTHREEPLAYERGAME));
+        players.add(new Player(player3Id, "", Color.YELLOW, NUMBEROFTROOPSTHREEPLAYERGAME));
+        Board board = new Board(getContinents(), getRiskCards());
+        return new RiskController(players, board);
+    }
+    public static RiskController setupFourPlayerGame(String player1Id, String player2Id, String player3Id, String player4Id) throws Exception {
+        ArrayList<Player> players = new ArrayList<Player>();
+        players.add(new Player(player1Id, "", Color.BLUE, NUMBEROFTROOPSFOURPLAYERGAME));
+        players.add(new Player(player2Id, "", Color.RED, NUMBEROFTROOPSFOURPLAYERGAME));
+        players.add(new Player(player3Id, "", Color.YELLOW, NUMBEROFTROOPSFOURPLAYERGAME));
+        players.add(new Player(player4Id, "", Color.GREEN, NUMBEROFTROOPSFOURPLAYERGAME));
+        Board board = new Board(getContinents(), getRiskCards());
+        return new RiskController(players, board);
+    }
+    public static RiskController setupFivePlayerGame(String player1Id, String player2Id, String player3Id, String player4Id, String player5Id) throws Exception {
+        ArrayList<Player> players = new ArrayList<Player>();
+        players.add(new Player(player1Id, "", Color.BLUE, NUMBEROFTROOPSFIVEPLAYERGAME));
+        players.add(new Player(player2Id, "", Color.RED, NUMBEROFTROOPSFIVEPLAYERGAME));
+        players.add(new Player(player3Id, "", Color.YELLOW, NUMBEROFTROOPSFIVEPLAYERGAME));
+        players.add(new Player(player4Id, "", Color.GREEN, NUMBEROFTROOPSFIVEPLAYERGAME));
+        players.add(new Player(player5Id, "", Color.ORANGE, NUMBEROFTROOPSFIVEPLAYERGAME));
+        Board board = new Board(getContinents(), getRiskCards());
+        return new RiskController(players, board);
+    }
+
+    public static RiskController setupSixPlayerGame(String player1Id, String player2Id, String player3Id, String player4Id, String player5Id, String player6Id) throws Exception {
+        ArrayList<Player> players = new ArrayList<Player>();
+        players.add(new Player(player1Id, "", Color.BLUE, NUMBEROFTROOPSSIXPLAYERGAME));
+        players.add(new Player(player2Id, "", Color.RED, NUMBEROFTROOPSSIXPLAYERGAME));
+        players.add(new Player(player3Id, "", Color.YELLOW, NUMBEROFTROOPSSIXPLAYERGAME));
+        players.add(new Player(player4Id, "", Color.GREEN, NUMBEROFTROOPSSIXPLAYERGAME));
+        players.add(new Player(player5Id, "", Color.ORANGE, NUMBEROFTROOPSSIXPLAYERGAME));
+        players.add(new Player(player6Id, "", Color.PINK, NUMBEROFTROOPSSIXPLAYERGAME));
+        Board board = new Board(getContinents(), getRiskCards());
+        return new RiskController(players, board);
+    }
+    private static ArrayList<Continent> getContinents() throws Exception {
         setupContinents();
         return continents;
     }
 
-    public static ArrayList<RiskCard> getRiskCards() throws Exception {
+    private static ArrayList<RiskCard> getRiskCards() throws Exception {
         setupRiskCards();
         return riskCards;
     }

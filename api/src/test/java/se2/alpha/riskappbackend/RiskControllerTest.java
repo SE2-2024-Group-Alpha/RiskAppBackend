@@ -21,19 +21,16 @@ import se2.alpha.riskappbackend.model.db.Country;
 import se2.alpha.riskappbackend.model.db.Player;
 import se2.alpha.riskappbackend.model.db.RiskController;
 import se2.alpha.riskappbackend.util.Dice;
+import se2.alpha.riskappbackend.util.GameSetupFactory;
 
 public class RiskControllerTest {
     RiskController riskController;
     MockedStatic<Dice> mockedStatic;
-    final int PLAYERNUMBEROFTROOPS = 10;
+    final int PLAYERNUMBEROFTROOPS = 35;
 
     @BeforeEach
     void setUp() throws Exception {
-        ArrayList<Player> players = new ArrayList<Player>();
-        players.add(new Player("123", "player1", Color.BLACK, PLAYERNUMBEROFTROOPS));
-        players.add(new Player("1234", "player2", Color.BLUE, PLAYERNUMBEROFTROOPS));
-        players.add(new Player("12345", "player3", Color.YELLOW, PLAYERNUMBEROFTROOPS));
-        riskController = new RiskController(players, new Board());
+        riskController = GameSetupFactory.setupThreePlayerGame("1", "2", "3");
         mockedStatic = Mockito.mockStatic(Dice.class);
     }
     @AfterEach
@@ -279,5 +276,36 @@ public class RiskControllerTest {
         riskController.getNewTroops(player.getId());
         assertEquals(PLAYERNUMBEROFTROOPS + 17, player.getFreeNumberOfTroops());
         assertEquals(PLAYERNUMBEROFTROOPS + 17, player.getTotalNumberOfTroops());
+    }
+
+    @Test
+    void testStrengthenCountry() throws Exception {
+        Player player = riskController.getPlayers().get(0);
+        Country country = riskController.getBoard().getContinents().get(0).getCountries().get(0);
+        player.controlCountry(country);
+        riskController.strengthenCountry(player.getId(), country, 5);
+        assertEquals(PLAYERNUMBEROFTROOPS - 5, player.getFreeNumberOfTroops());
+        assertEquals(PLAYERNUMBEROFTROOPS, player.getTotalNumberOfTroops());
+        assertEquals(5, country.getNumberOfTroops());
+    }
+
+    @Test
+    void testSeizeCountry() throws Exception {
+        Player player = riskController.getPlayers().get(0);
+        Country country = riskController.getBoard().getContinents().get(0).getCountries().get(0);
+        riskController.seizeCountry(player.getId(), country, 5);
+        assertEquals(player, country.getOwner());
+        assertEquals(PLAYERNUMBEROFTROOPS - 5, player.getFreeNumberOfTroops());
+        assertEquals(PLAYERNUMBEROFTROOPS, player.getTotalNumberOfTroops());
+        assertEquals(5, country.getNumberOfTroops());
+    }
+
+    @Test
+    void testSeizeCountryNotAllowed() throws Exception {
+        Player player = riskController.getPlayers().get(0);
+        Country country = riskController.getBoard().getContinents().get(0).getCountries().get(0);
+        riskController.getPlayers().get(1).controlCountry(country);
+        Exception exception = assertThrows(Exception.class, () -> riskController.seizeCountry(player.getId(), country, 5));
+        assertEquals("Country cannot be seized while being owned by another player", exception.getMessage());
     }
 }

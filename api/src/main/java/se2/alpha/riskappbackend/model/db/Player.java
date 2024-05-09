@@ -110,6 +110,19 @@ public class Player {
         c.setOwner(null);
     }
 
+    public void strengthenCountry(Country country, int cntTroops)
+    {
+        country.addArmy(cntTroops);
+        this.freeNumberOfTroops -= cntTroops;
+    }
+
+    public void seizeCountry(Country country, int cntTroops)
+    {
+        controlCountry(country);
+        country.addArmy(cntTroops);
+        this.freeNumberOfTroops -= cntTroops;
+    }
+
     public TradeType canTradeRiskCards() throws Exception
     {
         int cntArtillery = 0;

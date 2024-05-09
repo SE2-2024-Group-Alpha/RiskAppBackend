@@ -78,6 +78,24 @@ public class RiskController {
         moveToCountry.addArmy(cntTroops);
     }
 
+    public void strengthenCountry(String playerId, Country country, int cntTroops) throws Exception
+    {
+        Player player = getPlayerById(playerId);
+        if(!player.equals(country.getOwner()))
+            throw new Exception("Country not owned by player");
+
+        player.strengthenCountry(country, cntTroops);
+    }
+
+    public void seizeCountry(String playerId, Country country, int cntTroops) throws Exception
+    {
+        Player player = getPlayerById(playerId);
+        if(country.getOwner() != null)
+            throw new Exception("Country cannot be seized while being owned by another player");
+
+        player.seizeCountry(country, cntTroops);
+    }
+
     public void getNewTroops(String playerId) throws Exception
     {
         int cntNewTroops = 0;
@@ -89,16 +107,6 @@ public class RiskController {
             cntNewTroops = 3;
 
         player.addArmy(cntNewTroops);
-    }
-
-    private Player getPlayerById(String id) throws Exception
-    {
-        for(Player player : players)
-        {
-            if(player.getId().equals(id))
-                return player;
-        }
-        throw new Exception("no player with this id found");
     }
 
     public void attack(Player attacker, Player defender, Country attackingCountry, Country defendingCountry) throws Exception
@@ -128,6 +136,16 @@ public class RiskController {
 
         boolean attackSuccessful = processDefender(defender, defendingCountry, defenderLosses);
         processAttacker(attacker, attackingCountry, defendingCountry, attackerLosses, attackSuccessful);
+    }
+
+    private Player getPlayerById(String id) throws Exception
+    {
+        for(Player player : players)
+        {
+            if(player.getId().equals(id))
+                return player;
+        }
+        throw new Exception("no player with this id found");
     }
 
     private boolean processDefender(Player player, Country country, int losses)

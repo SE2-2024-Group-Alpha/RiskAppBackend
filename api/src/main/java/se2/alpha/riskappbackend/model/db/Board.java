@@ -14,9 +14,9 @@ public class Board {
     private ArrayList<Continent> continents;
     private ArrayList<RiskCard> cards;
 
-    public Board() throws Exception{
-        continents = GameSetupFactory.getContinents();
-        cards = GameSetupFactory.getRiskCards();
+    public Board(ArrayList<Continent> continents, ArrayList<RiskCard> cards) throws Exception{
+        this.continents = continents;
+        this.cards = cards;
     }
 
     public void setContinents(ArrayList<Continent> continents) {
