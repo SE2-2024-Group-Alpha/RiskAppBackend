@@ -15,6 +15,7 @@ import se2.alpha.riskappbackend.model.db.Troop;
 import se2.alpha.riskappbackend.model.db.TroopType;
 import se2.alpha.riskappbackend.model.game.CreateLobbyRequest;
 import se2.alpha.riskappbackend.model.game.CreateLobbyResponse;
+import se2.alpha.riskappbackend.service.DiceService;
 import se2.alpha.riskappbackend.service.GameService;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class GameController {
 
     @Autowired
     private GameService gameService;
+    private DiceService diceService;
 
     @GetMapping("/lobby")
     public ResponseEntity<?> getActiveLobbies() {
@@ -64,5 +66,17 @@ public class GameController {
         {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
+    }
+
+    @GetMapping("/dice/roll")
+    public ResponseEntity<?> rollDice() {
+        int result = diceService.roll();
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/dice/rollMultiple/{numRolls}")
+    public ResponseEntity<?> rollMultiple(@PathVariable int numRolls) {
+        int[] results = diceService.rollMultipleTimes(numRolls);
+        return ResponseEntity.ok(results);
     }
 }

@@ -1,4 +1,4 @@
-package se2.alpha.riskappbackend.util;
+package se2.alpha.riskappbackend.model.db;
 
 import java.util.Random;
 
