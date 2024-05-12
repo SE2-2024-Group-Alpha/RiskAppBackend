@@ -20,16 +20,8 @@ public class RiskController {
         return players;
     }
 
-    public void setPlayers(ArrayList<Player> players) {
-        this.players = players;
-    }
-
     public Board getBoard() {
         return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
     }
 
     public RiskCard getNewRiskCard(String playerId) throws Exception

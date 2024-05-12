@@ -19,6 +19,7 @@ import se2.alpha.riskappbackend.model.db.Board;
 import se2.alpha.riskappbackend.model.db.Continent;
 import se2.alpha.riskappbackend.model.db.Country;
 import se2.alpha.riskappbackend.model.db.Player;
+import se2.alpha.riskappbackend.model.db.RiskCard;
 import se2.alpha.riskappbackend.model.db.RiskController;
 import se2.alpha.riskappbackend.util.Dice;
 import se2.alpha.riskappbackend.util.GameSetupFactory;
@@ -307,5 +308,23 @@ public class RiskControllerTest {
         riskController.getPlayers().get(1).controlCountry(country);
         Exception exception = assertThrows(Exception.class, () -> riskController.seizeCountry(player.getId(), country, 5));
         assertEquals("Country cannot be seized while being owned by another player", exception.getMessage());
+    }
+
+    @Test
+    void testGetNewRiskCard() throws Exception {
+        Player player = riskController.getPlayers().get(0);
+        riskController.getNewRiskCard(player.getId());
+        assertEquals(1, player.getCards().size());
+        riskController.getNewRiskCard(player.getId());
+        assertEquals(2, player.getCards().size());
+    }
+
+    @Test
+    void testGetRiskCardsByPlayer() throws Exception {
+        Player player = riskController.getPlayers().get(0);
+        riskController.getNewRiskCard(player.getId());
+        riskController.getNewRiskCard(player.getId());
+        ArrayList<RiskCard> riskCards = riskController.getRiskCardsByPlayer(player.getId());
+        assertEquals(2, riskCards.size());
     }
 }
