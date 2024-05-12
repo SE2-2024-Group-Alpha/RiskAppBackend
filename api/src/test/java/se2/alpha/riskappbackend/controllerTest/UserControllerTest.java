@@ -58,6 +58,9 @@ public class UserControllerTest {
                 .password("password123")
                 .role(Role.USER)
                 .score(0)
+                .wins(0)
+                .losses(0)
+                .gamesPlayed(0)
                 .build();
         when(userService.saveUser(user)).thenReturn(user);
 
