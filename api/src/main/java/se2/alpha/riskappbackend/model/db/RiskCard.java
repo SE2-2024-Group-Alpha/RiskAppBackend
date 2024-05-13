@@ -1,24 +1,22 @@
 package se2.alpha.riskappbackend.model.db;
 
 public class RiskCard {
-    private TroopType type;
+    private RiskCardType type;
     private Country country;
-    private boolean isWildCard;
 
-    public RiskCard(TroopType type, Country country, boolean isWildCard) {
+    public RiskCard(RiskCardType type, Country country) {
         this.type = type;
         this.country = country;
-        this.isWildCard = isWildCard;
     }
 
     public RiskCard() {
     }
 
-    public TroopType getType() {
+    public RiskCardType getType() {
         return type;
     }
 
-    public void setType(TroopType type) {
+    public void setType(RiskCardType type) {
         this.type = type;
     }
 
@@ -28,13 +26,5 @@ public class RiskCard {
 
     public void setCountry(Country country) {
         this.country = country;
-    }
-
-    public boolean isWildCard() {
-        return isWildCard;
-    }
-
-    public void setWildCard(boolean wildCard) {
-        isWildCard = wildCard;
     }
 }

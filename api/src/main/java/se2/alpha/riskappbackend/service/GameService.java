@@ -40,6 +40,10 @@ public class GameService {
     public GameSession leaveSession(UUID sessionId, WebSocketSession userSession) {
         GameSession session = gameSessions.get(sessionId);
         session.leave(userSession);
+        if (session.isEmpty()){
+            gameSessions.remove(sessionId);
+        }
+
         return session;
     }
 

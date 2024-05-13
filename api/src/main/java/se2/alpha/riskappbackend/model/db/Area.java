@@ -1,8 +1,8 @@
 package se2.alpha.riskappbackend.model.db;
 
 public abstract class Area {
-    protected String name;
-    protected Player owner;
+    private String name;
+    private Player owner;
 
     public Area(String name, Player owner) {
         this.name = name;

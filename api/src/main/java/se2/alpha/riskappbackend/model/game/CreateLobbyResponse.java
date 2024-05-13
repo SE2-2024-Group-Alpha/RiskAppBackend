@@ -13,4 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CreateLobbyResponse {
     private UUID gameSessionId;
+
+
+
 }
