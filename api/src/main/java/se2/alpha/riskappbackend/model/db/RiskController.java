@@ -2,8 +2,6 @@ package se2.alpha.riskappbackend.model.db;
 
 import java.util.ArrayList;
 
-import se2.alpha.riskappbackend.util.Dice;
-
 public class RiskController {
     private ArrayList<Player> players;
     private Board board;

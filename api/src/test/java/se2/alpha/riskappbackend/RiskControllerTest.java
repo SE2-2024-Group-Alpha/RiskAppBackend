@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,16 +11,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 import se2.alpha.riskappbackend.model.db.Board;
 import se2.alpha.riskappbackend.model.db.Continent;
 import se2.alpha.riskappbackend.model.db.Country;
+import se2.alpha.riskappbackend.model.db.Dice;
 import se2.alpha.riskappbackend.model.db.Player;
 import se2.alpha.riskappbackend.model.db.RiskCard;
 import se2.alpha.riskappbackend.model.db.RiskController;
-import se2.alpha.riskappbackend.util.Dice;
 import se2.alpha.riskappbackend.util.GameSetupFactory;
 
 public class RiskControllerTest {
