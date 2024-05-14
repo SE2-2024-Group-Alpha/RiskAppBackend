@@ -1,25 +1,36 @@
 package se2.alpha.riskappbackend.model.db;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
+import lombok.Getter;
+
+@Getter
 public class RiskController {
+    private UUID id;
     private ArrayList<Player> players;
     private Board board;
+    private int idxPlayerTurn;
 
     public RiskController(ArrayList<Player> players, Board board) {
+        this.id = UUID.randomUUID();
         this.players = players;
         this.board = board;
+        idxPlayerTurn = 0;
     }
 
     public RiskController() {
     }
 
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public Board getBoard() {
-        return board;
+    public void endPlayerTurn()
+    {
+        players.get(idxPlayerTurn).setCurrentTurn(false);
+        if(++idxPlayerTurn >= players.size())
+            idxPlayerTurn = 0;
+        if(players.get(idxPlayerTurn).isEliminated())
+            endPlayerTurn();
+        else
+            players.get(idxPlayerTurn).setCurrentTurn(true);
     }
 
     public RiskCard getNewRiskCard(String playerId) throws Exception

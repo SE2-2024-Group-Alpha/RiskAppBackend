@@ -16,6 +16,7 @@ public class Player {
     private int cntRiskCardsTraded;
     private int totalNumberOfTroops;
     private int freeNumberOfTroops;
+    private boolean currentTurn;
     private ArrayList<Country> controlledCountries;
     private ArrayList<Continent> controlledContinents;
     private static final int TROOPSFORFIRSTTRADE = 4;
@@ -34,12 +35,14 @@ public class Player {
         controlledCountries = new ArrayList<Country>();
         freeNumberOfTroops = numberOfTroops;
         totalNumberOfTroops = numberOfTroops;
+        currentTurn = false;
     }
 
     public Player() {
         cards = new ArrayList<RiskCard>();
         controlledContinents = new ArrayList<Continent>();
         controlledCountries = new ArrayList<Country>();
+        currentTurn = false;
     }
 
     public void setName(String name) {
@@ -82,6 +85,10 @@ public class Player {
 
     public void setEliminated(boolean eliminated) {
         this.eliminated = eliminated;
+    }
+
+    public void setCurrentTurn(boolean currentTurn) {
+        this.currentTurn = currentTurn;
     }
 
     public void controlCountry(Country c)
