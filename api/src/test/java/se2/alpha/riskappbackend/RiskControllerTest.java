@@ -325,4 +325,65 @@ public class RiskControllerTest {
         ArrayList<RiskCard> riskCards = riskController.getRiskCardsByPlayer(player.getId());
         assertEquals(2, riskCards.size());
     }
+
+    @Test
+    void testIsFirstPlayerActive() {
+        Player player1 = riskController.getPlayers().get(0);
+        Player player2 = riskController.getPlayers().get(1);
+        Player player3 = riskController.getPlayers().get(2);
+        assertTrue(player1.isCurrentTurn());
+        assertFalse(player2.isCurrentTurn());
+        assertFalse(player3.isCurrentTurn());
+    }
+
+    @Test
+    void testPlayerActiveAfterOneTurn() {
+        Player player1 = riskController.getPlayers().get(0);
+        Player player2 = riskController.getPlayers().get(1);
+        Player player3 = riskController.getPlayers().get(2);
+        assertTrue(player1.isCurrentTurn());
+        assertFalse(player2.isCurrentTurn());
+        assertFalse(player3.isCurrentTurn());
+        riskController.endPlayerTurn();
+        assertFalse(player1.isCurrentTurn());
+        assertTrue(player2.isCurrentTurn());
+        assertFalse(player3.isCurrentTurn());
+    }
+
+    @Test
+    void testMultipleTurns() {
+        Player player1 = riskController.getPlayers().get(0);
+        Player player2 = riskController.getPlayers().get(1);
+        Player player3 = riskController.getPlayers().get(2);
+        assertTrue(player1.isCurrentTurn());
+        assertFalse(player2.isCurrentTurn());
+        assertFalse(player3.isCurrentTurn());
+        riskController.endPlayerTurn();
+        assertFalse(player1.isCurrentTurn());
+        assertTrue(player2.isCurrentTurn());
+        assertFalse(player3.isCurrentTurn());
+        riskController.endPlayerTurn();
+        assertFalse(player1.isCurrentTurn());
+        assertFalse(player2.isCurrentTurn());
+        assertTrue(player3.isCurrentTurn());
+        riskController.endPlayerTurn();
+        assertTrue(player1.isCurrentTurn());
+        assertFalse(player2.isCurrentTurn());
+        assertFalse(player3.isCurrentTurn());
+    }
+
+    @Test
+    void testCurrentTurnWithEliminatedPlayers() {
+        Player player1 = riskController.getPlayers().get(0);
+        Player player2 = riskController.getPlayers().get(1);
+        Player player3 = riskController.getPlayers().get(2);
+        player2.setEliminated(true);
+        assertTrue(player1.isCurrentTurn());
+        assertFalse(player2.isCurrentTurn());
+        assertFalse(player3.isCurrentTurn());
+        riskController.endPlayerTurn();
+        assertFalse(player1.isCurrentTurn());
+        assertFalse(player2.isCurrentTurn());
+        assertTrue(player3.isCurrentTurn());
+    }
 }
