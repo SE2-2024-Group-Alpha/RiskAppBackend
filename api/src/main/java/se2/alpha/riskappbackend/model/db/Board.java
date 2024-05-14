@@ -1,13 +1,8 @@
 package se2.alpha.riskappbackend.model.db;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import lombok.Getter;
-import se2.alpha.riskappbackend.util.GameSetupFactory;
-import se2.alpha.riskappbackend.util.Territories;
-import se2.alpha.riskappbackend.util.TerritoryNode;
 
 @Getter
 public class Board {

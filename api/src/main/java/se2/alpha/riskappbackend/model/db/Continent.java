@@ -1,7 +1,6 @@
 package se2.alpha.riskappbackend.model.db;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import lombok.Getter;
 
