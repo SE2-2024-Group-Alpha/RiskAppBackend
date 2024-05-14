@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import se2.alpha.riskappbackend.model.db.Board;
@@ -29,7 +30,11 @@ public class RiskControllerTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        riskController = GameSetupFactory.setupThreePlayerGame("1", "2", "3");
+        ArrayList<Player> players = new ArrayList<Player>();
+        players.add(new Player("1", "", Color.BLUE));
+        players.add(new Player("2", "", Color.RED));
+        players.add(new Player("3", "", Color.YELLOW));
+        riskController = GameSetupFactory.setupThreePlayerGame(players);
         mockedStatic = Mockito.mockStatic(Dice.class);
     }
     @AfterEach
