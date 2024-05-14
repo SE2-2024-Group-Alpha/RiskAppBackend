@@ -38,6 +38,18 @@ public class Player {
         currentTurn = false;
     }
 
+    public Player(String id, String name, Color color) {
+        this.id = id;
+        this.name = name;
+        this.color = color;
+        cards = new ArrayList<RiskCard>();
+        controlledContinents = new ArrayList<Continent>();
+        controlledCountries = new ArrayList<Country>();
+        freeNumberOfTroops = 0;
+        totalNumberOfTroops = 0;
+        currentTurn = false;
+    }
+
     public Player() {
         cards = new ArrayList<RiskCard>();
         controlledContinents = new ArrayList<Continent>();

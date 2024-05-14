@@ -17,6 +17,7 @@ public class RiskController {
         this.players = players;
         this.board = board;
         idxPlayerTurn = 0;
+        players.get(idxPlayerTurn).setCurrentTurn(true);
     }
 
     public RiskController() {
