@@ -1,13 +1,15 @@
 package se2.alpha.riskappbackend.model.websocket;
 
-import lombok.Getter;
-
+import java.util.ArrayList;
 import java.util.UUID;
 
+import lombok.Getter;
+import se2.alpha.riskappbackend.model.db.Player;
+
 @Getter
-public class UserReadyWebsocketMessage implements IGameWebsocketMessage {
+public class CreateGameWebsocketMessage implements IGameWebsocketMessage {
     private final CustomWebsocketMessageType type = CustomWebsocketMessageType.GAME;
-    GameWebsocketMessageAction action = GameWebsocketMessageAction.JOIN;
+    GameWebsocketMessageAction action = GameWebsocketMessageAction.CREATE_GAME;
     private UUID gameSessionId;
-    private Boolean isReady;
+    private ArrayList<Player> players;
 }

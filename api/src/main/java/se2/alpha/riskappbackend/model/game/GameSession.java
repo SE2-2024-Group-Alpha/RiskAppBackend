@@ -2,6 +2,10 @@ package se2.alpha.riskappbackend.model.game;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import se2.alpha.riskappbackend.model.db.Player;
+import se2.alpha.riskappbackend.model.db.RiskController;
+import se2.alpha.riskappbackend.util.GameSetupFactory;
+
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.*;
@@ -18,6 +22,7 @@ public class GameSession {
     @Getter
     private GameState state;
     private final Map<String, UserState> userStates;
+    private RiskController riskController;
 
     public GameSession(String name) {
         this.name = name;
@@ -47,6 +52,27 @@ public class GameSession {
     public void leave(WebSocketSession userSession) {
         userStates.remove(Objects.requireNonNull(userSession.getPrincipal()).getName());
         users = userStates.size();
+    }
+
+    public void createGame(ArrayList<Player> players) throws Exception
+    {
+        switch(players.size())
+        {
+            case 3:
+                riskController = GameSetupFactory.setupThreePlayerGame(players);
+                break;
+            case 4:
+                riskController = GameSetupFactory.setupFourPlayerGame(players);
+                break;
+            case 5:
+                riskController = GameSetupFactory.setupFivePlayerGame(players);
+                break;
+            case 6:
+                riskController = GameSetupFactory.setupSixPlayerGame(players);
+                break;
+            default:
+                throw new Exception("there must be between 3 and 6 players");
+        }
     }
 
     @JsonIgnore

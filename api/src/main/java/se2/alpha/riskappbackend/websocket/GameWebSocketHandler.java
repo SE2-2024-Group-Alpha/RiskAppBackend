@@ -6,10 +6,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
+
+import se2.alpha.riskappbackend.model.db.RiskController;
 import se2.alpha.riskappbackend.model.game.GameSession;
 import se2.alpha.riskappbackend.model.game.UserState;
 import se2.alpha.riskappbackend.model.websocket.*;
 import se2.alpha.riskappbackend.service.GameService;
+import se2.alpha.riskappbackend.util.GameSetupFactory;
 
 import java.util.Objects;
 
@@ -45,6 +48,7 @@ public class GameWebSocketHandler {
             case JOIN -> handleJoin(session, message);
             case USER_READY -> handleUserReady(session, message);
             case USER_LEAVE -> handleUserLeave(session, message);
+            case CREATE_GAME -> handleCreateGame(session, message);
         }
     }
 
@@ -69,6 +73,14 @@ public class GameWebSocketHandler {
         String userName = Objects.requireNonNull(session.getPrincipal()).getName();
         UserState currentState = gameSession.getUserState(userName);
         currentState.setIsReady(userReadyWebsocketMessage.getIsReady());
+        UserSyncWebsocketMessage userSyncWebsocketMessage = new UserSyncWebsocketMessage(gameSession.getReadyUsers());
+        sendMessageToAll(gameSession, userSyncWebsocketMessage);
+    }
+
+    public void handleCreateGame(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+        CreateGameWebsocketMessage createGameWebsocketMessage = gson.fromJson((String) message.getPayload(), CreateGameWebsocketMessage.class);
+        GameSession gameSession = gameService.getGameSessionById(createGameWebsocketMessage.getGameSessionId());
+        gameSession.createGame(createGameWebsocketMessage.getPlayers());
         UserSyncWebsocketMessage userSyncWebsocketMessage = new UserSyncWebsocketMessage(gameSession.getReadyUsers());
         sendMessageToAll(gameSession, userSyncWebsocketMessage);
     }
