@@ -107,4 +107,10 @@ public class GameSession {
     public boolean isEmpty() {
         return userStates.isEmpty();
     }
+
+    @JsonIgnore
+    public Player getActivePlayer()
+    {
+        return riskController.getActivePlayer();
+    }
 }

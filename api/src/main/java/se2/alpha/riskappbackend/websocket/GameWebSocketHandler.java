@@ -81,7 +81,7 @@ public class GameWebSocketHandler {
         CreateGameWebsocketMessage createGameWebsocketMessage = gson.fromJson((String) message.getPayload(), CreateGameWebsocketMessage.class);
         GameSession gameSession = gameService.getGameSessionById(createGameWebsocketMessage.getGameSessionId());
         gameSession.createGame(createGameWebsocketMessage.getPlayers());
-        UserSyncWebsocketMessage userSyncWebsocketMessage = new UserSyncWebsocketMessage(gameSession.getReadyUsers());
-        sendMessageToAll(gameSession, userSyncWebsocketMessage);
+        GameStartedWebsocketMessage gameStartedWebsocketMessage = new GameStartedWebsocketMessage(gameSession.getActivePlayer());
+        sendMessageToAll(gameSession, gameStartedWebsocketMessage);
     }
 }

@@ -140,6 +140,14 @@ public class RiskController {
         processAttacker(attacker, attackingCountry, defendingCountry, attackerLosses, attackSuccessful);
     }
 
+    public Player getActivePlayer()
+    {
+        for(Player player : players)
+            if(player.isCurrentTurn())
+                return player;
+        return null;
+    }
+
     private Player getPlayerById(String id) throws Exception
     {
         for(Player player : players)

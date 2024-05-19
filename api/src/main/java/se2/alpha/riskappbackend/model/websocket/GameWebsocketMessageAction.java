@@ -5,5 +5,6 @@ public enum GameWebsocketMessageAction {
     USER_SYNC,
     USER_READY,
     USER_LEAVE,
-    CREATE_GAME
+    CREATE_GAME,
+    GAME_STARTED
 }
