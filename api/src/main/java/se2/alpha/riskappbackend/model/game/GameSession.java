@@ -75,6 +75,17 @@ public class GameSession {
         }
     }
 
+    public Player endTurn() throws Exception
+    {
+        riskController.endPlayerTurn();
+        return riskController.getActivePlayer();
+    }
+
+    public void seizeCountry(String playerId, String countryName, int numberOfTroops) throws Exception
+    {
+        riskController.seizeCountry(playerId, countryName, numberOfTroops);
+    }
+
     @JsonIgnore
     public List<String> getUserNames() {
         return userStates.keySet().stream().toList();
@@ -112,5 +123,11 @@ public class GameSession {
     public Player getActivePlayer()
     {
         return riskController.getActivePlayer();
+    }
+
+    @JsonIgnore
+    public ArrayList<Player> getPlayers()
+    {
+        return riskController.getPlayers();
     }
 }
