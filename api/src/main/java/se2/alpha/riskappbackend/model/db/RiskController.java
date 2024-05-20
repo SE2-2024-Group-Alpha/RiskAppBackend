@@ -89,9 +89,10 @@ public class RiskController {
         player.strengthenCountry(country, cntTroops);
     }
 
-    public void seizeCountry(String playerId, Country country, int cntTroops) throws Exception
+    public void seizeCountry(String playerId, String countryName, int cntTroops) throws Exception
     {
         Player player = getPlayerById(playerId);
+        Country country = getCountryByName(countryName);
         if(country.getOwner() != null)
             throw new Exception("Country cannot be seized while being owned by another player");
 
@@ -156,6 +157,17 @@ public class RiskController {
                 return player;
         }
         throw new Exception("no player with this id found");
+    }
+
+    private Country getCountryByName(String countryName) throws Exception
+    {
+        for(Continent continent : board.getContinents())
+        {
+            for(Country country : continent.getCountries())
+                if(countryName.equals(country.getName()))
+                    return country;
+        }
+        throw new Exception("no country with this name found");
     }
 
     private boolean processDefender(Player player, Country country, int losses)

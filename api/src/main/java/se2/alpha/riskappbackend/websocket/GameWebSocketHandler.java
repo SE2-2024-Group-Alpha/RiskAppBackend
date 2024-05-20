@@ -51,6 +51,7 @@ public class GameWebSocketHandler {
             case USER_LEAVE -> handleUserLeave(session, message);
             case CREATE_GAME -> handleCreateGame(session, message);
             case END_TURN -> handleEndTurn(session, message);
+            case SEIZE_COUNTRY -> handleSeizeCountry(session, message);
         }
     }
 
@@ -93,5 +94,13 @@ public class GameWebSocketHandler {
         Player activePlayer = gameSession.endTurn();
         NewTurnWebsocketMessage newTurnWebsocketMessage = new NewTurnWebsocketMessage(activePlayer);
         sendMessageToAll(gameSession, newTurnWebsocketMessage);
+    }
+
+    public void handleSeizeCountry(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+        SeizeCountryWebsocketMessage seizeCountryWebsocketMessage = gson.fromJson((String) message.getPayload(), SeizeCountryWebsocketMessage.class);
+        GameSession gameSession = gameService.getGameSessionById(seizeCountryWebsocketMessage.getGameSessionId());
+        gameSession.seizeCountry(seizeCountryWebsocketMessage.getPlayerId(), seizeCountryWebsocketMessage.getCountryName(), seizeCountryWebsocketMessage.getNumberOfTroops());
+        CountryChangedWebsocketMessage countryChangedWebsocketMessage = new CountryChangedWebsocketMessage(seizeCountryWebsocketMessage.getPlayerId(), seizeCountryWebsocketMessage.getCountryName(), seizeCountryWebsocketMessage.getNumberOfTroops());
+        sendMessageToAll(gameSession, countryChangedWebsocketMessage);
     }
 }
