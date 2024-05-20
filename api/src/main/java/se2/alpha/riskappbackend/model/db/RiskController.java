@@ -67,8 +67,10 @@ public class RiskController {
         player.tradeRiskCards();
     }
 
-    public void moveTroops(String playerId, Country moveFromCountry, Country moveToCountry, int cntTroops) throws Exception {
+    public void moveTroops(String playerId, String moveFromCountryName, String moveToCountryName, int cntTroops) throws Exception {
         Player player = getPlayerById(playerId);
+        Country moveFromCountry = getCountryByName(moveFromCountryName);
+        Country moveToCountry = getCountryByName(moveToCountryName);
         if(!player.equals(moveFromCountry.getOwner()) || !player.equals(moveToCountry.getOwner()))
             throw new Exception("countries must be owned by player");
         if(moveFromCountry.getNumberOfTroops() <= cntTroops)
@@ -80,9 +82,10 @@ public class RiskController {
         moveToCountry.addArmy(cntTroops);
     }
 
-    public void strengthenCountry(String playerId, Country country, int cntTroops) throws Exception
+    public void strengthenCountry(String playerId, String countryName, int cntTroops) throws Exception
     {
         Player player = getPlayerById(playerId);
+        Country country = getCountryByName(countryName);
         if(!player.equals(country.getOwner()))
             throw new Exception("Country not owned by player");
 
@@ -112,10 +115,12 @@ public class RiskController {
         player.addArmy(cntNewTroops);
     }
 
-    public void attack(Player attacker, Player defender, Country attackingCountry, Country defendingCountry) throws Exception
+    public void attack(Player attacker, Player defender, String attackingCountryName, String defendingCountryName) throws Exception
     {
         int attackerLosses = 0;
         int defenderLosses = 0;
+        Country attackingCountry = getCountryByName(attackingCountryName);
+        Country defendingCountry = getCountryByName(defendingCountryName);
         if(!attackingCountry.getAttackableCountries().contains(defendingCountry))
             throw new Exception("Cannot attack this country");
 
