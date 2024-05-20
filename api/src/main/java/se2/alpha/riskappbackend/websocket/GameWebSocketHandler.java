@@ -7,6 +7,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import se2.alpha.riskappbackend.model.db.Player;
 import se2.alpha.riskappbackend.model.db.RiskController;
 import se2.alpha.riskappbackend.model.game.GameSession;
 import se2.alpha.riskappbackend.model.game.UserState;
@@ -49,6 +50,7 @@ public class GameWebSocketHandler {
             case USER_READY -> handleUserReady(session, message);
             case USER_LEAVE -> handleUserLeave(session, message);
             case CREATE_GAME -> handleCreateGame(session, message);
+            case END_TURN -> handleEndTurn(session, message);
         }
     }
 
@@ -83,5 +85,13 @@ public class GameWebSocketHandler {
         gameSession.createGame(createGameWebsocketMessage.getPlayers());
         GameStartedWebsocketMessage gameStartedWebsocketMessage = new GameStartedWebsocketMessage(gameSession.getActivePlayer());
         sendMessageToAll(gameSession, gameStartedWebsocketMessage);
+    }
+
+    public void handleEndTurn(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+        EndTurnWebsocketMessage endTurnWebsocketMessage = gson.fromJson((String) message.getPayload(), EndTurnWebsocketMessage.class);
+        GameSession gameSession = gameService.getGameSessionById(endTurnWebsocketMessage.getGameSessionId());
+        Player activePlayer = gameSession.endTurn();
+        NewTurnWebsocketMessage newTurnWebsocketMessage = new NewTurnWebsocketMessage(activePlayer);
+        sendMessageToAll(gameSession, newTurnWebsocketMessage);
     }
 }
