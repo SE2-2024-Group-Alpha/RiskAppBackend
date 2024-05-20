@@ -13,4 +13,5 @@ public class GameStartedWebsocketMessage implements IGameWebsocketMessage {
     private final CustomWebsocketMessageType type = CustomWebsocketMessageType.GAME;
     private final GameWebsocketMessageAction action = GameWebsocketMessageAction.GAME_STARTED;
     private ArrayList<Player> players;
+    private Player activePlayer;
 }

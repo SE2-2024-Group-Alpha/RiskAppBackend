@@ -31,9 +31,9 @@ public class RiskControllerTest {
     @BeforeEach
     void setUp() throws Exception {
         ArrayList<Player> players = new ArrayList<Player>();
-        players.add(new Player("1", "", Color.BLUE));
-        players.add(new Player("2", "", Color.RED));
-        players.add(new Player("3", "", Color.YELLOW));
+        players.add(new Player("1", "", Color.BLUE.getRGB()));
+        players.add(new Player("2", "", Color.RED.getRGB()));
+        players.add(new Player("3", "", Color.YELLOW.getRGB()));
         riskController = GameSetupFactory.setupThreePlayerGame(players);
         mockedStatic = Mockito.mockStatic(Dice.class);
     }
@@ -297,7 +297,7 @@ public class RiskControllerTest {
     void testSeizeCountry() throws Exception {
         Player player = riskController.getPlayers().get(0);
         Country country = riskController.getBoard().getContinents().get(0).getCountries().get(0);
-        riskController.seizeCountry(player.getId(), country, 5);
+        riskController.seizeCountry(player.getId(), country.getName(), 5);
         assertEquals(player, country.getOwner());
         assertEquals(PLAYERNUMBEROFTROOPS - 5, player.getFreeNumberOfTroops());
         assertEquals(PLAYERNUMBEROFTROOPS, player.getTotalNumberOfTroops());
@@ -309,7 +309,7 @@ public class RiskControllerTest {
         Player player = riskController.getPlayers().get(0);
         Country country = riskController.getBoard().getContinents().get(0).getCountries().get(0);
         riskController.getPlayers().get(1).controlCountry(country);
-        Exception exception = assertThrows(Exception.class, () -> riskController.seizeCountry(player.getId(), country, 5));
+        Exception exception = assertThrows(Exception.class, () -> riskController.seizeCountry(player.getId(), country.getName(), 5));
         assertEquals("Country cannot be seized while being owned by another player", exception.getMessage());
     }
 
