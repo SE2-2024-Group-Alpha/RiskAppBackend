@@ -7,9 +7,8 @@ import lombok.Getter;
 import se2.alpha.riskappbackend.model.db.Player;
 
 @Getter
-public class CreateGameWebsocketMessage implements IGameWebsocketMessage {
+public class EndTurnWebsocketMessage implements IGameWebsocketMessage {
     private final CustomWebsocketMessageType type = CustomWebsocketMessageType.GAME;
-    GameWebsocketMessageAction action = GameWebsocketMessageAction.CREATE_GAME;
+    GameWebsocketMessageAction action = GameWebsocketMessageAction.END_TURN;
     private UUID gameSessionId;
-    private ArrayList<Player> players;
 }
