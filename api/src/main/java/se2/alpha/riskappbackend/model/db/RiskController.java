@@ -165,7 +165,7 @@ public class RiskController {
         throw new Exception("no player with this id found");
     }
 
-    private Country getCountryByName(String countryName) throws Exception
+    public Country getCountryByName(String countryName) throws Exception
     {
         for(Continent continent : board.getContinents())
         {

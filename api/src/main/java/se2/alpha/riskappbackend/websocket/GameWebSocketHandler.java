@@ -7,6 +7,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import se2.alpha.riskappbackend.model.db.Country;
 import se2.alpha.riskappbackend.model.db.Player;
 import se2.alpha.riskappbackend.model.db.RiskController;
 import se2.alpha.riskappbackend.model.game.GameSession;
@@ -53,6 +54,7 @@ public class GameWebSocketHandler {
             case END_TURN -> handleEndTurn(session, message);
             case SEIZE_COUNTRY -> handleSeizeCountry(session, message);
             case STRENGTHEN_COUNTRY -> handleStrengthenCountry(session, message);
+            case MOVE_TROOPS -> handleMoveTroops(session, message);
         }
     }
 
@@ -115,5 +117,17 @@ public class GameWebSocketHandler {
         int numberOfTroops = gameSession.strengthenCountry(strengthenCountryWebsocketMessage.getPlayerId(), strengthenCountryWebsocketMessage.getCountryName(), strengthenCountryWebsocketMessage.getNumberOfTroops());
         CountryChangedWebsocketMessage countryChangedWebsocketMessage = new CountryChangedWebsocketMessage(strengthenCountryWebsocketMessage.getPlayerId(), strengthenCountryWebsocketMessage.getCountryName(), numberOfTroops);
         sendMessageToAll(gameSession, countryChangedWebsocketMessage);
+    }
+
+    public void handleMoveTroops(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+        MoveTroopsWebsocketMessage moveTroopsWebsocketMessage = gson.fromJson((String) message.getPayload(), MoveTroopsWebsocketMessage.class);
+        GameSession gameSession = gameService.getGameSessionById(moveTroopsWebsocketMessage.getGameSessionId());
+        gameSession.moveTroops(moveTroopsWebsocketMessage.getPlayerId(), moveTroopsWebsocketMessage.getMoveFromCountryName(), moveTroopsWebsocketMessage.getMoveToCountryName(), moveTroopsWebsocketMessage.getNumberOfTroops());
+        Country moveFromCountry = gameSession.getCountryByName(moveTroopsWebsocketMessage.getMoveFromCountryName());
+        CountryChangedWebsocketMessage moveFromCountryChangedWebsocketMessage = new CountryChangedWebsocketMessage(moveFromCountry.getOwner().getId(), moveFromCountry.getName(), moveFromCountry.getNumberOfTroops());
+        sendMessageToAll(gameSession, moveFromCountryChangedWebsocketMessage);
+        Country moveToCountry = gameSession.getCountryByName(moveTroopsWebsocketMessage.getMoveToCountryName());
+        CountryChangedWebsocketMessage moveToCountryChangedWebsocketMessage = new CountryChangedWebsocketMessage(moveToCountry.getOwner().getId(), moveToCountry.getName(), moveToCountry.getNumberOfTroops());
+        sendMessageToAll(gameSession, moveToCountryChangedWebsocketMessage);
     }
 }

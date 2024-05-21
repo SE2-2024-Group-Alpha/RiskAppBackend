@@ -2,6 +2,7 @@ package se2.alpha.riskappbackend.model.game;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import se2.alpha.riskappbackend.model.db.Country;
 import se2.alpha.riskappbackend.model.db.Player;
 import se2.alpha.riskappbackend.model.db.RiskController;
 import se2.alpha.riskappbackend.util.GameSetupFactory;
@@ -94,6 +95,16 @@ public class GameSession {
     public void getNewTroops(String playerId) throws Exception
     {
         riskController.getNewTroops(playerId);
+    }
+
+    public void moveTroops(String playerId, String moveFromCountryName, String moveToCountryName, int numberOfTroops) throws Exception
+    {
+        riskController.moveTroops(playerId, moveFromCountryName, moveToCountryName, numberOfTroops);
+    }
+
+    public Country getCountryByName(String countryName) throws Exception
+    {
+        return riskController.getCountryByName(countryName);
     }
 
     @JsonIgnore
