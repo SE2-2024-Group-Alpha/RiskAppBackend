@@ -116,22 +116,28 @@ public class RiskController {
         player.addArmy(cntNewTroops);
     }
 
-    public void attack(Player attacker, Player defender, String attackingCountryName, String defendingCountryName) throws Exception
+    public void attack(String attackerPlayerId, String defenderPlayerId, String attackingCountryName, String defendingCountryName) throws Exception
     {
         int attackerLosses = 0;
         int defenderLosses = 0;
+        Player attacker = getPlayerById(attackerPlayerId);
+        Player defender = getPlayerById(defenderPlayerId);
         Country attackingCountry = getCountryByName(attackingCountryName);
         Country defendingCountry = getCountryByName(defendingCountryName);
+
+        System.out.println("attacking country owner " + attackingCountry.getOwner().getName());
+        System.out.println("defending country owner " + defendingCountry.getOwner().getName());
+
         if(!attackingCountry.getAttackableCountries().contains(defendingCountry))
             throw new Exception("Cannot attack this country");
 
         if(attackingCountry.getNumberOfTroops() < 2)
             throw new Exception("Attacking Country must have at least 2 troops");
 
-        Integer[] attackerRolls = Dice.rollMultipleTimes((Integer) attackingCountry.getNumberOfTroops());
+        Integer[] attackerRolls = Dice.rollMultipleTimes((Integer) (attackingCountry.getNumberOfTroops() - 1));
         Integer[] defenderRolls = Dice.rollMultipleTimes((Integer) defendingCountry.getNumberOfTroops());
 
-        for(int i = 0; i < defenderRolls.length; i++)
+        for(int i = 0; i < Math.min(defenderRolls.length, attackerRolls.length - 1); i++)
         {
             if(attackerRolls[i] > defenderRolls[i])
             {
@@ -145,6 +151,15 @@ public class RiskController {
 
         boolean attackSuccessful = processDefender(defender, defendingCountry, defenderLosses);
         processAttacker(attacker, attackingCountry, defendingCountry, attackerLosses, attackSuccessful);
+
+        System.out.println("attacking country owner " + attackingCountry.getOwner().getName());
+        System.out.println("defending country owner " + defendingCountry.getOwner().getName());
+
+        System.out.println("attacker losses " + attackerLosses);
+        System.out.println("defender losses " + defenderLosses);
+
+        if(!attackSuccessful && attackingCountry.getNumberOfTroops() > 1)
+            attack(attackerPlayerId, defenderPlayerId, attackingCountryName, defendingCountryName);
     }
 
     public Player getActivePlayer()
