@@ -93,6 +93,7 @@ public class GameWebSocketHandler {
         EndTurnWebsocketMessage endTurnWebsocketMessage = gson.fromJson((String) message.getPayload(), EndTurnWebsocketMessage.class);
         GameSession gameSession = gameService.getGameSessionById(endTurnWebsocketMessage.getGameSessionId());
         Player activePlayer = gameSession.endTurn();
+        gameSession.getNewTroops(activePlayer.getId());
         NewTurnWebsocketMessage newTurnWebsocketMessage = new NewTurnWebsocketMessage(activePlayer);
         sendMessageToAll(gameSession, newTurnWebsocketMessage);
     }
@@ -103,6 +104,9 @@ public class GameWebSocketHandler {
         gameSession.seizeCountry(seizeCountryWebsocketMessage.getPlayerId(), seizeCountryWebsocketMessage.getCountryName(), seizeCountryWebsocketMessage.getNumberOfTroops());
         CountryChangedWebsocketMessage countryChangedWebsocketMessage = new CountryChangedWebsocketMessage(seizeCountryWebsocketMessage.getPlayerId(), seizeCountryWebsocketMessage.getCountryName(), seizeCountryWebsocketMessage.getNumberOfTroops());
         sendMessageToAll(gameSession, countryChangedWebsocketMessage);
+        Player activePlayer = gameSession.endTurn();
+        NewTurnWebsocketMessage newTurnWebsocketMessage = new NewTurnWebsocketMessage(activePlayer);
+        sendMessageToAll(gameSession, newTurnWebsocketMessage);
     }
 
     public void handleStrengthenCountry(WebSocketSession session, WebSocketMessage<?> message) throws Exception {

@@ -91,6 +91,11 @@ public class GameSession {
         return riskController.strengthenCountry(playerId, countryName, numberOfTroops);
     }
 
+    public void getNewTroops(String playerId) throws Exception
+    {
+        riskController.getNewTroops(playerId);
+    }
+
     @JsonIgnore
     public List<String> getUserNames() {
         return userStates.keySet().stream().toList();
