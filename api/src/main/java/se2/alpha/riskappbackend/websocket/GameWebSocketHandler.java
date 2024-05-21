@@ -55,6 +55,7 @@ public class GameWebSocketHandler {
             case SEIZE_COUNTRY -> handleSeizeCountry(session, message);
             case STRENGTHEN_COUNTRY -> handleStrengthenCountry(session, message);
             case MOVE_TROOPS -> handleMoveTroops(session, message);
+            case ATTACK -> handleAttack(session, message);
         }
     }
 
@@ -128,6 +129,18 @@ public class GameWebSocketHandler {
         sendMessageToAll(gameSession, moveFromCountryChangedWebsocketMessage);
         Country moveToCountry = gameSession.getCountryByName(moveTroopsWebsocketMessage.getMoveToCountryName());
         CountryChangedWebsocketMessage moveToCountryChangedWebsocketMessage = new CountryChangedWebsocketMessage(moveToCountry.getOwner().getId(), moveToCountry.getName(), moveToCountry.getNumberOfTroops());
+        sendMessageToAll(gameSession, moveToCountryChangedWebsocketMessage);
+    }
+
+    public void handleAttack(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+        AttackWebsocketMessage attackWebsocketMessage = gson.fromJson((String) message.getPayload(), AttackWebsocketMessage.class);
+        GameSession gameSession = gameService.getGameSessionById(attackWebsocketMessage.getGameSessionId());
+        gameSession.attack(attackWebsocketMessage.getAttackerPlayerId(), attackWebsocketMessage.getDefenderPlayerId(), attackWebsocketMessage.getAttackingCountryName(), attackWebsocketMessage.getDefendingCountryName());
+        Country attackingCountry = gameSession.getCountryByName(attackWebsocketMessage.getAttackingCountryName());
+        CountryChangedWebsocketMessage moveFromCountryChangedWebsocketMessage = new CountryChangedWebsocketMessage(attackingCountry.getOwner().getId(), attackingCountry.getName(), attackingCountry.getNumberOfTroops());
+        sendMessageToAll(gameSession, moveFromCountryChangedWebsocketMessage);
+        Country defendingCountry = gameSession.getCountryByName(attackWebsocketMessage.getDefendingCountryName());
+        CountryChangedWebsocketMessage moveToCountryChangedWebsocketMessage = new CountryChangedWebsocketMessage(defendingCountry.getOwner().getId(), defendingCountry.getName(), defendingCountry.getNumberOfTroops());
         sendMessageToAll(gameSession, moveToCountryChangedWebsocketMessage);
     }
 }

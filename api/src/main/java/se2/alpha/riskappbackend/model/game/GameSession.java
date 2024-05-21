@@ -102,6 +102,11 @@ public class GameSession {
         riskController.moveTroops(playerId, moveFromCountryName, moveToCountryName, numberOfTroops);
     }
 
+    public void attack(String attackerPlayerId, String defenderPlayerId, String attackingCountryName, String defendingCountryName) throws Exception
+    {
+        riskController.attack(attackerPlayerId, defenderPlayerId, attackingCountryName, defendingCountryName);
+    }
+
     public Country getCountryByName(String countryName) throws Exception
     {
         return riskController.getCountryByName(countryName);
