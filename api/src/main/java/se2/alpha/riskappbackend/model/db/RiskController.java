@@ -134,7 +134,7 @@ public class RiskController {
         Integer[] attackerRolls = Dice.rollMultipleTimes((Integer) (attackingCountry.getNumberOfTroops() - 1));
         Integer[] defenderRolls = Dice.rollMultipleTimes((Integer) defendingCountry.getNumberOfTroops());
 
-        for(int i = 0; i < Math.min(defenderRolls.length, attackerRolls.length - 1); i++)
+        for(int i = 0; i < Math.min(defenderRolls.length, attackerRolls.length); i++)
         {
             if(attackerRolls[i] > defenderRolls[i])
             {
