@@ -82,7 +82,7 @@ public class RiskController {
         moveToCountry.addArmy(cntTroops);
     }
 
-    public void strengthenCountry(String playerId, String countryName, int cntTroops) throws Exception
+    public int strengthenCountry(String playerId, String countryName, int cntTroops) throws Exception
     {
         Player player = getPlayerById(playerId);
         Country country = getCountryByName(countryName);
@@ -90,6 +90,7 @@ public class RiskController {
             throw new Exception("Country not owned by player");
 
         player.strengthenCountry(country, cntTroops);
+        return country.getNumberOfTroops();
     }
 
     public void seizeCountry(String playerId, String countryName, int cntTroops) throws Exception

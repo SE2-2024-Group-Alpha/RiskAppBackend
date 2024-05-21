@@ -52,6 +52,7 @@ public class GameWebSocketHandler {
             case CREATE_GAME -> handleCreateGame(session, message);
             case END_TURN -> handleEndTurn(session, message);
             case SEIZE_COUNTRY -> handleSeizeCountry(session, message);
+            case STRENGTHEN_COUNTRY -> handleStrengthenCountry(session, message);
         }
     }
 
@@ -101,6 +102,14 @@ public class GameWebSocketHandler {
         GameSession gameSession = gameService.getGameSessionById(seizeCountryWebsocketMessage.getGameSessionId());
         gameSession.seizeCountry(seizeCountryWebsocketMessage.getPlayerId(), seizeCountryWebsocketMessage.getCountryName(), seizeCountryWebsocketMessage.getNumberOfTroops());
         CountryChangedWebsocketMessage countryChangedWebsocketMessage = new CountryChangedWebsocketMessage(seizeCountryWebsocketMessage.getPlayerId(), seizeCountryWebsocketMessage.getCountryName(), seizeCountryWebsocketMessage.getNumberOfTroops());
+        sendMessageToAll(gameSession, countryChangedWebsocketMessage);
+    }
+
+    public void handleStrengthenCountry(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+        StrengthenCountryWebsocketMessage strengthenCountryWebsocketMessage = gson.fromJson((String) message.getPayload(), StrengthenCountryWebsocketMessage.class);
+        GameSession gameSession = gameService.getGameSessionById(strengthenCountryWebsocketMessage.getGameSessionId());
+        int numberOfTroops = gameSession.strengthenCountry(strengthenCountryWebsocketMessage.getPlayerId(), strengthenCountryWebsocketMessage.getCountryName(), strengthenCountryWebsocketMessage.getNumberOfTroops());
+        CountryChangedWebsocketMessage countryChangedWebsocketMessage = new CountryChangedWebsocketMessage(strengthenCountryWebsocketMessage.getPlayerId(), strengthenCountryWebsocketMessage.getCountryName(), numberOfTroops);
         sendMessageToAll(gameSession, countryChangedWebsocketMessage);
     }
 }

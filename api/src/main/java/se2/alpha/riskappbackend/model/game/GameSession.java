@@ -86,6 +86,11 @@ public class GameSession {
         riskController.seizeCountry(playerId, countryName, numberOfTroops);
     }
 
+    public int strengthenCountry(String playerId, String countryName, int numberOfTroops) throws Exception
+    {
+        return riskController.strengthenCountry(playerId, countryName, numberOfTroops);
+    }
+
     @JsonIgnore
     public List<String> getUserNames() {
         return userStates.keySet().stream().toList();
