@@ -125,9 +125,6 @@ public class RiskController {
         Country attackingCountry = getCountryByName(attackingCountryName);
         Country defendingCountry = getCountryByName(defendingCountryName);
 
-        System.out.println("attacking country owner " + attackingCountry.getOwner().getName());
-        System.out.println("defending country owner " + defendingCountry.getOwner().getName());
-
         if(!attackingCountry.getAttackableCountries().contains(defendingCountry))
             throw new Exception("Cannot attack this country");
 
@@ -151,12 +148,6 @@ public class RiskController {
 
         boolean attackSuccessful = processDefender(defender, defendingCountry, defenderLosses);
         processAttacker(attacker, attackingCountry, defendingCountry, attackerLosses, attackSuccessful);
-
-        System.out.println("attacking country owner " + attackingCountry.getOwner().getName());
-        System.out.println("defending country owner " + defendingCountry.getOwner().getName());
-
-        System.out.println("attacker losses " + attackerLosses);
-        System.out.println("defender losses " + defenderLosses);
 
         if(!attackSuccessful && attackingCountry.getNumberOfTroops() > 1)
             attack(attackerPlayerId, defenderPlayerId, attackingCountryName, defendingCountryName);
