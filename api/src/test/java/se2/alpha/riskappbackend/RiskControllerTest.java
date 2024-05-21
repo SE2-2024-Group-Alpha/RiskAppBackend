@@ -65,6 +65,7 @@ public class RiskControllerTest {
     @Test
     void testAttackCompleteFail() throws Exception {
         mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 5)).thenReturn(new Integer[]{1, 1, 1, 1, 1});
+        mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 1)).thenReturn(new Integer[]{1}); // one is needed because the attack goes into second round with losses
         mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 4)).thenReturn(new Integer[]{6, 6, 6, 6});
         Board board = riskController.getBoard();
         Country attackingCountry = board.getContinents().get(0).getCountries().get(0);
@@ -78,12 +79,14 @@ public class RiskControllerTest {
         riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(defender, defendingCountry.getOwner());
         assertEquals(4, defendingCountry.getNumberOfTroops());
-        assertEquals(2, attackingCountry.getNumberOfTroops());
+        assertEquals(1, attackingCountry.getNumberOfTroops());
     }
     @Test
     void testAttackWithOneLossOnBothSides() throws Exception {
         mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 2)).thenReturn(new Integer[]{6, 1});
         mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 10)).thenReturn(new Integer[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6});
+        mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 1)).thenReturn(new Integer[]{1}); //needed for second round of attack
+        mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 9)).thenReturn(new Integer[]{6, 6, 6, 6, 6, 6, 6, 6, 6}); //needed for second round of attack
         Board board = riskController.getBoard();
         Country attackingCountry = board.getContinents().get(0).getCountries().get(0);
         Country defendingCountry = attackingCountry.getAttackableCountries().get(0);
@@ -94,14 +97,17 @@ public class RiskControllerTest {
         attackingCountry.addArmy(11);
         defendingCountry.addArmy(2);
         riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
-        assertEquals(defender, defendingCountry.getOwner());
-        assertEquals(1, defendingCountry.getNumberOfTroops());
-        assertEquals(10, attackingCountry.getNumberOfTroops());
+        assertEquals(attacker, defendingCountry.getOwner());
+        assertEquals(9, defendingCountry.getNumberOfTroops());
+        assertEquals(1, attackingCountry.getNumberOfTroops());
     }
     @Test
     void testAttackWithTwoLossesOnBothSides() throws Exception {
         mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 5)).thenReturn(new Integer[]{6, 6, 1, 1, 1});
         mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 4)).thenReturn(new Integer[]{5, 5, 5, 5});
+        mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 2)).thenReturn(new Integer[]{6, 6}); //needed for second round of attack
+        mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 3)).thenReturn(new Integer[]{1, 1, 1}); //needed for second and third round of attack
+        mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 1)).thenReturn(new Integer[]{1}); //needed for third round of attack
         Board board = riskController.getBoard();
         Country attackingCountry = board.getContinents().get(0).getCountries().get(0);
         Country defendingCountry = attackingCountry.getAttackableCountries().get(0);
@@ -114,7 +120,7 @@ public class RiskControllerTest {
         riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(defender, defendingCountry.getOwner());
         assertEquals(2, defendingCountry.getNumberOfTroops());
-        assertEquals(4, attackingCountry.getNumberOfTroops());
+        assertEquals(1, attackingCountry.getNumberOfTroops());
     }
     @Test
     void testAttackCaptureContinent() throws Exception {
