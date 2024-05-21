@@ -16,9 +16,9 @@ public class GameSetupFactoryTest {
     @Test
     void testThreePlayerGame() throws Exception {
         ArrayList<Player> players = new ArrayList<Player>();
-        players.add(new Player("1", "", Color.BLUE));
-        players.add(new Player("2", "", Color.RED));
-        players.add(new Player("3", "", Color.YELLOW));
+        players.add(new Player("1", "", Color.BLUE.getRGB()));
+        players.add(new Player("2", "", Color.RED.getRGB()));
+        players.add(new Player("3", "", Color.YELLOW.getRGB()));
         RiskController riskController = GameSetupFactory.setupThreePlayerGame(players);
         assertEquals(3, riskController.getPlayers().size());
     }
@@ -26,10 +26,10 @@ public class GameSetupFactoryTest {
     @Test
     void testFourPlayerGame() throws Exception {
         ArrayList<Player> players = new ArrayList<Player>();
-        players.add(new Player("1", "", Color.BLUE));
-        players.add(new Player("2", "", Color.RED));
-        players.add(new Player("3", "", Color.YELLOW));
-        players.add(new Player("4", "", Color.GREEN));
+        players.add(new Player("1", "", Color.BLUE.getRGB()));
+        players.add(new Player("2", "", Color.RED.getRGB()));
+        players.add(new Player("3", "", Color.YELLOW.getRGB()));
+        players.add(new Player("4", "", Color.GREEN.getRGB()));
         RiskController riskController = GameSetupFactory.setupFourPlayerGame(players);
         assertEquals(4, riskController.getPlayers().size());
     }
@@ -37,11 +37,11 @@ public class GameSetupFactoryTest {
     @Test
     void testFivePlayerGame() throws Exception {
         ArrayList<Player> players = new ArrayList<Player>();
-        players.add(new Player("1", "", Color.BLUE));
-        players.add(new Player("2", "", Color.RED));
-        players.add(new Player("3", "", Color.YELLOW));
-        players.add(new Player("4", "", Color.GREEN));
-        players.add(new Player("5", "", Color.ORANGE));
+        players.add(new Player("1", "", Color.BLUE.getRGB()));
+        players.add(new Player("2", "", Color.RED.getRGB()));
+        players.add(new Player("3", "", Color.YELLOW.getRGB()));
+        players.add(new Player("4", "", Color.GREEN.getRGB()));
+        players.add(new Player("5", "", Color.ORANGE.getRGB()));
         RiskController riskController = GameSetupFactory.setupFivePlayerGame(players);
         assertEquals(5, riskController.getPlayers().size());
     }
@@ -49,12 +49,12 @@ public class GameSetupFactoryTest {
     @Test
     void testSixPlayerGame() throws Exception {
         ArrayList<Player> players = new ArrayList<Player>();
-        players.add(new Player("1", "", Color.BLUE));
-        players.add(new Player("2", "", Color.RED));
-        players.add(new Player("3", "", Color.YELLOW));
-        players.add(new Player("4", "", Color.GREEN));
-        players.add(new Player("5", "", Color.ORANGE));
-        players.add(new Player("6", "", Color.PINK));
+        players.add(new Player("1", "", Color.BLUE.getRGB()));
+        players.add(new Player("2", "", Color.RED.getRGB()));
+        players.add(new Player("3", "", Color.YELLOW.getRGB()));
+        players.add(new Player("4", "", Color.GREEN.getRGB()));
+        players.add(new Player("5", "", Color.ORANGE.getRGB()));
+        players.add(new Player("6", "", Color.PINK.getRGB()));
         RiskController riskController = GameSetupFactory.setupSixPlayerGame(players);
         assertEquals(6, riskController.getPlayers().size());
     }
@@ -62,12 +62,12 @@ public class GameSetupFactoryTest {
     @Test
     void testContinents() throws Exception {
         ArrayList<Player> players = new ArrayList<Player>();
-        players.add(new Player("1", "", Color.BLUE));
-        players.add(new Player("2", "", Color.RED));
-        players.add(new Player("3", "", Color.YELLOW));
-        players.add(new Player("4", "", Color.GREEN));
-        players.add(new Player("5", "", Color.ORANGE));
-        players.add(new Player("6", "", Color.PINK));
+        players.add(new Player("1", "", Color.BLUE.getRGB()));
+        players.add(new Player("2", "", Color.RED.getRGB()));
+        players.add(new Player("3", "", Color.YELLOW.getRGB()));
+        players.add(new Player("4", "", Color.GREEN.getRGB()));
+        players.add(new Player("5", "", Color.ORANGE.getRGB()));
+        players.add(new Player("6", "", Color.PINK.getRGB()));
         RiskController riskController = GameSetupFactory.setupSixPlayerGame(players);
         assertEquals(6, riskController.getBoard().getContinents().size());
     }
@@ -76,12 +76,12 @@ public class GameSetupFactoryTest {
     void testCountries() throws Exception {
         int nrCountries = 0;
         ArrayList<Player> players = new ArrayList<Player>();
-        players.add(new Player("1", "", Color.BLUE));
-        players.add(new Player("2", "", Color.RED));
-        players.add(new Player("3", "", Color.YELLOW));
-        players.add(new Player("4", "", Color.GREEN));
-        players.add(new Player("5", "", Color.ORANGE));
-        players.add(new Player("6", "", Color.PINK));
+        players.add(new Player("1", "", Color.BLUE.getRGB()));
+        players.add(new Player("2", "", Color.RED.getRGB()));
+        players.add(new Player("3", "", Color.YELLOW.getRGB()));
+        players.add(new Player("4", "", Color.GREEN.getRGB()));
+        players.add(new Player("5", "", Color.ORANGE.getRGB()));
+        players.add(new Player("6", "", Color.PINK.getRGB()));
         RiskController riskController = GameSetupFactory.setupSixPlayerGame(players);
         for(Continent continent : riskController.getBoard().getContinents())
             nrCountries += continent.getCountries().size();
