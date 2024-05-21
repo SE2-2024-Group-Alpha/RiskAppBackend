@@ -54,11 +54,11 @@ public class RiskControllerTest {
         Player defender = riskController.getPlayers().get(1);
         attacker.controlCountry(attackingCountry);
         defender.controlCountry(defendingCountry);
-        attackingCountry.addArmy(10);
+        attackingCountry.addArmy(11);
         defendingCountry.addArmy(1);
-        riskController.attack(attacker, defender, attackingCountry.getName(), defendingCountry.getName());
+        riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(attacker, defendingCountry.getOwner());
-        assertEquals(9, defendingCountry.getNumberOfTroops());
+        assertEquals(10, defendingCountry.getNumberOfTroops());
         assertEquals(1, attackingCountry.getNumberOfTroops());
     }
 
@@ -73,12 +73,12 @@ public class RiskControllerTest {
         Player defender = riskController.getPlayers().get(1);
         attacker.controlCountry(attackingCountry);
         defender.controlCountry(defendingCountry);
-        attackingCountry.addArmy(5);
+        attackingCountry.addArmy(6);
         defendingCountry.addArmy(4);
-        riskController.attack(attacker, defender, attackingCountry.getName(), defendingCountry.getName());
+        riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(defender, defendingCountry.getOwner());
         assertEquals(4, defendingCountry.getNumberOfTroops());
-        assertEquals(1, attackingCountry.getNumberOfTroops());
+        assertEquals(2, attackingCountry.getNumberOfTroops());
     }
     @Test
     void testAttackWithOneLossOnBothSides() throws Exception {
@@ -91,12 +91,12 @@ public class RiskControllerTest {
         Player defender = riskController.getPlayers().get(1);
         attacker.controlCountry(attackingCountry);
         defender.controlCountry(defendingCountry);
-        attackingCountry.addArmy(10);
+        attackingCountry.addArmy(11);
         defendingCountry.addArmy(2);
-        riskController.attack(attacker, defender, attackingCountry.getName(), defendingCountry.getName());
+        riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(defender, defendingCountry.getOwner());
         assertEquals(1, defendingCountry.getNumberOfTroops());
-        assertEquals(9, attackingCountry.getNumberOfTroops());
+        assertEquals(10, attackingCountry.getNumberOfTroops());
     }
     @Test
     void testAttackWithTwoLossesOnBothSides() throws Exception {
@@ -109,12 +109,12 @@ public class RiskControllerTest {
         Player defender = riskController.getPlayers().get(1);
         attacker.controlCountry(attackingCountry);
         defender.controlCountry(defendingCountry);
-        attackingCountry.addArmy(5);
+        attackingCountry.addArmy(6);
         defendingCountry.addArmy(4);
-        riskController.attack(attacker, defender, attackingCountry.getName(), defendingCountry.getName());
+        riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(defender, defendingCountry.getOwner());
         assertEquals(2, defendingCountry.getNumberOfTroops());
-        assertEquals(3, attackingCountry.getNumberOfTroops());
+        assertEquals(4, attackingCountry.getNumberOfTroops());
     }
     @Test
     void testAttackCaptureContinent() throws Exception {
@@ -131,9 +131,9 @@ public class RiskControllerTest {
             attacker.controlCountry(country);
         }
         defender.controlCountry(defendingCountry);
-        attackingCountry.addArmy(5);
+        attackingCountry.addArmy(6);
         defendingCountry.addArmy(4);
-        riskController.attack(attacker, defender, attackingCountry.getName(), defendingCountry.getName());
+        riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(attacker, continent.getOwner());
     }
     @Test
@@ -153,9 +153,9 @@ public class RiskControllerTest {
             country.setOwner(defender);
         }
         defendingCountry.setOwner(defender);
-        attackingCountry.addArmy(5);
+        attackingCountry.addArmy(6);
         defendingCountry.addArmy(4);
-        riskController.attack(attacker, defender, attackingCountry.getName(), defendingCountry.getName());
+        riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(null, continent.getOwner());
     }
     @Test
@@ -169,9 +169,9 @@ public class RiskControllerTest {
         Player defender = riskController.getPlayers().get(1);
         attacker.controlCountry(attackingCountry);
         defender.controlCountry(defendingCountry);
-        attackingCountry.addArmy(10);
+        attackingCountry.addArmy(11);
         defendingCountry.addArmy(1);
-        riskController.attack(attacker, defender, attackingCountry.getName(), defendingCountry.getName());
+        riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertTrue(defender.isEliminated());
     }
     @Test
@@ -186,9 +186,9 @@ public class RiskControllerTest {
         attacker.controlCountry(attackingCountry);
         defender.controlCountry(defendingCountry);
         defender.controlCountry(attackingCountry.getAttackableCountries().get(1));
-        attackingCountry.addArmy(10);
+        attackingCountry.addArmy(11);
         defendingCountry.addArmy(1);
-        riskController.attack(attacker, defender, attackingCountry.getName(), defendingCountry.getName());
+        riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertFalse(defender.isEliminated());
     }
     @Test
