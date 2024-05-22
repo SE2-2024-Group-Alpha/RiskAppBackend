@@ -69,6 +69,32 @@ public class GameController {
         }
     }
 
+    @GetMapping("/{gameSessionId}/player/{id}/riskcards/tradable")
+    public ResponseEntity<?> canPlayerTradeRiskCards(@PathVariable String gameSessionId, @PathVariable("id") String id) {
+        GameSession gameSession = gameService.getGameSessionById(UUID.fromString(gameSessionId));
+        try {
+            boolean canTrade = gameSession.canPlayerTradeRiskCards(id);
+            return ResponseEntity.ok(canTrade);
+        }
+        catch(Exception ex)
+        {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @GetMapping("/{gameSessionId}/player/{id}/riskcards/trade")
+    public ResponseEntity<?> tradeRiskCards(@PathVariable String gameSessionId, @PathVariable("id") String id) {
+        GameSession gameSession = gameService.getGameSessionById(UUID.fromString(gameSessionId));
+        try {
+            gameSession.tradeRiskCards(id);
+            return ResponseEntity.ok().build();
+        }
+        catch(Exception ex)
+        {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
     @GetMapping("/dice/roll")
     public ResponseEntity<?> rollDice() {
         int result = diceService.roll();

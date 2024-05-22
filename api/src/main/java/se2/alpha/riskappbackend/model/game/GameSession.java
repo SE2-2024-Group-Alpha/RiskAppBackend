@@ -123,6 +123,16 @@ public class GameSession {
         return riskController.getRiskCardsByPlayer(playerId);
     }
 
+    public boolean canPlayerTradeRiskCards(String playerId) throws Exception
+    {
+        return riskController.canPlayerTradeRiskCards(playerId);
+    }
+
+    public void tradeRiskCards(String playerId) throws Exception
+    {
+        riskController.tradeRiskCards(playerId);
+    }
+
     @JsonIgnore
     public List<String> getUserNames() {
         return userStates.keySet().stream().toList();
