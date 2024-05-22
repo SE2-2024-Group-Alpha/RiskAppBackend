@@ -1,6 +1,7 @@
 package se2.alpha.riskappbackend.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -130,6 +131,8 @@ public class GameSetupFactory {
         }
 
         setupJokerRiskCards();
+
+        Collections.shuffle(riskCards);
     }
 
     private static void setupJokerRiskCards()
