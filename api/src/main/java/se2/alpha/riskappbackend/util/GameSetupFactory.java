@@ -59,7 +59,7 @@ public class GameSetupFactory {
         return continents;
     }
 
-    private static ArrayList<RiskCard> getRiskCards() throws Exception {
+    public static ArrayList<RiskCard> getRiskCards() throws Exception {
         setupRiskCards();
         return riskCards;
     }

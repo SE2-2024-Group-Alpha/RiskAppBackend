@@ -3,6 +3,7 @@ package se2.alpha.riskappbackend.model.db;
 import java.util.ArrayList;
 
 import lombok.Getter;
+import se2.alpha.riskappbackend.util.GameSetupFactory;
 
 @Getter
 public class Board {
@@ -25,7 +26,7 @@ public class Board {
     public RiskCard getNewRiskCard() throws Exception
     {
         if(cards.isEmpty())
-            throw new Exception("No available risk cards anymore");
+            cards = GameSetupFactory.getRiskCards();
         return cards.remove(0);
     }
 
