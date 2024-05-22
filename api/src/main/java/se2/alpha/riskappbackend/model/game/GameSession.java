@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import se2.alpha.riskappbackend.model.db.Country;
 import se2.alpha.riskappbackend.model.db.Player;
+import se2.alpha.riskappbackend.model.db.RiskCard;
 import se2.alpha.riskappbackend.model.db.RiskController;
 import se2.alpha.riskappbackend.util.GameSetupFactory;
 
@@ -110,6 +111,16 @@ public class GameSession {
     public Country getCountryByName(String countryName) throws Exception
     {
         return riskController.getCountryByName(countryName);
+    }
+
+    public RiskCard getNewRiskCard(String playerId) throws Exception
+    {
+        return riskController.getNewRiskCard(playerId);
+    }
+
+    public ArrayList<RiskCard> getRiskCardsByPlayer(String playerId) throws Exception
+    {
+        return riskController.getRiskCardsByPlayer(playerId);
     }
 
     @JsonIgnore

@@ -15,6 +15,7 @@ import se2.alpha.riskappbackend.model.db.Troop;
 import se2.alpha.riskappbackend.model.db.TroopType;
 import se2.alpha.riskappbackend.model.game.CreateLobbyRequest;
 import se2.alpha.riskappbackend.model.game.CreateLobbyResponse;
+import se2.alpha.riskappbackend.model.game.GameSession;
 import se2.alpha.riskappbackend.service.DiceService;
 import se2.alpha.riskappbackend.service.GameService;
 
@@ -42,11 +43,11 @@ public class GameController {
         
     }
 
-    @GetMapping("/riskcard/player/{id}")
-    public ResponseEntity<?> getNewRiskCard(@PathVariable("id") String id) {
-        RiskController riskController = new RiskController();
+    @GetMapping("/{gamesessionid}/player/{id}/riskcard")
+    public ResponseEntity<?> getNewRiskCard(@PathVariable String gamesessionid, @PathVariable String id) {
+        GameSession gameSession = gameService.getGameSessionById(UUID.fromString(gamesessionid));
         try {
-            RiskCard riskCard = riskController.getNewRiskCard(id);
+            RiskCard riskCard = gameSession.getNewRiskCard(id);
             return ResponseEntity.ok(riskCard);
         }
         catch(Exception ex)
@@ -55,11 +56,11 @@ public class GameController {
         }
     }
 
-    @GetMapping("/player/{id}/riskcards")
-    public ResponseEntity<?> getAllRiskCardsByPlayer(@PathVariable("id") String id) {
-        RiskController riskController = new RiskController();
+    @GetMapping("/{gamesessionid}/player/{id}/riskcards")
+    public ResponseEntity<?> getAllRiskCardsByPlayer(@PathVariable String gamesessionid, @PathVariable("id") String id) {
+        GameSession gameSession = gameService.getGameSessionById(UUID.fromString(gamesessionid));
         try {
-            ArrayList<RiskCard> riskCards = riskController.getRiskCardsByPlayer(id);
+            ArrayList<RiskCard> riskCards = gameSession.getRiskCardsByPlayer(id);
             return ResponseEntity.ok(riskCards);
         }
         catch(Exception ex)
