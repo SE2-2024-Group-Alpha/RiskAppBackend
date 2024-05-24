@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import se2.alpha.riskappbackend.model.db.Board;
@@ -29,7 +30,11 @@ public class RiskControllerTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        riskController = GameSetupFactory.setupThreePlayerGame("1", "2", "3");
+        ArrayList<Player> players = new ArrayList<Player>();
+        players.add(new Player("1", "", Color.BLUE.getRGB()));
+        players.add(new Player("2", "", Color.RED.getRGB()));
+        players.add(new Player("3", "", Color.YELLOW.getRGB()));
+        riskController = GameSetupFactory.setupThreePlayerGame(players);
         mockedStatic = Mockito.mockStatic(Dice.class);
     }
     @AfterEach
@@ -49,17 +54,18 @@ public class RiskControllerTest {
         Player defender = riskController.getPlayers().get(1);
         attacker.controlCountry(attackingCountry);
         defender.controlCountry(defendingCountry);
-        attackingCountry.addArmy(10);
+        attackingCountry.addArmy(11);
         defendingCountry.addArmy(1);
-        riskController.attack(attacker, defender, attackingCountry, defendingCountry);
+        riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(attacker, defendingCountry.getOwner());
-        assertEquals(9, defendingCountry.getNumberOfTroops());
+        assertEquals(10, defendingCountry.getNumberOfTroops());
         assertEquals(1, attackingCountry.getNumberOfTroops());
     }
 
     @Test
     void testAttackCompleteFail() throws Exception {
         mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 5)).thenReturn(new Integer[]{1, 1, 1, 1, 1});
+        mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 1)).thenReturn(new Integer[]{1}); // one is needed because the attack goes into second round with losses
         mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 4)).thenReturn(new Integer[]{6, 6, 6, 6});
         Board board = riskController.getBoard();
         Country attackingCountry = board.getContinents().get(0).getCountries().get(0);
@@ -68,9 +74,9 @@ public class RiskControllerTest {
         Player defender = riskController.getPlayers().get(1);
         attacker.controlCountry(attackingCountry);
         defender.controlCountry(defendingCountry);
-        attackingCountry.addArmy(5);
+        attackingCountry.addArmy(6);
         defendingCountry.addArmy(4);
-        riskController.attack(attacker, defender, attackingCountry, defendingCountry);
+        riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(defender, defendingCountry.getOwner());
         assertEquals(4, defendingCountry.getNumberOfTroops());
         assertEquals(1, attackingCountry.getNumberOfTroops());
@@ -79,6 +85,8 @@ public class RiskControllerTest {
     void testAttackWithOneLossOnBothSides() throws Exception {
         mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 2)).thenReturn(new Integer[]{6, 1});
         mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 10)).thenReturn(new Integer[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6});
+        mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 1)).thenReturn(new Integer[]{1}); //needed for second round of attack
+        mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 9)).thenReturn(new Integer[]{6, 6, 6, 6, 6, 6, 6, 6, 6}); //needed for second round of attack
         Board board = riskController.getBoard();
         Country attackingCountry = board.getContinents().get(0).getCountries().get(0);
         Country defendingCountry = attackingCountry.getAttackableCountries().get(0);
@@ -86,17 +94,20 @@ public class RiskControllerTest {
         Player defender = riskController.getPlayers().get(1);
         attacker.controlCountry(attackingCountry);
         defender.controlCountry(defendingCountry);
-        attackingCountry.addArmy(10);
+        attackingCountry.addArmy(11);
         defendingCountry.addArmy(2);
-        riskController.attack(attacker, defender, attackingCountry, defendingCountry);
-        assertEquals(defender, defendingCountry.getOwner());
-        assertEquals(1, defendingCountry.getNumberOfTroops());
-        assertEquals(9, attackingCountry.getNumberOfTroops());
+        riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
+        assertEquals(attacker, defendingCountry.getOwner());
+        assertEquals(9, defendingCountry.getNumberOfTroops());
+        assertEquals(1, attackingCountry.getNumberOfTroops());
     }
     @Test
     void testAttackWithTwoLossesOnBothSides() throws Exception {
         mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 5)).thenReturn(new Integer[]{6, 6, 1, 1, 1});
         mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 4)).thenReturn(new Integer[]{5, 5, 5, 5});
+        mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 2)).thenReturn(new Integer[]{6, 6}); //needed for second round of attack
+        mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 3)).thenReturn(new Integer[]{1, 1, 1}); //needed for second and third round of attack
+        mockedStatic.when(() -> Dice.rollMultipleTimes((Integer) 1)).thenReturn(new Integer[]{1}); //needed for third round of attack
         Board board = riskController.getBoard();
         Country attackingCountry = board.getContinents().get(0).getCountries().get(0);
         Country defendingCountry = attackingCountry.getAttackableCountries().get(0);
@@ -104,12 +115,12 @@ public class RiskControllerTest {
         Player defender = riskController.getPlayers().get(1);
         attacker.controlCountry(attackingCountry);
         defender.controlCountry(defendingCountry);
-        attackingCountry.addArmy(5);
+        attackingCountry.addArmy(6);
         defendingCountry.addArmy(4);
-        riskController.attack(attacker, defender, attackingCountry, defendingCountry);
+        riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(defender, defendingCountry.getOwner());
         assertEquals(2, defendingCountry.getNumberOfTroops());
-        assertEquals(3, attackingCountry.getNumberOfTroops());
+        assertEquals(1, attackingCountry.getNumberOfTroops());
     }
     @Test
     void testAttackCaptureContinent() throws Exception {
@@ -126,9 +137,9 @@ public class RiskControllerTest {
             attacker.controlCountry(country);
         }
         defender.controlCountry(defendingCountry);
-        attackingCountry.addArmy(5);
+        attackingCountry.addArmy(6);
         defendingCountry.addArmy(4);
-        riskController.attack(attacker, defender, attackingCountry, defendingCountry);
+        riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(attacker, continent.getOwner());
     }
     @Test
@@ -148,9 +159,9 @@ public class RiskControllerTest {
             country.setOwner(defender);
         }
         defendingCountry.setOwner(defender);
-        attackingCountry.addArmy(5);
+        attackingCountry.addArmy(6);
         defendingCountry.addArmy(4);
-        riskController.attack(attacker, defender, attackingCountry, defendingCountry);
+        riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(null, continent.getOwner());
     }
     @Test
@@ -164,9 +175,9 @@ public class RiskControllerTest {
         Player defender = riskController.getPlayers().get(1);
         attacker.controlCountry(attackingCountry);
         defender.controlCountry(defendingCountry);
-        attackingCountry.addArmy(10);
+        attackingCountry.addArmy(11);
         defendingCountry.addArmy(1);
-        riskController.attack(attacker, defender, attackingCountry, defendingCountry);
+        riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertTrue(defender.isEliminated());
     }
     @Test
@@ -181,9 +192,9 @@ public class RiskControllerTest {
         attacker.controlCountry(attackingCountry);
         defender.controlCountry(defendingCountry);
         defender.controlCountry(attackingCountry.getAttackableCountries().get(1));
-        attackingCountry.addArmy(10);
+        attackingCountry.addArmy(11);
         defendingCountry.addArmy(1);
-        riskController.attack(attacker, defender, attackingCountry, defendingCountry);
+        riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertFalse(defender.isEliminated());
     }
     @Test
@@ -196,7 +207,7 @@ public class RiskControllerTest {
         player.controlCountry(moveToCountry);
         moveFromCountry.addArmy(10);
         moveToCountry.addArmy(10);
-        riskController.moveTroops(player.getId(), moveFromCountry, moveToCountry, 5);
+        riskController.moveTroops(player.getId(), moveFromCountry.getName(), moveToCountry.getName(), 5);
         assertEquals(5, moveFromCountry.getNumberOfTroops());
         assertEquals(15, moveToCountry.getNumberOfTroops());
     }
@@ -211,7 +222,7 @@ public class RiskControllerTest {
         moveFromCountry.addArmy(3);
         moveToCountry.addArmy(10);
 
-        Exception exception = assertThrows(Exception.class, () -> riskController.moveTroops(player.getId(), moveFromCountry, moveToCountry, 5));
+        Exception exception = assertThrows(Exception.class, () -> riskController.moveTroops(player.getId(), moveFromCountry.getName(), moveToCountry.getName(), 5));
         assertEquals("not enough troops in this country to move from", exception.getMessage());
     }
     @Test
@@ -223,7 +234,7 @@ public class RiskControllerTest {
         moveFromCountry.addArmy(10);
         moveToCountry.addArmy(10);
 
-        Exception exception = assertThrows(Exception.class, () -> riskController.moveTroops(player.getId(), moveFromCountry, moveToCountry, 5));
+        Exception exception = assertThrows(Exception.class, () -> riskController.moveTroops(player.getId(), moveFromCountry.getName(), moveToCountry.getName(), 5));
         assertEquals("countries must be owned by player", exception.getMessage());
     }
     @Test
@@ -237,7 +248,7 @@ public class RiskControllerTest {
         moveFromCountry.addArmy(10);
         moveToCountry.addArmy(10);
 
-        Exception exception = assertThrows(Exception.class, () -> riskController.moveTroops(player.getId(), moveFromCountry, moveToCountry, 5));
+        Exception exception = assertThrows(Exception.class, () -> riskController.moveTroops(player.getId(), moveFromCountry.getName(), moveToCountry.getName(), 5));
         assertEquals("moving troops between those 2 countries not allowed", exception.getMessage());
     }
     @Test
@@ -282,7 +293,7 @@ public class RiskControllerTest {
         Player player = riskController.getPlayers().get(0);
         Country country = riskController.getBoard().getContinents().get(0).getCountries().get(0);
         player.controlCountry(country);
-        riskController.strengthenCountry(player.getId(), country, 5);
+        riskController.strengthenCountry(player.getId(), country.getName(), 5);
         assertEquals(PLAYERNUMBEROFTROOPS - 5, player.getFreeNumberOfTroops());
         assertEquals(PLAYERNUMBEROFTROOPS, player.getTotalNumberOfTroops());
         assertEquals(5, country.getNumberOfTroops());
@@ -292,7 +303,7 @@ public class RiskControllerTest {
     void testSeizeCountry() throws Exception {
         Player player = riskController.getPlayers().get(0);
         Country country = riskController.getBoard().getContinents().get(0).getCountries().get(0);
-        riskController.seizeCountry(player.getId(), country, 5);
+        riskController.seizeCountry(player.getId(), country.getName(), 5);
         assertEquals(player, country.getOwner());
         assertEquals(PLAYERNUMBEROFTROOPS - 5, player.getFreeNumberOfTroops());
         assertEquals(PLAYERNUMBEROFTROOPS, player.getTotalNumberOfTroops());
@@ -304,7 +315,7 @@ public class RiskControllerTest {
         Player player = riskController.getPlayers().get(0);
         Country country = riskController.getBoard().getContinents().get(0).getCountries().get(0);
         riskController.getPlayers().get(1).controlCountry(country);
-        Exception exception = assertThrows(Exception.class, () -> riskController.seizeCountry(player.getId(), country, 5));
+        Exception exception = assertThrows(Exception.class, () -> riskController.seizeCountry(player.getId(), country.getName(), 5));
         assertEquals("Country cannot be seized while being owned by another player", exception.getMessage());
     }
 
@@ -324,5 +335,66 @@ public class RiskControllerTest {
         riskController.getNewRiskCard(player.getId());
         ArrayList<RiskCard> riskCards = riskController.getRiskCardsByPlayer(player.getId());
         assertEquals(2, riskCards.size());
+    }
+
+    @Test
+    void testIsFirstPlayerActive() {
+        Player player1 = riskController.getPlayers().get(0);
+        Player player2 = riskController.getPlayers().get(1);
+        Player player3 = riskController.getPlayers().get(2);
+        assertTrue(player1.isCurrentTurn());
+        assertFalse(player2.isCurrentTurn());
+        assertFalse(player3.isCurrentTurn());
+    }
+
+    @Test
+    void testPlayerActiveAfterOneTurn() {
+        Player player1 = riskController.getPlayers().get(0);
+        Player player2 = riskController.getPlayers().get(1);
+        Player player3 = riskController.getPlayers().get(2);
+        assertTrue(player1.isCurrentTurn());
+        assertFalse(player2.isCurrentTurn());
+        assertFalse(player3.isCurrentTurn());
+        riskController.endPlayerTurn();
+        assertFalse(player1.isCurrentTurn());
+        assertTrue(player2.isCurrentTurn());
+        assertFalse(player3.isCurrentTurn());
+    }
+
+    @Test
+    void testMultipleTurns() {
+        Player player1 = riskController.getPlayers().get(0);
+        Player player2 = riskController.getPlayers().get(1);
+        Player player3 = riskController.getPlayers().get(2);
+        assertTrue(player1.isCurrentTurn());
+        assertFalse(player2.isCurrentTurn());
+        assertFalse(player3.isCurrentTurn());
+        riskController.endPlayerTurn();
+        assertFalse(player1.isCurrentTurn());
+        assertTrue(player2.isCurrentTurn());
+        assertFalse(player3.isCurrentTurn());
+        riskController.endPlayerTurn();
+        assertFalse(player1.isCurrentTurn());
+        assertFalse(player2.isCurrentTurn());
+        assertTrue(player3.isCurrentTurn());
+        riskController.endPlayerTurn();
+        assertTrue(player1.isCurrentTurn());
+        assertFalse(player2.isCurrentTurn());
+        assertFalse(player3.isCurrentTurn());
+    }
+
+    @Test
+    void testCurrentTurnWithEliminatedPlayers() {
+        Player player1 = riskController.getPlayers().get(0);
+        Player player2 = riskController.getPlayers().get(1);
+        Player player3 = riskController.getPlayers().get(2);
+        player2.setEliminated(true);
+        assertTrue(player1.isCurrentTurn());
+        assertFalse(player2.isCurrentTurn());
+        assertFalse(player3.isCurrentTurn());
+        riskController.endPlayerTurn();
+        assertFalse(player1.isCurrentTurn());
+        assertFalse(player2.isCurrentTurn());
+        assertTrue(player3.isCurrentTurn());
     }
 }

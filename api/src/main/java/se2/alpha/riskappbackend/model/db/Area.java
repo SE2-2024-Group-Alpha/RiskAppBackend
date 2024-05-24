@@ -9,7 +9,7 @@ public abstract class Area {
         this.owner = owner;
     }
 
-    public Area() {
+    protected Area() {
     }
 
     public String getName() {

@@ -1,25 +1,37 @@
 package se2.alpha.riskappbackend.model.db;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
+import lombok.Getter;
+
+@Getter
 public class RiskController {
+    private UUID id;
     private ArrayList<Player> players;
     private Board board;
+    private int idxPlayerTurn;
 
     public RiskController(ArrayList<Player> players, Board board) {
+        this.id = UUID.randomUUID();
         this.players = players;
         this.board = board;
+        idxPlayerTurn = 0;
+        players.get(idxPlayerTurn).setCurrentTurn(true);
     }
 
     public RiskController() {
     }
 
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public Board getBoard() {
-        return board;
+    public void endPlayerTurn()
+    {
+        players.get(idxPlayerTurn).setCurrentTurn(false);
+        if(++idxPlayerTurn >= players.size())
+            idxPlayerTurn = 0;
+        if(players.get(idxPlayerTurn).isEliminated())
+            endPlayerTurn();
+        else
+            players.get(idxPlayerTurn).setCurrentTurn(true);
     }
 
     public RiskCard getNewRiskCard(String playerId) throws Exception
@@ -55,8 +67,10 @@ public class RiskController {
         player.tradeRiskCards();
     }
 
-    public void moveTroops(String playerId, Country moveFromCountry, Country moveToCountry, int cntTroops) throws Exception {
+    public void moveTroops(String playerId, String moveFromCountryName, String moveToCountryName, int cntTroops) throws Exception {
         Player player = getPlayerById(playerId);
+        Country moveFromCountry = getCountryByName(moveFromCountryName);
+        Country moveToCountry = getCountryByName(moveToCountryName);
         if(!player.equals(moveFromCountry.getOwner()) || !player.equals(moveToCountry.getOwner()))
             throw new Exception("countries must be owned by player");
         if(moveFromCountry.getNumberOfTroops() <= cntTroops)
@@ -68,18 +82,21 @@ public class RiskController {
         moveToCountry.addArmy(cntTroops);
     }
 
-    public void strengthenCountry(String playerId, Country country, int cntTroops) throws Exception
+    public int strengthenCountry(String playerId, String countryName, int cntTroops) throws Exception
     {
         Player player = getPlayerById(playerId);
+        Country country = getCountryByName(countryName);
         if(!player.equals(country.getOwner()))
             throw new Exception("Country not owned by player");
 
         player.strengthenCountry(country, cntTroops);
+        return country.getNumberOfTroops();
     }
 
-    public void seizeCountry(String playerId, Country country, int cntTroops) throws Exception
+    public void seizeCountry(String playerId, String countryName, int cntTroops) throws Exception
     {
         Player player = getPlayerById(playerId);
+        Country country = getCountryByName(countryName);
         if(country.getOwner() != null)
             throw new Exception("Country cannot be seized while being owned by another player");
 
@@ -99,20 +116,25 @@ public class RiskController {
         player.addArmy(cntNewTroops);
     }
 
-    public void attack(Player attacker, Player defender, Country attackingCountry, Country defendingCountry) throws Exception
+    public void attack(String attackerPlayerId, String defenderPlayerId, String attackingCountryName, String defendingCountryName) throws Exception
     {
         int attackerLosses = 0;
         int defenderLosses = 0;
+        Player attacker = getPlayerById(attackerPlayerId);
+        Player defender = getPlayerById(defenderPlayerId);
+        Country attackingCountry = getCountryByName(attackingCountryName);
+        Country defendingCountry = getCountryByName(defendingCountryName);
+
         if(!attackingCountry.getAttackableCountries().contains(defendingCountry))
             throw new Exception("Cannot attack this country");
 
         if(attackingCountry.getNumberOfTroops() < 2)
             throw new Exception("Attacking Country must have at least 2 troops");
 
-        Integer[] attackerRolls = Dice.rollMultipleTimes((Integer) attackingCountry.getNumberOfTroops());
+        Integer[] attackerRolls = Dice.rollMultipleTimes((Integer) (attackingCountry.getNumberOfTroops() - 1));
         Integer[] defenderRolls = Dice.rollMultipleTimes((Integer) defendingCountry.getNumberOfTroops());
 
-        for(int i = 0; i < defenderRolls.length; i++)
+        for(int i = 0; i < Math.min(defenderRolls.length, attackerRolls.length); i++)
         {
             if(attackerRolls[i] > defenderRolls[i])
             {
@@ -126,6 +148,17 @@ public class RiskController {
 
         boolean attackSuccessful = processDefender(defender, defendingCountry, defenderLosses);
         processAttacker(attacker, attackingCountry, defendingCountry, attackerLosses, attackSuccessful);
+
+        if(!attackSuccessful && attackingCountry.getNumberOfTroops() > 1)
+            attack(attackerPlayerId, defenderPlayerId, attackingCountryName, defendingCountryName);
+    }
+
+    public Player getActivePlayer()
+    {
+        for(Player player : players)
+            if(player.isCurrentTurn())
+                return player;
+        return null;
     }
 
     private Player getPlayerById(String id) throws Exception
@@ -136,6 +169,17 @@ public class RiskController {
                 return player;
         }
         throw new Exception("no player with this id found");
+    }
+
+    public Country getCountryByName(String countryName) throws Exception
+    {
+        for(Continent continent : board.getContinents())
+        {
+            for(Country country : continent.getCountries())
+                if(countryName.equals(country.getName()))
+                    return country;
+        }
+        throw new Exception("no country with this name found");
     }
 
     private boolean processDefender(Player player, Country country, int losses)

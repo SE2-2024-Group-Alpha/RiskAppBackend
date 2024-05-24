@@ -1,6 +1,5 @@
 package se2.alpha.riskappbackend.model.db;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -10,12 +9,13 @@ import lombok.Getter;
 public class Player {
     private String id;
     private String name;
-    private Color color;
+    private int color;
     private ArrayList<RiskCard> cards;
     private boolean eliminated;
     private int cntRiskCardsTraded;
     private int totalNumberOfTroops;
     private int freeNumberOfTroops;
+    private boolean currentTurn;
     private ArrayList<Country> controlledCountries;
     private ArrayList<Continent> controlledContinents;
     private static final int TROOPSFORFIRSTTRADE = 4;
@@ -25,7 +25,7 @@ public class Player {
     private static final int TROOPSFORFIFTHTRADE = 12;
     private static final int TROOPSFORSIXTHTRADE = 15;
 
-    public Player(String id, String name, Color color, int numberOfTroops) {
+    public Player(String id, String name, int color, int numberOfTroops) {
         this.id = id;
         this.name = name;
         this.color = color;
@@ -34,19 +34,33 @@ public class Player {
         controlledCountries = new ArrayList<Country>();
         freeNumberOfTroops = numberOfTroops;
         totalNumberOfTroops = numberOfTroops;
+        currentTurn = false;
+    }
+
+    public Player(String id, String name, int color) {
+        this.id = id;
+        this.name = name;
+        this.color = color;
+        cards = new ArrayList<RiskCard>();
+        controlledContinents = new ArrayList<Continent>();
+        controlledCountries = new ArrayList<Country>();
+        freeNumberOfTroops = 0;
+        totalNumberOfTroops = 0;
+        currentTurn = false;
     }
 
     public Player() {
         cards = new ArrayList<RiskCard>();
         controlledContinents = new ArrayList<Continent>();
         controlledCountries = new ArrayList<Country>();
+        currentTurn = false;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setColor(Color color) {
+    public void setColor(int color) {
         this.color = color;
     }
 
@@ -82,6 +96,10 @@ public class Player {
 
     public void setEliminated(boolean eliminated) {
         this.eliminated = eliminated;
+    }
+
+    public void setCurrentTurn(boolean currentTurn) {
+        this.currentTurn = currentTurn;
     }
 
     public void controlCountry(Country c)

@@ -1,12 +1,16 @@
 package se2.alpha.riskappbackend.model.db;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 
 import lombok.Getter;
 
 @Getter
 public class Country extends Area{
+    @JsonIgnore
     private ArrayList<Country> attackableCountries;
+    @JsonIgnore
     private Continent continent;
     private int numberOfTroops;
 
@@ -19,10 +23,6 @@ public class Country extends Area{
 
     public Country() {
         super();
-    }
-
-    public void setAttackableCountries(ArrayList<Country> attackableCountries) {
-        this.attackableCountries = attackableCountries;
     }
 
     public void addArmy(int newTroops)
