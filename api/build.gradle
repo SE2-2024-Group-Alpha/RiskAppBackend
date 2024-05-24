@@ -2,7 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.3'
 	id 'io.spring.dependency-management' version '1.1.4'
-	id 'jacoco-report-aggregation'
+	id 'jacoco'
 	id 'org.sonarqube' version '5.0.0.4638'
 }
 
@@ -43,13 +43,21 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-tasks.named('check') {
-	dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
-}
 jacocoTestReport {
+	dependsOn 'testDebugUnitTest'
+
 	reports {
 		xml.required = true
+		xml.destination file("${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
 	}
+
+	def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+	def debugTree = fileTree(dir: "${project.layout.buildDirectory.get().asFile}/intermediates/javac/debug", excludes: fileFilter)
+	def mainSrc = "${project.projectDir}/src/main/java"
+
+	sourceDirectories.from = files([mainSrc])
+	classDirectories.from = files([debugTree])
+	executionData.from = files("${project.layout.buildDirectory.get().asFile}/jacoco/testDebugUnitTest.exec")
 }
 sonar {
 	properties {
@@ -57,5 +65,7 @@ sonar {
 		property 'sonar.token', 'sqp_1a1e73ab2e4cd140a9f75e7983086832c02e8189'
 		property 'sonar.projectKey', 'RiskAppBackend'
 		property 'sonar.organization', 'SE2-2024-Group-Alpha'
+		property 'sonar.java.coveragePlugin', 'jacoco'
+		property 'sonar.coverage.jacoco.xmlReportPaths', "${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
 	}
 }
