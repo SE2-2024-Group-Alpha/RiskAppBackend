@@ -44,27 +44,25 @@ tasks.named('test') {
 }
 
 jacocoTestReport {
-	dependsOn 'testDebugUnitTest'
+	dependsOn test
 
 	reports {
 		xml.required = true
 		xml.destination file("${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
 	}
-
-	def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
-	def debugTree = fileTree(dir: "${project.layout.buildDirectory.get().asFile}/intermediates/javac/debug", excludes: fileFilter)
-	def mainSrc = "${project.projectDir}/src/main/java"
-
-	sourceDirectories.from = files([mainSrc])
-	classDirectories.from = files([debugTree])
-	executionData.from = files("${project.layout.buildDirectory.get().asFile}/jacoco/testDebugUnitTest.exec")
 }
+
+build.dependsOn jacocoTestReport
+
 sonar {
 	properties {
-		property 'sonar.host.url', 'https://sonarcloud.io'
+
+		property 'sonar.host.url', 'http://localhost:9000'
+		property 'sonar.projectKey', 'riskappbackend'
 		property 'sonar.token', 'sqp_1a1e73ab2e4cd140a9f75e7983086832c02e8189'
+		/*property 'sonar.host.url', 'https://sonarcloud.io'
 		property 'sonar.projectKey', 'RiskAppBackend'
-		property 'sonar.organization', 'SE2-2024-Group-Alpha'
+		property 'sonar.organization', 'SE2-2024-Group-Alpha'*/
 		property 'sonar.java.coveragePlugin', 'jacoco'
 		property 'sonar.coverage.jacoco.xmlReportPaths', "${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
 	}
