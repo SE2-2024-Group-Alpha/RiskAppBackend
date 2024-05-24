@@ -62,7 +62,7 @@ sonar {
 		property 'sonar.token', 'sqp_1a1e73ab2e4cd140a9f75e7983086832c02e8189'
 		property 'sonar.host.url', 'https://sonarcloud.io'
 		property 'sonar.projectKey', 'RiskAppBackend'
-		property 'sonar.organization', 'SE2-2024-Group-Alpha'
+		property 'sonar.organization', 'se2-2024-group-alpha'
 		property 'sonar.java.coveragePlugin', 'jacoco'
 		property 'sonar.coverage.jacoco.xmlReportPaths', "${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
 	}
