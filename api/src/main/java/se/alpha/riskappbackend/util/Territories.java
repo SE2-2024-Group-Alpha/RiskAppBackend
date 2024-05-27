@@ -177,4 +177,9 @@ public class Territories {
         territories.put("Eastern Australia", EasternAustralia);
         territories.put("Middle East", MiddleEast);
     }
+
+    public static HashMap<String, TerritoryNode> getAllTerritories()
+    {
+        return territories;
+    }
 }
