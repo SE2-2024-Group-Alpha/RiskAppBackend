@@ -36,15 +36,6 @@ public class GameSession {
         users = 0;
     }
 
-//    public GameSession(String name, WebSocketSession userSession) {
-//        this.name = name;
-//        this.sessionId = UUID.randomUUID();
-//        this.userSessions = new HashMap<>();
-//        this.userSessions.put(userSession.getId(), userSession);
-//        this.state = GameState.Lobby;
-//        users = 1;
-//    }
-
     public void join(WebSocketSession userSession) {
         String userName = Objects.requireNonNull(userSession.getPrincipal()).getName();
         UserState userState = new UserState(userSession, false);
