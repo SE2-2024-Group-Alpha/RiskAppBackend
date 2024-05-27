@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import lombok.Getter;
+import se2.alpha.riskappbackend.model.exception.RiskException;
 
 @Getter
 public class Player {
@@ -141,7 +142,7 @@ public class Player {
         this.freeNumberOfTroops -= cntTroops;
     }
 
-    public TradeType canTradeRiskCards() throws Exception
+    public TradeType canTradeRiskCards()
     {
         int cntArtillery = 0;
         int cntInfantry = 0;
@@ -198,12 +199,12 @@ public class Player {
         return cntJoker >= riskCardsNeeded;
     }
 
-    public void tradeRiskCards() throws Exception
+    public void tradeRiskCards() throws RiskException
     {
         TradeType tradeType = canTradeRiskCards();
 
         if(tradeType.equals(TradeType.NONE))
-            throw new Exception("Player cannot trade any risk cards");
+            throw new RiskException("custom", "Player cannot trade any risk cards");
         tradeCardsByType(cards, tradeType);
     }
 
