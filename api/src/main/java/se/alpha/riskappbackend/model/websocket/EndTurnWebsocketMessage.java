@@ -6,7 +6,17 @@ import lombok.Getter;
 
 @Getter
 public class EndTurnWebsocketMessage implements IGameWebsocketMessage {
-    private final CustomWebsocketMessageType type = CustomWebsocketMessageType.GAME;
-    GameWebsocketMessageAction action = GameWebsocketMessageAction.END_TURN;
+    private static final CustomWebsocketMessageType type = CustomWebsocketMessageType.GAME;
+    private static final GameWebsocketMessageAction action = GameWebsocketMessageAction.END_TURN;
     private UUID gameSessionId;
+
+    @Override
+    public CustomWebsocketMessageType getType() {
+        return type;
+    }
+
+    @Override
+    public GameWebsocketMessageAction getAction() {
+        return action;
+    }
 }

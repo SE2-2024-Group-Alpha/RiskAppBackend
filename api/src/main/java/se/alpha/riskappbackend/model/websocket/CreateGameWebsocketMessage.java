@@ -8,8 +8,18 @@ import se.alpha.riskappbackend.model.db.Player;
 
 @Getter
 public class CreateGameWebsocketMessage implements IGameWebsocketMessage {
-    private final CustomWebsocketMessageType type = CustomWebsocketMessageType.GAME;
-    GameWebsocketMessageAction action = GameWebsocketMessageAction.CREATE_GAME;
+    private static final CustomWebsocketMessageType type = CustomWebsocketMessageType.GAME;
+    private static final GameWebsocketMessageAction action = GameWebsocketMessageAction.CREATE_GAME;
     private UUID gameSessionId;
     private ArrayList<Player> players;
+
+    @Override
+    public CustomWebsocketMessageType getType() {
+        return type;
+    }
+
+    @Override
+    public GameWebsocketMessageAction getAction() {
+        return action;
+    }
 }
