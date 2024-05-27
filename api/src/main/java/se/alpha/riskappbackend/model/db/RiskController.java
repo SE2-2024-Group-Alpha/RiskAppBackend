@@ -44,7 +44,7 @@ public class RiskController {
         return riskCard;
     }
 
-    public ArrayList<RiskCard> getRiskCardsByPlayer(String playerId) throws RiskException
+    public List<RiskCard> getRiskCardsByPlayer(String playerId) throws RiskException
     {
         for(Player player : players)
         {

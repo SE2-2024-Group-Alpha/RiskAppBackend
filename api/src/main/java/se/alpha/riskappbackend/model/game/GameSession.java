@@ -119,7 +119,7 @@ public class GameSession {
         return riskController.getNewRiskCard(playerId);
     }
 
-    public ArrayList<RiskCard> getRiskCardsByPlayer(String playerId) throws Exception
+    public List<RiskCard> getRiskCardsByPlayer(String playerId) throws Exception
     {
         return riskController.getRiskCardsByPlayer(playerId);
     }

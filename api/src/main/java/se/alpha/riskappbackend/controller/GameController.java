@@ -54,7 +54,7 @@ public class GameController {
     public ResponseEntity<?> getAllRiskCardsByPlayer(@PathVariable String gamesessionid, @PathVariable("id") String id) {
         GameSession gameSession = gameService.getGameSessionById(UUID.fromString(gamesessionid));
         try {
-            ArrayList<RiskCard> riskCards = gameSession.getRiskCardsByPlayer(id);
+            ArrayList<RiskCard> riskCards = new ArrayList<>(gameSession.getRiskCardsByPlayer(id));
             return ResponseEntity.ok(riskCards);
         }
         catch(Exception ex)

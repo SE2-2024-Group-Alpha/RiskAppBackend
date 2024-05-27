@@ -1,4 +1,4 @@
-package se2.alpha.riskappbackend;
+package se.alpha.riskappbackend;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -13,15 +13,16 @@ import org.mockito.Mockito;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 
-import se2.alpha.riskappbackend.model.db.Board;
-import se2.alpha.riskappbackend.model.db.Continent;
-import se2.alpha.riskappbackend.model.db.Country;
-import se2.alpha.riskappbackend.model.db.Dice;
-import se2.alpha.riskappbackend.model.db.Player;
-import se2.alpha.riskappbackend.model.db.RiskCard;
-import se2.alpha.riskappbackend.model.db.RiskController;
-import se2.alpha.riskappbackend.util.GameSetupFactory;
+import se.alpha.riskappbackend.model.db.Board;
+import se.alpha.riskappbackend.model.db.Continent;
+import se.alpha.riskappbackend.model.db.Country;
+import se.alpha.riskappbackend.model.db.Dice;
+import se.alpha.riskappbackend.model.db.Player;
+import se.alpha.riskappbackend.model.db.RiskCard;
+import se.alpha.riskappbackend.model.db.RiskController;
+import se.alpha.riskappbackend.util.GameSetupFactory;
 
 public class RiskControllerTest {
     RiskController riskController;
@@ -333,7 +334,7 @@ public class RiskControllerTest {
         Player player = riskController.getPlayers().get(0);
         riskController.getNewRiskCard(player.getId());
         riskController.getNewRiskCard(player.getId());
-        ArrayList<RiskCard> riskCards = riskController.getRiskCardsByPlayer(player.getId());
+        List<RiskCard> riskCards = riskController.getRiskCardsByPlayer(player.getId());
         assertEquals(2, riskCards.size());
     }
 
