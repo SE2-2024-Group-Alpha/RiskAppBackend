@@ -48,7 +48,7 @@ public class GameSession {
         users = userStates.size();
     }
 
-    public void createGame(ArrayList<Player> players) throws Exception
+    public void createGame(List<Player> players) throws Exception
     {
         switch(players.size())
         {
