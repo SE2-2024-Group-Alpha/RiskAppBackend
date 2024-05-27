@@ -59,7 +59,6 @@ sonar {
 
 		/*property 'sonar.host.url', 'http://localhost:9000'
 		property 'sonar.projectKey', 'riskappbackend'*/
-		property 'sonar.token', 'test'
 		property 'sonar.host.url', 'https://sonarcloud.io'
 		property 'sonar.projectKey', 'RiskAppBackend'
 		property 'sonar.organization', 'se2-2024-group-alpha'
