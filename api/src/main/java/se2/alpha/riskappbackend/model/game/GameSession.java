@@ -133,6 +133,16 @@ public class GameSession {
         riskController.tradeRiskCards(playerId);
     }
 
+    public boolean isPlayerEliminated(String playerId) throws Exception
+    {
+        return riskController.isPlayerEliminated(playerId);
+    }
+
+    public boolean hasPlayerWon(String playerId) throws Exception
+    {
+        return riskController.hasPlayerWon(playerId);
+    }
+
     @JsonIgnore
     public List<String> getUserNames() {
         return userStates.keySet().stream().toList();

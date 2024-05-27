@@ -161,6 +161,25 @@ public class RiskController {
         return null;
     }
 
+    public boolean isPlayerEliminated(String playerId) throws Exception
+    {
+        Player player = getPlayerById(playerId);
+        return player.isEliminated();
+    }
+
+    public boolean hasPlayerWon(String playerId) throws Exception
+    {
+        Player playerToCheck = getPlayerById(playerId);
+        if(playerToCheck.isEliminated())
+            return false;
+        for(Player player : players)
+        {
+            if(!player.isEliminated() && !player.getId().equals(playerId))
+                return false;
+        }
+        return true;
+    }
+
     private Player getPlayerById(String id) throws Exception
     {
         for(Player player : players)
