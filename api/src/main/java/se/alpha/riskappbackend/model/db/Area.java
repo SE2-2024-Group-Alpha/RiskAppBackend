@@ -16,10 +16,6 @@ public abstract class Area {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Player getOwner() {
         return owner;
     }
