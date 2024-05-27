@@ -1,9 +1,11 @@
 package se2.alpha.riskappbackend.model.db;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import lombok.Getter;
+import se2.alpha.riskappbackend.model.exception.RiskException;
 
 @Getter
 public class RiskController {
@@ -12,7 +14,7 @@ public class RiskController {
     private Board board;
     private int idxPlayerTurn;
 
-    public RiskController(ArrayList<Player> players, Board board) {
+    public RiskController(List<Player> players, Board board) {
         this.id = UUID.randomUUID();
         this.players = players;
         this.board = board;
@@ -34,7 +36,7 @@ public class RiskController {
             players.get(idxPlayerTurn).setCurrentTurn(true);
     }
 
-    public RiskCard getNewRiskCard(String playerId) throws Exception
+    public RiskCard getNewRiskCard(String playerId) throws RiskException
     {
         Player player = getPlayerById(playerId);
         RiskCard riskCard = board.getNewRiskCard();
@@ -42,68 +44,68 @@ public class RiskController {
         return riskCard;
     }
 
-    public ArrayList<RiskCard> getRiskCardsByPlayer(String playerId) throws Exception
+    public ArrayList<RiskCard> getRiskCardsByPlayer(String playerId) throws RiskException
     {
         for(Player player : players)
         {
             if(player.getId().equals(playerId))
                 return player.getCards();
         }
-        throw new Exception("no player with this id found");
+        throw new RiskException("custom", "no player with this id found");
     }
 
-    public boolean canPlayerTradeRiskCards(String playerId) throws Exception
+    public boolean canPlayerTradeRiskCards(String playerId) throws RiskException
     {
         Player player = getPlayerById(playerId);
         return !player.canTradeRiskCards().equals(TradeType.NONE);
     }
 
-    public void tradeRiskCards(String playerId) throws Exception
+    public void tradeRiskCards(String playerId) throws RiskException
     {
         Player player = getPlayerById(playerId);
         TradeType tradeType = player.canTradeRiskCards();
         if(tradeType.equals(TradeType.NONE))
-            throw new Exception("Player cannot trade any risk cards");
+            throw new RiskException("custom", "Player cannot trade any risk cards");
         player.tradeRiskCards();
     }
 
-    public void moveTroops(String playerId, String moveFromCountryName, String moveToCountryName, int cntTroops) throws Exception {
+    public void moveTroops(String playerId, String moveFromCountryName, String moveToCountryName, int cntTroops) throws RiskException {
         Player player = getPlayerById(playerId);
         Country moveFromCountry = getCountryByName(moveFromCountryName);
         Country moveToCountry = getCountryByName(moveToCountryName);
         if(!player.equals(moveFromCountry.getOwner()) || !player.equals(moveToCountry.getOwner()))
-            throw new Exception("countries must be owned by player");
+            throw new RiskException("custom", "countries must be owned by player");
         if(moveFromCountry.getNumberOfTroops() <= cntTroops)
-            throw new Exception("not enough troops in this country to move from");
+            throw new RiskException("custom", "not enough troops in this country to move from");
         if(!moveFromCountry.getAttackableCountries().contains(moveToCountry))
-            throw new Exception("moving troops between those 2 countries not allowed");
+            throw new RiskException("custom", "moving troops between those 2 countries not allowed");
 
         moveFromCountry.removeArmy(cntTroops);
         moveToCountry.addArmy(cntTroops);
     }
 
-    public int strengthenCountry(String playerId, String countryName, int cntTroops) throws Exception
+    public int strengthenCountry(String playerId, String countryName, int cntTroops) throws RiskException
     {
         Player player = getPlayerById(playerId);
         Country country = getCountryByName(countryName);
         if(!player.equals(country.getOwner()))
-            throw new Exception("Country not owned by player");
+            throw new RiskException("custom", "Country not owned by player");
 
         player.strengthenCountry(country, cntTroops);
         return country.getNumberOfTroops();
     }
 
-    public void seizeCountry(String playerId, String countryName, int cntTroops) throws Exception
+    public void seizeCountry(String playerId, String countryName, int cntTroops) throws RiskException
     {
         Player player = getPlayerById(playerId);
         Country country = getCountryByName(countryName);
         if(country.getOwner() != null)
-            throw new Exception("Country cannot be seized while being owned by another player");
+            throw new RiskException("custom", "Country cannot be seized while being owned by another player");
 
         player.seizeCountry(country, cntTroops);
     }
 
-    public void getNewTroops(String playerId) throws Exception
+    public void getNewTroops(String playerId) throws RiskException
     {
         int cntNewTroops = 0;
         Player player = getPlayerById(playerId);
@@ -116,7 +118,7 @@ public class RiskController {
         player.addArmy(cntNewTroops);
     }
 
-    public void attack(String attackerPlayerId, String defenderPlayerId, String attackingCountryName, String defendingCountryName) throws Exception
+    public void attack(String attackerPlayerId, String defenderPlayerId, String attackingCountryName, String defendingCountryName) throws RiskException
     {
         int attackerLosses = 0;
         int defenderLosses = 0;
@@ -126,10 +128,10 @@ public class RiskController {
         Country defendingCountry = getCountryByName(defendingCountryName);
 
         if(!attackingCountry.getAttackableCountries().contains(defendingCountry))
-            throw new Exception("Cannot attack this country");
+            throw new RiskException("custom", "Cannot attack this country");
 
         if(attackingCountry.getNumberOfTroops() < 2)
-            throw new Exception("Attacking Country must have at least 2 troops");
+            throw new RiskException("custom", "Attacking Country must have at least 2 troops");
 
         Integer[] attackerRolls = Dice.rollMultipleTimes((Integer) (attackingCountry.getNumberOfTroops() - 1));
         Integer[] defenderRolls = Dice.rollMultipleTimes((Integer) defendingCountry.getNumberOfTroops());
@@ -161,13 +163,13 @@ public class RiskController {
         return null;
     }
 
-    public boolean isPlayerEliminated(String playerId) throws Exception
+    public boolean isPlayerEliminated(String playerId) throws RiskException
     {
         Player player = getPlayerById(playerId);
         return player.isEliminated();
     }
 
-    public boolean hasPlayerWon(String playerId) throws Exception
+    public boolean hasPlayerWon(String playerId) throws RiskException
     {
         Player playerToCheck = getPlayerById(playerId);
         if(playerToCheck.isEliminated())
@@ -180,17 +182,17 @@ public class RiskController {
         return true;
     }
 
-    private Player getPlayerById(String id) throws Exception
+    private Player getPlayerById(String id) throws RiskException
     {
         for(Player player : players)
         {
             if(player.getId().equals(id))
                 return player;
         }
-        throw new Exception("no player with this id found");
+        throw new RiskException("custom", "no player with this id found");
     }
 
-    public Country getCountryByName(String countryName) throws Exception
+    public Country getCountryByName(String countryName) throws RiskException
     {
         for(Continent continent : board.getContinents())
         {
@@ -198,7 +200,7 @@ public class RiskController {
                 if(countryName.equals(country.getName()))
                     return country;
         }
-        throw new Exception("no country with this name found");
+        throw new RiskException("custom", "no country with this name found");
     }
 
     private boolean processDefender(Player player, Country country, int losses)

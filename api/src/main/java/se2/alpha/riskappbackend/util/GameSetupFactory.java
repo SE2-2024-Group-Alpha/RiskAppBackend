@@ -12,6 +12,7 @@ import se2.alpha.riskappbackend.model.db.Player;
 import se2.alpha.riskappbackend.model.db.RiskCard;
 import se2.alpha.riskappbackend.model.db.RiskCardType;
 import se2.alpha.riskappbackend.model.db.RiskController;
+import se2.alpha.riskappbackend.model.exception.RiskException;
 
 public class GameSetupFactory {
     private static ArrayList<Continent> continents;
@@ -21,49 +22,49 @@ public class GameSetupFactory {
     private static int NUMBEROFTROOPSFIVEPLAYERGAME = 25;
     private static int NUMBEROFTROOPSSIXPLAYERGAME = 20;
 
-    public static RiskController setupThreePlayerGame(ArrayList<Player> players) throws Exception {
+    public static RiskController setupThreePlayerGame(ArrayList<Player> players) throws RiskException {
         if(players.size() != 3)
-            throw new Exception("there must be 3 players");
+            throw new RiskException("custom", "there must be 3 players");
         for(Player player : players)
             player.addArmy(NUMBEROFTROOPSTHREEPLAYERGAME);
         Board board = new Board(getContinents(), getRiskCards());
         return new RiskController(players, board);
     }
-    public static RiskController setupFourPlayerGame(ArrayList<Player> players) throws Exception {
+    public static RiskController setupFourPlayerGame(ArrayList<Player> players) throws RiskException {
         if(players.size() != 4)
-            throw new Exception("there must be 4 players");
+            throw new RiskException("custom", "there must be 4 players");
         for(Player player : players)
             player.addArmy(NUMBEROFTROOPSFOURPLAYERGAME);
         Board board = new Board(getContinents(), getRiskCards());
         return new RiskController(players, board);
     }
-    public static RiskController setupFivePlayerGame(ArrayList<Player> players) throws Exception {
+    public static RiskController setupFivePlayerGame(ArrayList<Player> players) throws RiskException {
         if(players.size() != 5)
-            throw new Exception("there must be 5 players");
+            throw new RiskException("custom", "there must be 5 players");
         for(Player player : players)
             player.addArmy(NUMBEROFTROOPSFIVEPLAYERGAME);
         Board board = new Board(getContinents(), getRiskCards());
         return new RiskController(players, board);
     }
 
-    public static RiskController setupSixPlayerGame(ArrayList<Player> players) throws Exception {
+    public static RiskController setupSixPlayerGame(ArrayList<Player> players) throws RiskException {
         if(players.size() != 6)
-            throw new Exception("there must be 6 players");
+            throw new RiskException("custom", "there must be 6 players");
         for(Player player : players)
             player.addArmy(NUMBEROFTROOPSSIXPLAYERGAME);
         Board board = new Board(getContinents(), getRiskCards());
         return new RiskController(players, board);
     }
-    private static ArrayList<Continent> getContinents() throws Exception {
+    private static ArrayList<Continent> getContinents() throws RiskException {
         setupContinents();
         return continents;
     }
 
-    public static ArrayList<RiskCard> getRiskCards() throws Exception {
+    public static ArrayList<RiskCard> getRiskCards() throws RiskException {
         setupRiskCards();
         return riskCards;
     }
-    private static void setupContinents() throws Exception
+    private static void setupContinents() throws RiskException
     {
         HashMap<String, TerritoryNode> territories = Territories.getAllTerritories();
         continents = new ArrayList<Continent>();
@@ -78,7 +79,7 @@ public class GameSetupFactory {
         setAttackableCountries(territories);
     }
 
-    private static void setAttackableCountries(HashMap<String, TerritoryNode> territories) throws Exception {
+    private static void setAttackableCountries(HashMap<String, TerritoryNode> territories) throws RiskException {
         for(Country country : getAllCountries())
         {
             for(TerritoryNode territoryNode : territories.get(country.getName()).getAdjTerritories())
@@ -89,7 +90,7 @@ public class GameSetupFactory {
         }
     }
 
-    private static void setupCountry(TerritoryNode territoryNode, String territoryName) throws Exception {
+    private static void setupCountry(TerritoryNode territoryNode, String territoryName) throws RiskException {
         Continent continent = getContinentByName(territoryNode.getContinent());
         continent.addCountry(new Country(territoryName, null, continent));
     }
@@ -104,17 +105,17 @@ public class GameSetupFactory {
         return true;
     }
 
-    private static Continent getContinentByName(String name) throws Exception
+    private static Continent getContinentByName(String name) throws RiskException
     {
         for(Continent continent : continents)
         {
             if(continent.getName().equals(name))
                 return continent;
         }
-        throw new Exception("Continent not found");
+        throw new RiskException("custom", "Continent not found");
     }
 
-    private static void setupRiskCards() throws Exception {
+    private static void setupRiskCards() throws RiskException {
         riskCards = new ArrayList<RiskCard>();
         if(continents == null)
             setupContinents();
@@ -164,13 +165,13 @@ public class GameSetupFactory {
         return countries;
     }
 
-    private static Country getCountryByName(String name) throws Exception
+    private static Country getCountryByName(String name) throws RiskException
     {
         for(Country country : getAllCountries())
         {
             if(country.getName().equals(name))
                 return country;
         }
-        throw new Exception("Country not found");
+        throw new RiskException("custom", "Country not found");
     }
 }
