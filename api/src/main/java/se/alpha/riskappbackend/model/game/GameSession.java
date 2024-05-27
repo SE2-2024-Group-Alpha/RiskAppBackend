@@ -154,11 +154,6 @@ public class GameSession {
         return Collections.unmodifiableMap(userSessions);
     }
 
-//    @JsonIgnore
-//    public void updateUserState(String userName, UserState userState){
-//        userStates.put(userName, userState);
-//    }
-
     @JsonIgnore
     public UserState getUserState(String userName){
         return userStates.get(userName);
