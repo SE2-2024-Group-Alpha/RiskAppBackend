@@ -184,7 +184,7 @@ public class GameSession {
     }
 
     @JsonIgnore
-    public ArrayList<Player> getPlayers()
+    public List<Player> getPlayers()
     {
         return riskController.getPlayers();
     }

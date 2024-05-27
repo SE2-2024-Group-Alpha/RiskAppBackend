@@ -10,7 +10,7 @@ import se2.alpha.riskappbackend.model.exception.RiskException;
 @Getter
 public class RiskController {
     private UUID id;
-    private ArrayList<Player> players;
+    private List<Player> players;
     private Board board;
     private int idxPlayerTurn;
 

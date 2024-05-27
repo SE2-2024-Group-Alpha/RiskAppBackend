@@ -16,6 +16,7 @@ import se2.alpha.riskappbackend.model.websocket.*;
 import se2.alpha.riskappbackend.service.GameService;
 import se2.alpha.riskappbackend.util.GameSetupFactory;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class GameWebSocketHandler {
@@ -88,7 +89,7 @@ public class GameWebSocketHandler {
         CreateGameWebsocketMessage createGameWebsocketMessage = gson.fromJson((String) message.getPayload(), CreateGameWebsocketMessage.class);
         GameSession gameSession = gameService.getGameSessionById(createGameWebsocketMessage.getGameSessionId());
         gameSession.createGame(createGameWebsocketMessage.getPlayers());
-        GameStartedWebsocketMessage gameStartedWebsocketMessage = new GameStartedWebsocketMessage(gameSession.getPlayers(), gameSession.getActivePlayer());
+        GameStartedWebsocketMessage gameStartedWebsocketMessage = new GameStartedWebsocketMessage(new ArrayList<>(gameSession.getPlayers()), gameSession.getActivePlayer());
         sendMessageToAll(gameSession, gameStartedWebsocketMessage);
     }
 
@@ -142,5 +143,16 @@ public class GameWebSocketHandler {
         Country defendingCountry = gameSession.getCountryByName(attackWebsocketMessage.getDefendingCountryName());
         CountryChangedWebsocketMessage moveToCountryChangedWebsocketMessage = new CountryChangedWebsocketMessage(defendingCountry.getOwner().getId(), defendingCountry.getName(), defendingCountry.getNumberOfTroops());
         sendMessageToAll(gameSession, moveToCountryChangedWebsocketMessage);
+
+        if(gameSession.isPlayerEliminated(attackWebsocketMessage.getDefenderPlayerId())) {
+            if(gameSession.hasPlayerWon(attackWebsocketMessage.getAttackerPlayerId()))
+            {
+                PlayerWonWebsocketMessage playerWonWebsocketMessage = new PlayerWonWebsocketMessage(attackWebsocketMessage.getAttackerPlayerId());
+            }
+            else
+            {
+                PlayerEliminatedWebsocketMessage playerEliminatedWebsocketMessage = new PlayerEliminatedWebsocketMessage(attackWebsocketMessage.getDefenderPlayerId());
+            }
+        }
     }
 }
