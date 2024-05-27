@@ -1,4 +1,4 @@
-package se2.alpha.riskappbackend;
+package se.alpha.riskappbackend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

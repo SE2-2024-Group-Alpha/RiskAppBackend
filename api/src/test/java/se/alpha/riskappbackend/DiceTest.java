@@ -1,4 +1,4 @@
-package se2.alpha.riskappbackend;
+package se.alpha.riskappbackend;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Assertions;
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import se2.alpha.riskappbackend.model.db.Dice;
+import se.alpha.riskappbackend.model.db.Dice;
 
 import java.util.Arrays;
 import java.util.HashMap;

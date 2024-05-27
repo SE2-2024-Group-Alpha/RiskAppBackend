@@ -1,4 +1,4 @@
-package se2.alpha.riskappbackend;
+package se.alpha.riskappbackend;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -6,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import se2.alpha.riskappbackend.model.db.Player;
-import se2.alpha.riskappbackend.model.db.RiskCard;
-import se2.alpha.riskappbackend.model.db.RiskCardType;
-import se2.alpha.riskappbackend.model.db.TradeType;
+import se.alpha.riskappbackend.model.db.TradeType;
+import se.alpha.riskappbackend.model.db.Player;
+import se.alpha.riskappbackend.model.db.RiskCard;
+import se.alpha.riskappbackend.model.db.RiskCardType;
 
 public class PlayerTest {
     Player player;

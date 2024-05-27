@@ -1,4 +1,4 @@
-package se2.alpha.riskappbackend;
+package se.alpha.riskappbackend;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import se2.alpha.riskappbackend.model.db.Continent;
-import se2.alpha.riskappbackend.model.db.Player;
-import se2.alpha.riskappbackend.model.db.RiskController;
-import se2.alpha.riskappbackend.util.GameSetupFactory;
+import se.alpha.riskappbackend.model.db.Continent;
+import se.alpha.riskappbackend.model.db.Player;
+import se.alpha.riskappbackend.model.db.RiskController;
+import se.alpha.riskappbackend.util.GameSetupFactory;
 
 public class GameSetupFactoryTest {
     @Test

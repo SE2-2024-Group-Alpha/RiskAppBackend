@@ -1,4 +1,4 @@
-package se2.alpha.riskappbackend.controllerTest;
+package se.alpha.riskappbackend.controllerTest;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -23,10 +23,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 
-import se2.alpha.riskappbackend.controller.UserController;
-import se2.alpha.riskappbackend.entity.Role;
-import se2.alpha.riskappbackend.entity.User;
-import se2.alpha.riskappbackend.service.UserService;
+import se.alpha.riskappbackend.controller.UserController;
+import se.alpha.riskappbackend.entity.Role;
+import se.alpha.riskappbackend.entity.User;
+import se.alpha.riskappbackend.service.UserService;
 
 @ExtendWith(MockitoExtension.class)
 public class UserControllerTest {

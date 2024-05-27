@@ -1,4 +1,4 @@
-package se2.alpha.riskappbackend.controllerTest;
+package se.alpha.riskappbackend.controllerTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,13 +8,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.socket.WebSocketSession;
-import se2.alpha.riskappbackend.controller.GameController;
-import se2.alpha.riskappbackend.model.game.CreateLobbyRequest;
-import se2.alpha.riskappbackend.model.game.GameSession;
-import se2.alpha.riskappbackend.service.GameService;
+
+import se.alpha.riskappbackend.controller.GameController;
+import se.alpha.riskappbackend.model.game.CreateLobbyRequest;
+import se.alpha.riskappbackend.model.game.GameSession;
+import se.alpha.riskappbackend.service.GameService;
 
 import java.util.Arrays;
 import java.util.Collections;

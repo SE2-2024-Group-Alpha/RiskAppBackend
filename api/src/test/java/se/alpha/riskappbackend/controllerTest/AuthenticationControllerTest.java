@@ -1,4 +1,4 @@
-package se2.alpha.riskappbackend.controllerTest;
+package se.alpha.riskappbackend.controllerTest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -6,26 +6,23 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import se2.alpha.riskappbackend.controller.AuthenticationController;
-import se2.alpha.riskappbackend.model.auth.JwtAuthenticationResponse;
-import se2.alpha.riskappbackend.model.auth.SignInRequest;
-import se2.alpha.riskappbackend.model.auth.SignUpRequest;
-import se2.alpha.riskappbackend.service.AuthenticationService;
+
+import se.alpha.riskappbackend.controller.AuthenticationController;
+import se.alpha.riskappbackend.model.auth.JwtAuthenticationResponse;
+import se.alpha.riskappbackend.model.auth.SignInRequest;
+import se.alpha.riskappbackend.model.auth.SignUpRequest;
+import se.alpha.riskappbackend.service.AuthenticationService;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import org.junit.jupiter.api.Test;
-
-
 
 
 @ExtendWith(MockitoExtension.class)
