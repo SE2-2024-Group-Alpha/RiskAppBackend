@@ -3,6 +3,7 @@ package se.alpha.riskappbackend.util;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import se.alpha.riskappbackend.model.db.Board;
@@ -22,7 +23,7 @@ public class GameSetupFactory {
     private static int NUMBEROFTROOPSFIVEPLAYERGAME = 25;
     private static int NUMBEROFTROOPSSIXPLAYERGAME = 20;
 
-    public static RiskController setupThreePlayerGame(ArrayList<Player> players) throws RiskException {
+    public static RiskController setupThreePlayerGame(List<Player> players) throws RiskException {
         if(players.size() != 3)
             throw new RiskException("custom", "there must be 3 players");
         for(Player player : players)
@@ -30,7 +31,7 @@ public class GameSetupFactory {
         Board board = new Board(getContinents(), getRiskCards());
         return new RiskController(players, board);
     }
-    public static RiskController setupFourPlayerGame(ArrayList<Player> players) throws RiskException {
+    public static RiskController setupFourPlayerGame(List<Player> players) throws RiskException {
         if(players.size() != 4)
             throw new RiskException("custom", "there must be 4 players");
         for(Player player : players)
@@ -38,7 +39,7 @@ public class GameSetupFactory {
         Board board = new Board(getContinents(), getRiskCards());
         return new RiskController(players, board);
     }
-    public static RiskController setupFivePlayerGame(ArrayList<Player> players) throws RiskException {
+    public static RiskController setupFivePlayerGame(List<Player> players) throws RiskException {
         if(players.size() != 5)
             throw new RiskException("custom", "there must be 5 players");
         for(Player player : players)
@@ -47,7 +48,7 @@ public class GameSetupFactory {
         return new RiskController(players, board);
     }
 
-    public static RiskController setupSixPlayerGame(ArrayList<Player> players) throws RiskException {
+    public static RiskController setupSixPlayerGame(List<Player> players) throws RiskException {
         if(players.size() != 6)
             throw new RiskException("custom", "there must be 6 players");
         for(Player player : players)
