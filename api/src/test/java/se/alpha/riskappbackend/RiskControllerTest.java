@@ -312,7 +312,7 @@ public class RiskControllerTest {
     }
 
     @Test
-    void testSeizeCountryNotAllowed() throws Exception {
+    void testSeizeCountryNotAllowed() {
         Player player = riskController.getPlayers().get(0);
         Country country = riskController.getBoard().getContinents().get(0).getCountries().get(0);
         riskController.getPlayers().get(1).controlCountry(country);
