@@ -4,7 +4,7 @@ public abstract class Area {
     private String name;
     private Player owner;
 
-    public Area(String name, Player owner) {
+    protected Area(String name, Player owner) {
         this.name = name;
         this.owner = owner;
     }
