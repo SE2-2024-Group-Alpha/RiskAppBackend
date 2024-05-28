@@ -22,9 +22,6 @@ public class RiskController {
         players.get(idxPlayerTurn).setCurrentTurn(true);
     }
 
-    public RiskController() {
-    }
-
     public void endPlayerTurn()
     {
         players.get(idxPlayerTurn).setCurrentTurn(false);
