@@ -73,7 +73,7 @@ public class GameSetupFactory {
     }
     private static void setupContinents() throws RiskException
     {
-        HashMap<String, TerritoryNode> territories = Territories.getAllTerritories();
+        HashMap<String, TerritoryNode> territories = (HashMap<String, TerritoryNode>) Territories.getAllTerritories();
         continents = new ArrayList<>();
         for (Map.Entry<String, TerritoryNode> entry : territories.entrySet()) {
             String territoryName = entry.getKey();
