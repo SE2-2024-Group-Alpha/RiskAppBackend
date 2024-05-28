@@ -36,7 +36,7 @@ import java.util.Objects;
 public class GameWebSocketHandler {
 
     private GameService gameService;
-    private static final Logger logger = LoggerFactory.getLogger(RiskWebSocketHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(GameWebSocketHandler.class);
     private final Gson gson = new Gson();
 
     public GameWebSocketHandler(GameService gameService) {
