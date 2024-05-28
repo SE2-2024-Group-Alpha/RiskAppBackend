@@ -54,7 +54,6 @@ class GameControllerTest {
     @Test
     @DisplayName("Create Lobby - Success")
     void createLobby_Success() throws Exception {
-        CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest("New Lobby");
         UUID sessionId = UUID.randomUUID();
         when(gameService.createNewSession(any(String.class))).thenReturn(sessionId);
 
