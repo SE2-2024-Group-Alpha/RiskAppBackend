@@ -5,13 +5,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import se.alpha.riskappbackend.model.db.TradeType;
 import se.alpha.riskappbackend.model.db.Player;
 import se.alpha.riskappbackend.model.db.RiskCard;
 import se.alpha.riskappbackend.model.db.RiskCardType;
 
-public class PlayerTest {
+class PlayerTest {
     Player player;
     @BeforeEach
     void setUp() {
@@ -196,76 +198,14 @@ public class PlayerTest {
         assertEquals(0, player.getCards().size());
     }
 
-    @Test
-    void testNewTroopsForFirstTrade() throws Exception {
+    @ParameterizedTest
+    @CsvSource({"0,4", "1,6", "2,8", "3,10", "4,12", "5,15", "6,20", "7,25"})
+    void testNewTroopsForSecondTrade(int cntTrade, int expectedFreeTroops) throws Exception {
+        player.setCntRiskCardsTraded(cntTrade);
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
         player.tradeRiskCards();
-        assertEquals(4, player.getFreeNumberOfTroops());
-    }
-
-    @Test
-    void testNewTroopsForSecondTrade() throws Exception {
-        player.setCntRiskCardsTraded(1);
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.tradeRiskCards();
-        assertEquals(6, player.getFreeNumberOfTroops());
-    }
-    @Test
-    void testNewTroopsForThirdTrade() throws Exception {
-        player.setCntRiskCardsTraded(2);
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.tradeRiskCards();
-        assertEquals(8, player.getFreeNumberOfTroops());
-    }
-    @Test
-    void testNewTroopsForFourthTrade() throws Exception {
-        player.setCntRiskCardsTraded(3);
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.tradeRiskCards();
-        assertEquals(10, player.getFreeNumberOfTroops());
-    }
-    @Test
-    void testNewTroopsForFifthTrade() throws Exception {
-        player.setCntRiskCardsTraded(4);
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.tradeRiskCards();
-        assertEquals(12, player.getFreeNumberOfTroops());
-    }
-    @Test
-    void testNewTroopsForSixthTrade() throws Exception {
-        player.setCntRiskCardsTraded(5);
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.tradeRiskCards();
-        assertEquals(15, player.getFreeNumberOfTroops());
-    }
-    @Test
-    void testNewTroopsForSeventhTrade() throws Exception {
-        player.setCntRiskCardsTraded(6);
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.tradeRiskCards();
-        assertEquals(20, player.getFreeNumberOfTroops());
-    }
-    @Test
-    void testNewTroopsForEightTrade() throws Exception {
-        player.setCntRiskCardsTraded(7);
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.addRiskCard(new RiskCard(RiskCardType.JOKER, null));
-        player.tradeRiskCards();
-        assertEquals(25, player.getFreeNumberOfTroops());
+        assertEquals(expectedFreeTroops, player.getFreeNumberOfTroops());
     }
 }
