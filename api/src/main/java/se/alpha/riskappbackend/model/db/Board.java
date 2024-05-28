@@ -16,14 +16,6 @@ public class Board {
         this.cards = cards;
     }
 
-    public void setContinents(ArrayList<Continent> continents) {
-        this.continents = continents;
-    }
-
-    public void setCards(ArrayList<RiskCard> cards) {
-        this.cards = cards;
-    }
-
     public RiskCard getNewRiskCard() throws RiskException
     {
         if(cards.isEmpty())
