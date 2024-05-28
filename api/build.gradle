@@ -64,6 +64,6 @@ sonar {
 		property 'sonar.organization', 'se2-2024-group-alpha'
 		property 'sonar.java.coveragePlugin', 'jacoco'
 		property 'sonar.coverage.jacoco.xmlReportPaths', "${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
-		property 'sonar.coverage.exclusions', 'test/**, main/se/alpha/riskappbackend/config/**, main/se/alpha/riskappbackend/controller/**, main/se/alpha/riskappbackend/entity/**, main/se/alpha/riskappbackend/model/auth/**, main/se/alpha/riskappbackend/model/game/**, main/se/alpha/riskappbackend/model/websocket/**, main/se/alpha/riskappbackend/config/**, main/se/alpha/riskappbackend/repository/**, main/se/alpha/riskappbackend/service/**, main/se/alpha/riskappbackend/websocket/**'
+		property 'sonar.coverage.exclusions', '**/test/**, **/config/**, **/controller/**, **/entity/**, **/auth/**, **/game/**, **/websocket/**, **/repository/**, **/service/**'
 	}
 }
