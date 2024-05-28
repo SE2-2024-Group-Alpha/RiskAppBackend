@@ -435,4 +435,20 @@ public class RiskControllerTest {
         assertFalse(player.isCurrentTurn());
         assertNotEquals(player, riskController.getActivePlayer());
     }
+
+    @Test
+    void testIsPlayerEliminated() {
+        Player player = riskController.getActivePlayer();
+        assertFalse(player.isEliminated());
+    }
+
+    @Test
+    void testHasPlayerWon() throws RiskException {
+        ArrayList<Player> players = (ArrayList<Player>) riskController.getPlayers();
+        for(Player player : players)
+            player.setEliminated(true);
+        Player winner = players.get(0);
+        winner.setEliminated(false);
+        assertTrue(riskController.hasPlayerWon(winner.getId()));
+    }
 }
