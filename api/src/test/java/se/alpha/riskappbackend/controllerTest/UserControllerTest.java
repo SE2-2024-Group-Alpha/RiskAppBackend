@@ -29,7 +29,7 @@ import se.alpha.riskappbackend.entity.User;
 import se.alpha.riskappbackend.service.UserService;
 
 @ExtendWith(MockitoExtension.class)
-public class UserControllerTest {
+class UserControllerTest {
     @Mock
     private UserService userService;
 
