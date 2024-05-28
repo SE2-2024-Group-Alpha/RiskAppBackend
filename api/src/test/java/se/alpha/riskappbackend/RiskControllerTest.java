@@ -22,6 +22,7 @@ import se.alpha.riskappbackend.model.db.Dice;
 import se.alpha.riskappbackend.model.db.Player;
 import se.alpha.riskappbackend.model.db.RiskCard;
 import se.alpha.riskappbackend.model.db.RiskController;
+import se.alpha.riskappbackend.model.exception.RiskException;
 import se.alpha.riskappbackend.util.GameSetupFactory;
 
 public class RiskControllerTest {
@@ -397,5 +398,31 @@ public class RiskControllerTest {
         assertFalse(player1.isCurrentTurn());
         assertFalse(player2.isCurrentTurn());
         assertTrue(player3.isCurrentTurn());
+    }
+
+    @Test
+    void testGetRiskCardsByPlayerWithoutValidPlayer() {
+        RiskException exception = assertThrows(RiskException.class, () -> riskController.getRiskCardsByPlayer(""));
+        assertEquals("no player with this id found", exception.getMessage());
+        assertEquals("custom", exception.getType());
+    }
+
+    @Test
+    void testMoveTroopsWithoutValidCountry() {
+        RiskException exception = assertThrows(RiskException.class, () -> riskController.moveTroops(riskController.getPlayers().get(0).getId(), "", "", 1));
+        assertEquals("no country with this name found", exception.getMessage());
+        assertEquals("custom", exception.getType());
+    }
+
+    @Test
+    void testCanPlayerTradeRiskCards() throws RiskException {
+        assertFalse(riskController.canPlayerTradeRiskCards(riskController.getPlayers().get(0).getId()));
+    }
+
+    @Test
+    void testTradeRiskCardsNotAllowed() {
+        RiskException exception = assertThrows(RiskException.class, () -> riskController.tradeRiskCards(riskController.getPlayers().get(0).getId()));
+        assertEquals("Player cannot trade any risk cards", exception.getMessage());
+        assertEquals("custom", exception.getType());
     }
 }
