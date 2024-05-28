@@ -2,6 +2,7 @@ package se.alpha.riskappbackend;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -424,5 +425,14 @@ public class RiskControllerTest {
         RiskException exception = assertThrows(RiskException.class, () -> riskController.tradeRiskCards(riskController.getPlayers().get(0).getId()));
         assertEquals("Player cannot trade any risk cards", exception.getMessage());
         assertEquals("custom", exception.getType());
+    }
+
+    @Test
+    void testGetActivePlayer() {
+        Player player = riskController.getActivePlayer();
+        assertTrue(player.isCurrentTurn());
+        riskController.endPlayerTurn();
+        assertFalse(player.isCurrentTurn());
+        assertNotEquals(player, riskController.getActivePlayer());
     }
 }
