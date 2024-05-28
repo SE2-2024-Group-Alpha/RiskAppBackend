@@ -18,7 +18,7 @@ public class Country extends Area{
         super(name, owner);
         this.continent = continent;
         numberOfTroops = 0;
-        attackableCountries = new ArrayList<Country>();
+        attackableCountries = new ArrayList<>();
     }
 
     public Country() {

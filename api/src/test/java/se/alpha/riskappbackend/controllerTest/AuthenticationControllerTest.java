@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @ExtendWith(MockitoExtension.class)
-public class AuthenticationControllerTest {
+class AuthenticationControllerTest {
 
     @Mock
     private AuthenticationService authenticationService;
@@ -121,9 +121,7 @@ public class AuthenticationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"token\":\"invalidToken\"}"))
                 .andExpect(status().isBadRequest())
-                // If your controller wraps the error message in a structure like { "error": "Invalid Token!" }
                 .andExpect(jsonPath("$.error").value("Invalid Token!"));
-        // Or, if your controller returns a plain message, ensure it's correctly setting the response body.
     }
 
 }

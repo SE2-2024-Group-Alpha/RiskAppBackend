@@ -28,12 +28,12 @@ public class RiskWebSocketHandler implements WebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        logger.info("Connection established with session id: " + session.getId());
+        logger.info(String.format("Connection established with session id: %1$s", session.getId()));
     }
 
     @Override
     public void handleMessage(@NonNull WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-        logger.info("Received Message: " + message.toString());
+        logger.info(String.format("Received Message: %1$s", message.toString()));
         ICustomWebsocketMessage msg = gson.fromJson((String) message.getPayload(), CustomWebsocketMessage.class);
         if(msg.getType() == CustomWebsocketMessageType.GAME) {
             gameWebSocketHandler.handleMessage(session, message);
@@ -41,13 +41,13 @@ public class RiskWebSocketHandler implements WebSocketHandler {
     }
 
     @Override
-    public void handleTransportError(@NonNull WebSocketSession session, @NonNull Throwable exception) throws Exception {
-
+    public void handleTransportError(@NonNull WebSocketSession session, @NonNull Throwable exception) {
+        logger.info(String.format("Transport error: %1$s", exception.getMessage()));
     }
 
     @Override
-    public void afterConnectionClosed(@NonNull WebSocketSession session, @NonNull CloseStatus closeStatus) throws Exception {
-
+    public void afterConnectionClosed(@NonNull WebSocketSession session, @NonNull CloseStatus closeStatus) {
+        logger.info(String.format("Connection closed: %1$s", session.getId()));
     }
 
     @Override

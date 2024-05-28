@@ -31,8 +31,8 @@ public class Player {
         this.name = name;
         this.color = color;
         cards = new ArrayList<RiskCard>();
-        controlledContinents = new ArrayList<Continent>();
-        controlledCountries = new ArrayList<Country>();
+        controlledContinents = new ArrayList<>();
+        controlledCountries = new ArrayList<>();
         freeNumberOfTroops = numberOfTroops;
         totalNumberOfTroops = numberOfTroops;
         currentTurn = false;
@@ -42,31 +42,23 @@ public class Player {
         this.id = id;
         this.name = name;
         this.color = color;
-        cards = new ArrayList<RiskCard>();
-        controlledContinents = new ArrayList<Continent>();
-        controlledCountries = new ArrayList<Country>();
+        cards = new ArrayList<>();
+        controlledContinents = new ArrayList<>();
+        controlledCountries = new ArrayList<>();
         freeNumberOfTroops = 0;
         totalNumberOfTroops = 0;
         currentTurn = false;
     }
 
     public Player() {
-        cards = new ArrayList<RiskCard>();
-        controlledContinents = new ArrayList<Continent>();
-        controlledCountries = new ArrayList<Country>();
+        cards = new ArrayList<>();
+        controlledContinents = new ArrayList<>();
+        controlledCountries = new ArrayList<>();
         currentTurn = false;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setColor(int color) {
-        this.color = color;
-    }
-
-    public void setCards(ArrayList<RiskCard> cards) {
-        this.cards = cards;
     }
 
     public void setCntRiskCardsTraded(int cntRiskCardsTraded)
@@ -88,11 +80,6 @@ public class Player {
     public void addRiskCard(RiskCard card)
     {
         cards.add(card);
-    }
-
-    public void removeRiskCard(RiskCard card)
-    {
-        cards.remove(card);
     }
 
     public void setEliminated(boolean eliminated) {
@@ -212,38 +199,46 @@ public class Player {
     {
         switch (tradeType)
         {
-            case ARTILLERY -> {
+            case ARTILLERY: {
                 removeCardsFromList(riskCards, RiskCardType.ARTILLERY, 3);
+                break;
             }
-            case INFANTRY -> {
+            case INFANTRY: {
                 removeCardsFromList(riskCards, RiskCardType.INFANTRY, 3);
+                break;
             }
-            case CAVALRY -> {
+            case CAVALRY: {
                 removeCardsFromList(riskCards, RiskCardType.CAVALRY, 3);
+                break;
             }
-            case ARTILLERY_JOKER -> {
+            case ARTILLERY_JOKER: {
                 int remainingCards = removeCardsFromList(riskCards, RiskCardType.ARTILLERY, 3);
                 removeCardsFromList(riskCards, RiskCardType.JOKER, remainingCards);
+                break;
             }
-            case INFANTRY_JOKER -> {
+            case INFANTRY_JOKER: {
                 int remainingCards = removeCardsFromList(riskCards, RiskCardType.INFANTRY, 3);
                 removeCardsFromList(riskCards, RiskCardType.JOKER, remainingCards);
+                break;
             }
-            case CAVALRY_JOKER -> {
+            case CAVALRY_JOKER: {
                 int remainingCards = removeCardsFromList(riskCards, RiskCardType.CAVALRY, 3);
                 removeCardsFromList(riskCards, RiskCardType.JOKER, remainingCards);
+                break;
             }
-            case MIXED -> {
+            case MIXED: {
                 removeCardsFromList(riskCards, RiskCardType.ARTILLERY, 1);
                 removeCardsFromList(riskCards, RiskCardType.CAVALRY, 1);
                 removeCardsFromList(riskCards, RiskCardType.INFANTRY, 1);
+                break;
             }
-            case MIXED_JOKER -> {
+            case MIXED_JOKER: {
                 int remainingCards = 0;
                 remainingCards += removeCardsFromList(riskCards, RiskCardType.ARTILLERY, 1);
                 remainingCards += removeCardsFromList(riskCards, RiskCardType.CAVALRY, 1);
                 remainingCards += removeCardsFromList(riskCards, RiskCardType.INFANTRY, 1);
                 removeCardsFromList(riskCards, RiskCardType.JOKER, remainingCards);
+                break;
             }
         }
         cntRiskCardsTraded++;

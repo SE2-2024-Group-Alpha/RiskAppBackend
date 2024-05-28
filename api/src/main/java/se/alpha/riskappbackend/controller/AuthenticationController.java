@@ -44,15 +44,6 @@ public class AuthenticationController {
         }
     }
 
-//    @PostMapping("/validate")
-//    public ResponseEntity<?> validateToken(@RequestBody ValidateTokenRequest request) {
-//        try {
-//            var validated = authenticationService.validateToken(request);
-//            return ResponseEntity.ok(validated);
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body("");
-//        }
-//    }
     @PostMapping("/validate")
     public ResponseEntity<?> validateToken(@RequestBody ValidateTokenRequest request) {
         try {

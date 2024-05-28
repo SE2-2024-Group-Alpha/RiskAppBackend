@@ -30,24 +30,7 @@ public class UserController {
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
-//
-//    @GetMapping("/{id}")
-//    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-//        return userService.getUserById(id)
-//                .map(ResponseEntity::ok)
-//                .orElse(ResponseEntity.notFound().build());
-//    }
-//
-//    @PutMapping("/{id}")
-//    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-//        return userService.getUserById(id)
-//                .map(existingUser -> {
-//                    user.setId(id);
-//                    return ResponseEntity.ok(userService.saveUser(user));
-//                })
-//                .orElse(ResponseEntity.notFound().build());
-//    }
-//
+
     @DeleteMapping()
     public ResponseEntity<Void> deleteAllUser() {
         var allUsers = userService.getAllUsers();

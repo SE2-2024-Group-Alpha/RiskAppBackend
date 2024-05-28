@@ -6,6 +6,7 @@ import se.alpha.riskappbackend.model.db.Country;
 import se.alpha.riskappbackend.model.db.Player;
 import se.alpha.riskappbackend.model.db.RiskCard;
 import se.alpha.riskappbackend.model.db.RiskController;
+import se.alpha.riskappbackend.model.exception.RiskException;
 import se.alpha.riskappbackend.util.GameSetupFactory;
 
 import org.springframework.web.socket.WebSocketSession;
@@ -48,7 +49,7 @@ public class GameSession {
         users = userStates.size();
     }
 
-    public void createGame(List<Player> players) throws Exception
+    public void createGame(List<Player> players) throws RiskException
     {
         switch(players.size())
         {
@@ -65,72 +66,72 @@ public class GameSession {
                 riskController = GameSetupFactory.setupSixPlayerGame(players);
                 break;
             default:
-                throw new Exception("there must be between 3 and 6 players");
+                throw new RiskException("custom", "there must be between 3 and 6 players");
         }
     }
 
-    public Player endTurn() throws Exception
+    public Player endTurn()
     {
         riskController.endPlayerTurn();
         return riskController.getActivePlayer();
     }
 
-    public void seizeCountry(String playerId, String countryName, int numberOfTroops) throws Exception
+    public void seizeCountry(String playerId, String countryName, int numberOfTroops) throws RiskException
     {
         riskController.seizeCountry(playerId, countryName, numberOfTroops);
     }
 
-    public int strengthenCountry(String playerId, String countryName, int numberOfTroops) throws Exception
+    public int strengthenCountry(String playerId, String countryName, int numberOfTroops) throws RiskException
     {
         return riskController.strengthenCountry(playerId, countryName, numberOfTroops);
     }
 
-    public void getNewTroops(String playerId) throws Exception
+    public void getNewTroops(String playerId) throws RiskException
     {
         riskController.getNewTroops(playerId);
     }
 
-    public void moveTroops(String playerId, String moveFromCountryName, String moveToCountryName, int numberOfTroops) throws Exception
+    public void moveTroops(String playerId, String moveFromCountryName, String moveToCountryName, int numberOfTroops) throws RiskException
     {
         riskController.moveTroops(playerId, moveFromCountryName, moveToCountryName, numberOfTroops);
     }
 
-    public void attack(String attackerPlayerId, String defenderPlayerId, String attackingCountryName, String defendingCountryName) throws Exception
+    public void attack(String attackerPlayerId, String defenderPlayerId, String attackingCountryName, String defendingCountryName) throws RiskException
     {
         riskController.attack(attackerPlayerId, defenderPlayerId, attackingCountryName, defendingCountryName);
     }
 
-    public Country getCountryByName(String countryName) throws Exception
+    public Country getCountryByName(String countryName) throws RiskException
     {
         return riskController.getCountryByName(countryName);
     }
 
-    public RiskCard getNewRiskCard(String playerId) throws Exception
+    public RiskCard getNewRiskCard(String playerId) throws RiskException
     {
         return riskController.getNewRiskCard(playerId);
     }
 
-    public List<RiskCard> getRiskCardsByPlayer(String playerId) throws Exception
+    public List<RiskCard> getRiskCardsByPlayer(String playerId) throws RiskException
     {
         return riskController.getRiskCardsByPlayer(playerId);
     }
 
-    public boolean canPlayerTradeRiskCards(String playerId) throws Exception
+    public boolean canPlayerTradeRiskCards(String playerId) throws RiskException
     {
         return riskController.canPlayerTradeRiskCards(playerId);
     }
 
-    public void tradeRiskCards(String playerId) throws Exception
+    public void tradeRiskCards(String playerId) throws RiskException
     {
         riskController.tradeRiskCards(playerId);
     }
 
-    public boolean isPlayerEliminated(String playerId) throws Exception
+    public boolean isPlayerEliminated(String playerId) throws RiskException
     {
         return riskController.isPlayerEliminated(playerId);
     }
 
-    public boolean hasPlayerWon(String playerId) throws Exception
+    public boolean hasPlayerWon(String playerId) throws RiskException
     {
         return riskController.hasPlayerWon(playerId);
     }

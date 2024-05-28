@@ -11,8 +11,6 @@ import java.util.*;
 
 @Service
 public class GameService {
-
-    private static final Logger logger = LoggerFactory.getLogger(GameService.class);
     private final Map<UUID, GameSession> gameSessions;
 
     public GameService() {
@@ -22,7 +20,7 @@ public class GameService {
     }
 
     public List<GameSession> getJoinableSessions() {
-        return new ArrayList<GameSession>(gameSessions.values());
+        return new ArrayList<>(gameSessions.values());
     }
 
     public UUID createNewSession(String name) {

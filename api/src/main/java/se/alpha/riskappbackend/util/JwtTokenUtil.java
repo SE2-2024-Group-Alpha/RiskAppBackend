@@ -18,7 +18,7 @@ import java.util.function.Function;
 @Component
 public class JwtTokenUtil {
 
-    private final String secretKey = "271D48FBA9BF696148FBFBA9BE13AE482472E1961E13AE48247";
+    private static final String secretKey = "271D48FBA9BF696148FBFBA9BE13AE482472E1961E13AE48247";
 
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);

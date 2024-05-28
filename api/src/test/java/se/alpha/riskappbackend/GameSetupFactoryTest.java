@@ -12,7 +12,7 @@ import se.alpha.riskappbackend.model.db.Player;
 import se.alpha.riskappbackend.model.db.RiskController;
 import se.alpha.riskappbackend.util.GameSetupFactory;
 
-public class GameSetupFactoryTest {
+class GameSetupFactoryTest {
     @Test
     void testThreePlayerGame() throws Exception {
         ArrayList<Player> players = new ArrayList<Player>();

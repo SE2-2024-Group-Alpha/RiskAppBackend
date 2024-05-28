@@ -7,6 +7,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import se.alpha.riskappbackend.model.exception.RiskException;
 import se.alpha.riskappbackend.model.websocket.AttackWebsocketMessage;
 import se.alpha.riskappbackend.model.websocket.CountryChangedWebsocketMessage;
 import se.alpha.riskappbackend.model.websocket.CreateGameWebsocketMessage;
@@ -36,7 +37,7 @@ import java.util.Objects;
 public class GameWebSocketHandler {
 
     private GameService gameService;
-    private static final Logger logger = LoggerFactory.getLogger(RiskWebSocketHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(GameWebSocketHandler.class);
     private final Gson gson = new Gson();
 
     public GameWebSocketHandler(GameService gameService) {
@@ -53,43 +54,43 @@ public class GameWebSocketHandler {
                     session.sendMessage(textMessage);
                 }
             } catch (Exception e) {
-                logger.error("Error sending message to WebSocketSession: " + e.getMessage());
+                logger.error(String.format("Error sending message to WebSocketSession: %1$s", e.getMessage()));
             }
         }
     }
 
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
         IGameWebsocketMessage gameWebsocketMessage = gson.fromJson((String) message.getPayload(), GameWebsocketMessage.class);
-        logger.info("Received Game Message with Action: " + gameWebsocketMessage.getAction());
+        logger.info(String.format("Received Game Message with Action: %1$s", gameWebsocketMessage.getAction()));
         switch (gameWebsocketMessage.getAction()){
             case JOIN -> handleJoin(session, message);
             case USER_READY -> handleUserReady(session, message);
             case USER_LEAVE -> handleUserLeave(session, message);
-            case CREATE_GAME -> handleCreateGame(session, message);
-            case END_TURN -> handleEndTurn(session, message);
-            case SEIZE_COUNTRY -> handleSeizeCountry(session, message);
-            case STRENGTHEN_COUNTRY -> handleStrengthenCountry(session, message);
-            case MOVE_TROOPS -> handleMoveTroops(session, message);
-            case ATTACK -> handleAttack(session, message);
+            case CREATE_GAME -> handleCreateGame(message);
+            case END_TURN -> handleEndTurn(message);
+            case SEIZE_COUNTRY -> handleSeizeCountry(message);
+            case STRENGTHEN_COUNTRY -> handleStrengthenCountry(message);
+            case MOVE_TROOPS -> handleMoveTroops(message);
+            case ATTACK -> handleAttack(message);
+            default -> handleDefault();
         }
     }
 
-//    TODO CHECK IF THIS WORKS!!!!
-    private void handleUserLeave(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+    private void handleUserLeave(WebSocketSession session, WebSocketMessage<?> message) {
         UserLeaveWebsocketMessage userLeaveWebsocketMessage = gson.fromJson((String) message.getPayload(), UserLeaveWebsocketMessage.class);
         GameSession gameSession = gameService.leaveSession(userLeaveWebsocketMessage.getGameSessionId(), session);
         UserSyncWebsocketMessage userSyncWebsocketMessage = new UserSyncWebsocketMessage(gameSession.getReadyUsers());
         sendMessageToAll(gameSession, userSyncWebsocketMessage);
     }
 
-    public void handleJoin(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+    public void handleJoin(WebSocketSession session, WebSocketMessage<?> message) {
         JoinWebsocketMessage joinWebsocketMessage = gson.fromJson((String) message.getPayload(), JoinWebsocketMessage.class);
         GameSession gameSession = gameService.joinSession(joinWebsocketMessage.getGameSessionId(), session);
         UserSyncWebsocketMessage userSyncWebsocketMessage = new UserSyncWebsocketMessage(gameSession.getReadyUsers());
         sendMessageToAll(gameSession, userSyncWebsocketMessage);
     }
 
-    public void handleUserReady(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+    public void handleUserReady(WebSocketSession session, WebSocketMessage<?> message) {
         UserReadyWebsocketMessage userReadyWebsocketMessage = gson.fromJson((String) message.getPayload(), UserReadyWebsocketMessage.class);
         GameSession gameSession = gameService.getGameSessionById(userReadyWebsocketMessage.getGameSessionId());
         String userName = Objects.requireNonNull(session.getPrincipal()).getName();
@@ -99,7 +100,7 @@ public class GameWebSocketHandler {
         sendMessageToAll(gameSession, userSyncWebsocketMessage);
     }
 
-    public void handleCreateGame(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+    public void handleCreateGame(WebSocketMessage<?> message) throws Exception {
         CreateGameWebsocketMessage createGameWebsocketMessage = gson.fromJson((String) message.getPayload(), CreateGameWebsocketMessage.class);
         GameSession gameSession = gameService.getGameSessionById(createGameWebsocketMessage.getGameSessionId());
         gameSession.createGame(createGameWebsocketMessage.getPlayers());
@@ -107,7 +108,7 @@ public class GameWebSocketHandler {
         sendMessageToAll(gameSession, gameStartedWebsocketMessage);
     }
 
-    public void handleEndTurn(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+    public void handleEndTurn(WebSocketMessage<?> message) throws Exception {
         EndTurnWebsocketMessage endTurnWebsocketMessage = gson.fromJson((String) message.getPayload(), EndTurnWebsocketMessage.class);
         GameSession gameSession = gameService.getGameSessionById(endTurnWebsocketMessage.getGameSessionId());
         Player activePlayer = gameSession.endTurn();
@@ -116,7 +117,7 @@ public class GameWebSocketHandler {
         sendMessageToAll(gameSession, newTurnWebsocketMessage);
     }
 
-    public void handleSeizeCountry(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+    public void handleSeizeCountry(WebSocketMessage<?> message) throws Exception {
         SeizeCountryWebsocketMessage seizeCountryWebsocketMessage = gson.fromJson((String) message.getPayload(), SeizeCountryWebsocketMessage.class);
         GameSession gameSession = gameService.getGameSessionById(seizeCountryWebsocketMessage.getGameSessionId());
         gameSession.seizeCountry(seizeCountryWebsocketMessage.getPlayerId(), seizeCountryWebsocketMessage.getCountryName(), seizeCountryWebsocketMessage.getNumberOfTroops());
@@ -127,7 +128,7 @@ public class GameWebSocketHandler {
         sendMessageToAll(gameSession, newTurnWebsocketMessage);
     }
 
-    public void handleStrengthenCountry(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+    public void handleStrengthenCountry(WebSocketMessage<?> message) throws Exception {
         StrengthenCountryWebsocketMessage strengthenCountryWebsocketMessage = gson.fromJson((String) message.getPayload(), StrengthenCountryWebsocketMessage.class);
         GameSession gameSession = gameService.getGameSessionById(strengthenCountryWebsocketMessage.getGameSessionId());
         int numberOfTroops = gameSession.strengthenCountry(strengthenCountryWebsocketMessage.getPlayerId(), strengthenCountryWebsocketMessage.getCountryName(), strengthenCountryWebsocketMessage.getNumberOfTroops());
@@ -135,7 +136,7 @@ public class GameWebSocketHandler {
         sendMessageToAll(gameSession, countryChangedWebsocketMessage);
     }
 
-    public void handleMoveTroops(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+    public void handleMoveTroops(WebSocketMessage<?> message) throws Exception {
         MoveTroopsWebsocketMessage moveTroopsWebsocketMessage = gson.fromJson((String) message.getPayload(), MoveTroopsWebsocketMessage.class);
         GameSession gameSession = gameService.getGameSessionById(moveTroopsWebsocketMessage.getGameSessionId());
         gameSession.moveTroops(moveTroopsWebsocketMessage.getPlayerId(), moveTroopsWebsocketMessage.getMoveFromCountryName(), moveTroopsWebsocketMessage.getMoveToCountryName(), moveTroopsWebsocketMessage.getNumberOfTroops());
@@ -147,7 +148,7 @@ public class GameWebSocketHandler {
         sendMessageToAll(gameSession, moveToCountryChangedWebsocketMessage);
     }
 
-    public void handleAttack(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+    public void handleAttack(WebSocketMessage<?> message) throws Exception {
         AttackWebsocketMessage attackWebsocketMessage = gson.fromJson((String) message.getPayload(), AttackWebsocketMessage.class);
         GameSession gameSession = gameService.getGameSessionById(attackWebsocketMessage.getGameSessionId());
         gameSession.attack(attackWebsocketMessage.getAttackerPlayerId(), attackWebsocketMessage.getDefenderPlayerId(), attackWebsocketMessage.getAttackingCountryName(), attackWebsocketMessage.getDefendingCountryName());
@@ -162,11 +163,18 @@ public class GameWebSocketHandler {
             if(gameSession.hasPlayerWon(attackWebsocketMessage.getAttackerPlayerId()))
             {
                 PlayerWonWebsocketMessage playerWonWebsocketMessage = new PlayerWonWebsocketMessage(attackWebsocketMessage.getAttackerPlayerId());
+                sendMessageToAll(gameSession, playerWonWebsocketMessage);
             }
             else
             {
                 PlayerEliminatedWebsocketMessage playerEliminatedWebsocketMessage = new PlayerEliminatedWebsocketMessage(attackWebsocketMessage.getDefenderPlayerId());
+                sendMessageToAll(gameSession, playerEliminatedWebsocketMessage);
             }
         }
+    }
+
+    public void handleDefault() throws RiskException
+    {
+        throw new RiskException("custom", "action not handled by server");
     }
 }
