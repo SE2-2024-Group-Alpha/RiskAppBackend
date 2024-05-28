@@ -40,7 +40,7 @@ public class RiskControllerTest {
         mockedStatic = Mockito.mockStatic(Dice.class);
     }
     @AfterEach
-    void tearDown() throws Exception {
+    void tearDown() {
         mockedStatic.close();
         Mockito.reset();
     }
@@ -214,7 +214,7 @@ public class RiskControllerTest {
         assertEquals(15, moveToCountry.getNumberOfTroops());
     }
     @Test
-    void testMoveTroopsNotEnoughTroops() throws Exception {
+    void testMoveTroopsNotEnoughTroops() {
         Board board = riskController.getBoard();
         Country moveFromCountry = board.getContinents().get(0).getCountries().get(0);
         Country moveToCountry = moveFromCountry.getAttackableCountries().get(0);
@@ -228,7 +228,7 @@ public class RiskControllerTest {
         assertEquals("not enough troops in this country to move from", exception.getMessage());
     }
     @Test
-    void testMoveTroopsCountriesNotControlledByPlayer() throws Exception {
+    void testMoveTroopsCountriesNotControlledByPlayer() {
         Board board = riskController.getBoard();
         Country moveFromCountry = board.getContinents().get(0).getCountries().get(0);
         Country moveToCountry = moveFromCountry.getAttackableCountries().get(0);
@@ -240,7 +240,7 @@ public class RiskControllerTest {
         assertEquals("countries must be owned by player", exception.getMessage());
     }
     @Test
-    void testMoveTroopsNotAllowed() throws Exception {
+    void testMoveTroopsNotAllowed() {
         Board board = riskController.getBoard();
         Country moveFromCountry = board.getContinents().get(0).getCountries().get(0);
         Country moveToCountry = board.getContinents().get(1).getCountries().get(0);
