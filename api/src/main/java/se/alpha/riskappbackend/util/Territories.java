@@ -2,8 +2,6 @@ package se.alpha.riskappbackend.util;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Territories {
     private static final TerritoryNode Alaska = new TerritoryNode("Alaska", "North America");
