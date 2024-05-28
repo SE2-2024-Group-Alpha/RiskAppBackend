@@ -19,11 +19,11 @@ public class PlayerTest {
     }
 
     @Test
-    void testCanPlayerTradeRiskCardsWithNoRiskCards() throws Exception {
+    void testCanPlayerTradeRiskCardsWithNoRiskCards() {
         assertEquals(TradeType.NONE, player.canTradeRiskCards());
     }
     @Test
-    void testCanPlayerTradeRiskCardsArtillery() throws Exception {
+    void testCanPlayerTradeRiskCardsArtillery() {
         player.addRiskCard(new RiskCard(RiskCardType.ARTILLERY, null));
         assertEquals(TradeType.NONE, player.canTradeRiskCards());
         player.addRiskCard(new RiskCard(RiskCardType.ARTILLERY, null));
@@ -33,7 +33,7 @@ public class PlayerTest {
     }
 
     @Test
-    void testCanPlayerTradeRiskCardsInfantry() throws Exception {
+    void testCanPlayerTradeRiskCardsInfantry() {
         player.addRiskCard(new RiskCard(RiskCardType.INFANTRY, null));
         assertEquals(TradeType.NONE, player.canTradeRiskCards());
         player.addRiskCard(new RiskCard(RiskCardType.INFANTRY, null));
@@ -43,7 +43,7 @@ public class PlayerTest {
     }
 
     @Test
-    void testCanPlayerTradeRiskCardsCavalry() throws Exception {
+    void testCanPlayerTradeRiskCardsCavalry() {
         player.addRiskCard(new RiskCard(RiskCardType.CAVALRY, null));
         assertEquals(TradeType.NONE, player.canTradeRiskCards());
         player.addRiskCard(new RiskCard(RiskCardType.CAVALRY, null));
@@ -53,7 +53,7 @@ public class PlayerTest {
     }
 
     @Test
-    void testCanPlayerTradeRiskCardsArtilleryJoker() throws Exception {
+    void testCanPlayerTradeRiskCardsArtilleryJoker() {
         player.addRiskCard(new RiskCard(RiskCardType.ARTILLERY, null));
         assertEquals(TradeType.NONE, player.canTradeRiskCards());
         player.addRiskCard(new RiskCard(RiskCardType.ARTILLERY, null));
@@ -63,7 +63,7 @@ public class PlayerTest {
     }
 
     @Test
-    void testCanPlayerTradeRiskCardsInfantryJoker() throws Exception {
+    void testCanPlayerTradeRiskCardsInfantryJoker() {
         player.addRiskCard(new RiskCard(RiskCardType.INFANTRY, null));
         assertEquals(TradeType.NONE, player.canTradeRiskCards());
         player.addRiskCard(new RiskCard(RiskCardType.INFANTRY, null));
@@ -73,7 +73,7 @@ public class PlayerTest {
     }
 
     @Test
-    void testCanPlayerTradeRiskCardsCavalryJoker() throws Exception {
+    void testCanPlayerTradeRiskCardsCavalryJoker() {
         player.addRiskCard(new RiskCard(RiskCardType.CAVALRY, null));
         assertEquals(TradeType.NONE, player.canTradeRiskCards());
         player.addRiskCard(new RiskCard(RiskCardType.CAVALRY, null));
@@ -83,7 +83,7 @@ public class PlayerTest {
     }
 
     @Test
-    void testCanPlayerTradeRiskCardsMixed() throws Exception {
+    void testCanPlayerTradeRiskCardsMixed() {
         player.addRiskCard(new RiskCard(RiskCardType.ARTILLERY, null));
         assertEquals(TradeType.NONE, player.canTradeRiskCards());
         player.addRiskCard(new RiskCard(RiskCardType.INFANTRY, null));
@@ -93,7 +93,7 @@ public class PlayerTest {
     }
 
     @Test
-    void testCanPlayerTradeRiskCardsMixedJokerCavalry() throws Exception {
+    void testCanPlayerTradeRiskCardsMixedJokerCavalry() {
         player.addRiskCard(new RiskCard(RiskCardType.ARTILLERY, null));
         assertEquals(TradeType.NONE, player.canTradeRiskCards());
         player.addRiskCard(new RiskCard(RiskCardType.INFANTRY, null));
@@ -103,7 +103,7 @@ public class PlayerTest {
     }
 
     @Test
-    void testCanPlayerTradeRiskCardsMixedJokerInfantry() throws Exception {
+    void testCanPlayerTradeRiskCardsMixedJokerInfantry() {
         player.addRiskCard(new RiskCard(RiskCardType.ARTILLERY, null));
         assertEquals(TradeType.NONE, player.canTradeRiskCards());
         player.addRiskCard(new RiskCard(RiskCardType.CAVALRY, null));
@@ -113,7 +113,7 @@ public class PlayerTest {
     }
 
     @Test
-    void testCanPlayerTradeRiskCardsMixedJokerArtillery() throws Exception {
+    void testCanPlayerTradeRiskCardsMixedJokerArtillery() {
         player.addRiskCard(new RiskCard(RiskCardType.CAVALRY, null));
         assertEquals(TradeType.NONE, player.canTradeRiskCards());
         player.addRiskCard(new RiskCard(RiskCardType.INFANTRY, null));
