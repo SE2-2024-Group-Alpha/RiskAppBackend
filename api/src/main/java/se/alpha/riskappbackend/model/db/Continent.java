@@ -11,7 +11,7 @@ public class Continent extends Area{
 
     public Continent(String name, Player owner) {
         super(name, owner);
-        this.countries = new ArrayList<Country>();
+        this.countries = new ArrayList<>();
     }
 
     public void addCountry(Country c)
