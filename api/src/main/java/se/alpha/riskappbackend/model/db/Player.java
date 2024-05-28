@@ -201,29 +201,36 @@ public class Player {
         {
             case ARTILLERY: {
                 removeCardsFromList(riskCards, RiskCardType.ARTILLERY, 3);
+                break;
             }
             case INFANTRY: {
                 removeCardsFromList(riskCards, RiskCardType.INFANTRY, 3);
+                break;
             }
             case CAVALRY: {
                 removeCardsFromList(riskCards, RiskCardType.CAVALRY, 3);
+                break;
             }
             case ARTILLERY_JOKER: {
                 int remainingCards = removeCardsFromList(riskCards, RiskCardType.ARTILLERY, 3);
                 removeCardsFromList(riskCards, RiskCardType.JOKER, remainingCards);
+                break;
             }
             case INFANTRY_JOKER: {
                 int remainingCards = removeCardsFromList(riskCards, RiskCardType.INFANTRY, 3);
                 removeCardsFromList(riskCards, RiskCardType.JOKER, remainingCards);
+                break;
             }
             case CAVALRY_JOKER: {
                 int remainingCards = removeCardsFromList(riskCards, RiskCardType.CAVALRY, 3);
                 removeCardsFromList(riskCards, RiskCardType.JOKER, remainingCards);
+                break;
             }
             case MIXED: {
                 removeCardsFromList(riskCards, RiskCardType.ARTILLERY, 1);
                 removeCardsFromList(riskCards, RiskCardType.CAVALRY, 1);
                 removeCardsFromList(riskCards, RiskCardType.INFANTRY, 1);
+                break;
             }
             case MIXED_JOKER: {
                 int remainingCards = 0;
@@ -231,6 +238,7 @@ public class Player {
                 remainingCards += removeCardsFromList(riskCards, RiskCardType.CAVALRY, 1);
                 remainingCards += removeCardsFromList(riskCards, RiskCardType.INFANTRY, 1);
                 removeCardsFromList(riskCards, RiskCardType.JOKER, remainingCards);
+                break;
             }
         }
         cntRiskCardsTraded++;
