@@ -15,5 +15,7 @@ public enum GameWebsocketMessageAction {
     ATTACK,
     COUNTRY_CHANGED,
     PLAYER_ELIMINATED,
-    PLAYER_WON
+    PLAYER_WON,
+
+    GAME_SYNC
 }
