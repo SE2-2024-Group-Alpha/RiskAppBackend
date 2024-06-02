@@ -9,7 +9,7 @@ import java.util.Random;
 public class DiceService {
 
     private static final int NUM_SIDES = 6;
-    private Random random = new Random();
+    private final Random random = new Random();
 
     public int roll() {
         return random.nextInt(NUM_SIDES) + 1;

@@ -1,6 +1,5 @@
 package se.alpha.riskappbackend.model.db;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,11 +8,11 @@ import se.alpha.riskappbackend.model.exception.RiskException;
 
 @Getter
 public class RiskController {
-    private UUID id;
-    private List<Player> players;
-    private Board board;
+    private final UUID id;
+    private final List<Player> players;
+    private final Board board;
     private int idxPlayerTurn;
-    private String customExceptionType = "custom";
+    private final String customExceptionType = "custom";
 
     public RiskController(List<Player> players, Board board) {
         this.id = UUID.randomUUID();

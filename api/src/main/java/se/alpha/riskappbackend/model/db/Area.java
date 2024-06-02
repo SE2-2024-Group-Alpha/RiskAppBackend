@@ -1,8 +1,6 @@
 package se.alpha.riskappbackend.model.db;
 
-import java.io.Serializable;
-
-public abstract class Area implements Serializable {
+public abstract class Area {
     private String name;
     private Player owner;
 

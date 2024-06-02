@@ -10,22 +10,21 @@ import se.alpha.riskappbackend.model.exception.RiskException;
 import se.alpha.riskappbackend.util.GameSetupFactory;
 
 import org.springframework.web.socket.WebSocketSession;
-import se.alpha.riskappbackend.websocket.GameWebSocketHandler;
 
 import java.security.SecureRandom;
 import java.util.*;
 
 public class GameSession {
     @Getter
-    private UUID sessionId;
+    private final UUID sessionId;
     @Getter
-    private String name;
+    private final String name;
     @Getter
     private Integer users;
     @Getter
-    private int shortId;
+    private final int shortId;
     @Getter
-    private GameState state;
+    private final GameState state;
     private final Map<String, UserState> userStates;
     @Getter
     private RiskController riskController;

@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public class GameWebSocketHandler {
 
-    private GameService gameService;
+    private final GameService gameService;
     private static final Logger logger = LoggerFactory.getLogger(GameWebSocketHandler.class);
     private static final Gson gson = new Gson();
 

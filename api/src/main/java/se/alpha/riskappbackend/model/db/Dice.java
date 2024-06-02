@@ -7,11 +7,7 @@ import java.util.Random;
 public class Dice {
 
     private static final int NUM_SIDES = 6;
-    private static Random random = new Random();
-
-    public Dice() {
-        random = new Random();
-    }
+    private static final Random random = new Random();
 
     // In your Dice class
     public int getNumSides() {

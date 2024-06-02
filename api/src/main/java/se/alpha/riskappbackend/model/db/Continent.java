@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 public class Continent extends Area implements Serializable {
-    private List<Country> countries;
+    private final List<Country> countries;
 
     public Continent(String name, Player owner) {
         super(name, owner);

@@ -9,7 +9,7 @@ import se.alpha.riskappbackend.util.GameSetupFactory;
 
 @Getter
 public class Board implements Serializable {
-    private List<Continent> continents;
+    private final List<Continent> continents;
     private List<RiskCard> cards;
 
     public Board(List<Continent> continents, List<RiskCard> cards) {

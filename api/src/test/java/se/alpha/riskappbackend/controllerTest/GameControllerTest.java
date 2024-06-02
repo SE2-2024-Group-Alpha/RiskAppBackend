@@ -17,6 +17,7 @@ import se.alpha.riskappbackend.service.GameService;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -44,7 +45,7 @@ class GameControllerTest {
     @DisplayName("Get Active Lobbies - Success")
     void getActiveLobbies_Success() throws Exception {
         GameSession gameSession = new GameSession("Test Lobby");
-        when(gameService.getJoinableSessions()).thenReturn(Arrays.asList(gameSession));
+        when(gameService.getJoinableSessions()).thenReturn(List.of(gameSession));
 
         mockMvc.perform(get("/game/lobby"))
                 .andExpect(status().isOk())

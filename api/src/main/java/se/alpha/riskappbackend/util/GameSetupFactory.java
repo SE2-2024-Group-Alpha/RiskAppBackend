@@ -19,11 +19,11 @@ import se.alpha.riskappbackend.model.exception.RiskException;
 public class GameSetupFactory {
     private static ArrayList<Continent> continents;
     private static ArrayList<RiskCard> riskCards;
-    private static int numberOfTroopsThreePlayerGame = 35;
-    private static int numberOfTroopsFourPlayerGame = 30;
-    private static int numberOfTroopsFivePlayerGame = 25;
-    private static int numberOfTroopsSixPlayerGame = 20;
-    private static String customExceptionType = "custom";
+    private static final int numberOfTroopsThreePlayerGame = 35;
+    private static final int numberOfTroopsFourPlayerGame = 30;
+    private static final int numberOfTroopsFivePlayerGame = 25;
+    private static final int numberOfTroopsSixPlayerGame = 20;
+    private static final String customExceptionType = "custom";
 
     private GameSetupFactory() {
 

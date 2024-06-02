@@ -1,11 +1,5 @@
 package se.alpha.riskappbackend;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +19,8 @@ import se.alpha.riskappbackend.model.db.RiskCard;
 import se.alpha.riskappbackend.model.db.RiskController;
 import se.alpha.riskappbackend.model.exception.RiskException;
 import se.alpha.riskappbackend.util.GameSetupFactory;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RiskControllerTest {
     RiskController riskController;
@@ -157,7 +153,7 @@ public class RiskControllerTest {
         attackingCountry.addArmy(20);
         defendingCountry.addArmy(4);
         riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
-        assertEquals(null, continent.getOwner());
+        assertNull(continent.getOwner());
     }
     @Test
     void testAttackSuccessfulPlayerEliminated() throws Exception {

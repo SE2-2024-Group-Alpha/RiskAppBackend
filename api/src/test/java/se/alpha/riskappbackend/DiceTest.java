@@ -26,7 +26,7 @@ class DiceTest {
     @Test
     void testRoll() {
         IntStream.range(0, 1000).forEach(i -> {
-            int result = dice.roll();
+            int result = Dice.roll();
             assertTrue(result >= 1 && result <= dice.getNumSides(), "Roll should be between 1 and " + dice.getNumSides());
         });
     }
@@ -34,14 +34,14 @@ class DiceTest {
     @Test
     void testRollMultipleTimesLength() {
         int numRolls = 10;
-        int[] results = dice.rollMultipleTimes(numRolls);
+        int[] results = Dice.rollMultipleTimes(numRolls);
         Assertions.assertEquals(numRolls, results.length, "Array length should match the number of rolls");
     }
 
     @Test
     void testRollMultipleTimesValues() {
         int numRolls = 10;
-        int[] results = dice.rollMultipleTimes(numRolls);
+        int[] results = Dice.rollMultipleTimes(numRolls);
         for (int result : results) {
             assertTrue(result >= 1 && result <=dice.getNumSides(), "Each roll should be between 1 and " + dice.getNumSides());
         }
@@ -52,7 +52,7 @@ class DiceTest {
         Map<Integer, Integer> frequencyMap = new HashMap<>();
         int totalRolls = 6000; // We choose a large number for a better distribution check
         for (int i = 0; i < totalRolls; i++) {
-            int result = dice.roll();
+            int result = Dice.roll();
             frequencyMap.put(result, frequencyMap.getOrDefault(result, 0) + 1);
         }
         // Expecting roughly even distribution, we should have about totalRolls / NUM_SIDES per side
@@ -70,7 +70,7 @@ class DiceTest {
     @Test
     void testRollMultipleTimesNotNull() {
         int numRolls = 10;
-        int[] results = dice.rollMultipleTimes(numRolls);
+        int[] results = Dice.rollMultipleTimes(numRolls);
         Assertions.assertNotNull(results, "Result array should not be null");
         assertTrue(Arrays.stream(results).noneMatch(r -> r < 1 || r > dice.getNumSides()), "All roll results should be between 1 and " + dice.getNumSides());
     }
@@ -79,7 +79,7 @@ class DiceTest {
     @Test
     void testRollMultipleTimesSum() {
         int numRolls = 100;
-        int[] results = dice.rollMultipleTimes(numRolls);
+        int[] results = Dice.rollMultipleTimes(numRolls);
         int sum = Arrays.stream(results).sum();
         int minSum = numRolls; // if all rolls are 1
         int maxSum = numRolls * dice.getNumSides(); // if all rolls are the maximum value
@@ -89,8 +89,8 @@ class DiceTest {
     @Test
     void testRepeatedRollsAreRandom() {
         int numRolls = 10;
-        int[] firstResults = dice.rollMultipleTimes(numRolls);
-        int[] secondResults = dice.rollMultipleTimes(numRolls);
+        int[] firstResults = Dice.rollMultipleTimes(numRolls);
+        int[] secondResults = Dice.rollMultipleTimes(numRolls);
         Assertions.assertFalse(Arrays.equals(firstResults, secondResults), "It is unlikely (though not impossible) for two sequences of random rolls to be identical");
     }
 
@@ -101,8 +101,10 @@ class DiceTest {
         Integer[] rolls = Dice.rollMultipleTimes((Integer) 10);
         for(int i = rolls.length - 1; i >= 0; i--)
         {
-            if(lastNumber > rolls[i])
+            if (lastNumber > rolls[i]) {
                 isSorted = false;
+                break;
+            }
         }
         assertTrue(isSorted);
     }
