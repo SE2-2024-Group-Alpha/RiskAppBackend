@@ -118,6 +118,7 @@ public class RiskController {
 
     public void attack(String attackerPlayerId, String defenderPlayerId, String attackingCountryName, String defendingCountryName) throws RiskException
     {
+        Dice dice = new Dice();
         int attackerLosses = 0;
         int defenderLosses = 0;
         Player attacker = getPlayerById(attackerPlayerId);
@@ -131,8 +132,8 @@ public class RiskController {
         if(attackingCountry.getNumberOfTroops() < 2)
             throw new RiskException(customExceptionType, "Attacking Country must have at least 2 troops");
 
-        Integer[] attackerRolls = Dice.rollMultipleTimes((Integer) (attackingCountry.getNumberOfTroops() - 1));
-        Integer[] defenderRolls = Dice.rollMultipleTimes((Integer) defendingCountry.getNumberOfTroops());
+        int[] attackerRolls = dice.rollMultiple( (attackingCountry.getNumberOfTroops() - 1));
+        int[] defenderRolls = dice.rollMultiple( defendingCountry.getNumberOfTroops());
 
         for(int i = 0; i < Math.min(defenderRolls.length, attackerRolls.length); i++)
         {
@@ -207,8 +208,8 @@ public class RiskController {
 
         if(country.getNumberOfTroops() == 0) {
             player.loseControlOverCountry(country);
-//            if(player.equals(country.getContinent().getOwner()))
-//                player.loseControlOverContinent(country.getContinent());
+            if(player.equals(country.getContinent().getOwner()))
+                player.loseControlOverContinent(country.getContinent());
         }
 
         return country.getNumberOfTroops() == 0;
@@ -230,8 +231,8 @@ public class RiskController {
                 player.controlCountry(defendingCountry);
             }
 
-//            if(isContinentOwnedByPlayer(defendingCountry.getContinent(), player))
-//                player.controlContinent(defendingCountry.getContinent());
+            if(isContinentOwnedByPlayer(defendingCountry.getContinent(), player))
+                player.controlContinent(defendingCountry.getContinent());
         }
     }
     private boolean isContinentOwnedByPlayer(Continent continent, Player player)

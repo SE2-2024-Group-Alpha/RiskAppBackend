@@ -137,7 +137,7 @@ public class GameSetupFactory {
 
     private static void setupCountry(TerritoryNode territoryNode, String territoryName) throws RiskException {
         Continent continent = getContinentByName(territoryNode.getContinent());
-        continent.addCountry(new Country(territoryName, null));
+        continent.addCountry(new Country(territoryName, null, continent));
     }
 
     private static boolean isNewContinent(String name) {
