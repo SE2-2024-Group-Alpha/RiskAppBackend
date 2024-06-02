@@ -1,10 +1,7 @@
 package se.alpha.riskappbackend.model.websocket;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import se.alpha.riskappbackend.model.db.Board;
-
-import java.util.Map;
 
 @Getter
 public class GameSyncWebsocketMessage implements IGameWebsocketMessage {

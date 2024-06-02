@@ -11,11 +11,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import se.alpha.riskappbackend.controller.GameController;
-import se.alpha.riskappbackend.model.game.CreateLobbyRequest;
 import se.alpha.riskappbackend.model.game.GameSession;
 import se.alpha.riskappbackend.service.GameService;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;

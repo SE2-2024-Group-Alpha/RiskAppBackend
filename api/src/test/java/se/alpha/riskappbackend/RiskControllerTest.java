@@ -22,7 +22,7 @@ import se.alpha.riskappbackend.util.GameSetupFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RiskControllerTest {
+class RiskControllerTest {
     RiskController riskController;
     MockedStatic<Dice> mockedStatic;
     final int PLAYERNUMBEROFTROOPS = 35;

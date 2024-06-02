@@ -75,7 +75,7 @@ public class GameSession {
     }
 
     public void sendGameSync() {
-
+        // send game sync here
     }
 
     public Player endTurn()

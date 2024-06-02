@@ -1,4 +1,5 @@
 package se.alpha.riskappbackend;
+
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +25,7 @@ import java.lang.reflect.Field;
 
 
 @ExtendWith(MockitoExtension.class)
-public class RiskWebSocketHandlerTest {
+class RiskWebSocketHandlerTest {
 
     @Mock
     private WebSocketSession mockSession;
@@ -38,40 +39,37 @@ public class RiskWebSocketHandlerTest {
     private RiskWebSocketHandler riskWebSocketHandler;
 
 
-
     @BeforeEach
     void setUp() {
         riskWebSocketHandler = new RiskWebSocketHandler(mockGameService);
     }
 
     @Test
-    public void testAfterConnectionEstablished() throws Exception {
-        WebSocketSession mockSession = mock(WebSocketSession.class);
+    void testAfterConnectionEstablished() throws Exception {
+        mockSession = mock(WebSocketSession.class);
         when(mockSession.getId()).thenReturn("123");
         riskWebSocketHandler.afterConnectionEstablished(mockSession);
         verify(mockSession, times(1)).getId();
     }
 
     @Test
-    public void testAfterConnectionClosed() throws Exception {
+    void testAfterConnectionClosed() {
         riskWebSocketHandler.afterConnectionClosed(mockSession, CloseStatus.NORMAL);
         verify(mockSession, times(1)).getId();
     }
 
 
-
-
-
     @Test
-    public void testHandleTransportError() {
+    void testHandleTransportError() {
         Exception exception = new RuntimeException("Network Error");
 
         riskWebSocketHandler.handleTransportError(mockSession, exception);
 
 
     }
+
     @Test
-    public void testHandleMessageWithGameType() throws Exception {
+    void testHandleMessageWithGameType() throws Exception {
         String jsonMessage = "{\"type\":\"GAME\"}";
         WebSocketMessage<String> message = new TextMessage(jsonMessage);
 
@@ -90,9 +88,8 @@ public class RiskWebSocketHandlerTest {
 
         riskWebSocketHandler.handleMessage(mockSession, message);
 
-        verify(mockGameWebSocketHandler).handleMessage(eq(mockSession), eq(message));
+        verify(mockGameWebSocketHandler).handleMessage(mockSession, message);
     }
-
 
 
 }

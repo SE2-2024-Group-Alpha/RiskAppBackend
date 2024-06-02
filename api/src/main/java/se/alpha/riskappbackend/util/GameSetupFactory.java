@@ -19,21 +19,19 @@ import se.alpha.riskappbackend.model.exception.RiskException;
 public class GameSetupFactory {
     private static ArrayList<Continent> continents;
     private static ArrayList<RiskCard> riskCards;
-    private static final int numberOfTroopsThreePlayerGame = 35;
-    private static final int numberOfTroopsFourPlayerGame = 30;
-    private static final int numberOfTroopsFivePlayerGame = 25;
-    private static final int numberOfTroopsSixPlayerGame = 20;
-    private static final String customExceptionType = "custom";
+    private static final int NUMBER_OF_TROOPS_THREE_PLAYER_GAME = 35;
+    private static final int NUMBER_OF_TROOPS_FOUR_PLAYER_GAME = 30;
+    private static final int NUMBER_OF_TROOPS_FIVE_PLAYER_GAME = 25;
+    private static final int NUMBER_OF_TROOPS_SIX_PLAYER_GAME = 20;
+    private static final String CUSTOM_EXCEPTION_TYPE = "custom";
 
     private GameSetupFactory() {
 
     }
 
     public static RiskController setupThreePlayerGame(List<Player> players) throws RiskException {
-//        if (players.size() != 3)
-//            throw new RiskException(customExceptionType, "there must be 3 players");
         for (Player player : players)
-            player.addArmy(numberOfTroopsThreePlayerGame);
+            player.addArmy(NUMBER_OF_TROOPS_THREE_PLAYER_GAME);
         Board board = new Board(getContinents(), getRiskCards());
 
         for (Player player : players)
@@ -44,9 +42,9 @@ public class GameSetupFactory {
 
     public static RiskController setupFourPlayerGame(List<Player> players) throws RiskException {
         if (players.size() != 4)
-            throw new RiskException(customExceptionType, "there must be 4 players");
+            throw new RiskException(CUSTOM_EXCEPTION_TYPE, "there must be 4 players");
         for (Player player : players)
-            player.addArmy(numberOfTroopsFourPlayerGame);
+            player.addArmy(NUMBER_OF_TROOPS_FOUR_PLAYER_GAME);
         Board board = new Board(getContinents(), getRiskCards());
 
         for (Player player : players)
@@ -57,9 +55,9 @@ public class GameSetupFactory {
 
     public static RiskController setupFivePlayerGame(List<Player> players) throws RiskException {
         if (players.size() != 5)
-            throw new RiskException(customExceptionType, "there must be 5 players");
+            throw new RiskException(CUSTOM_EXCEPTION_TYPE, "there must be 5 players");
         for (Player player : players)
-            player.addArmy(numberOfTroopsFivePlayerGame);
+            player.addArmy(NUMBER_OF_TROOPS_FIVE_PLAYER_GAME);
         Board board = new Board(getContinents(), getRiskCards());
 
         for (Player player : players)
@@ -70,9 +68,9 @@ public class GameSetupFactory {
 
     public static RiskController setupSixPlayerGame(List<Player> players) throws RiskException {
         if (players.size() != 6)
-            throw new RiskException(customExceptionType, "there must be 6 players");
+            throw new RiskException(CUSTOM_EXCEPTION_TYPE, "there must be 6 players");
         for (Player player : players)
-            player.addArmy(numberOfTroopsSixPlayerGame);
+            player.addArmy(NUMBER_OF_TROOPS_SIX_PLAYER_GAME);
         Board board = new Board(getContinents(), getRiskCards());
 
         for (Player player : players)
@@ -153,7 +151,7 @@ public class GameSetupFactory {
             if (continent.getName().equals(name))
                 return continent;
         }
-        throw new RiskException(customExceptionType, "Continent not found");
+        throw new RiskException(CUSTOM_EXCEPTION_TYPE, "Continent not found");
     }
 
     private static void setupRiskCards() throws RiskException {
@@ -208,6 +206,6 @@ public class GameSetupFactory {
             if (country.getName().equals(name))
                 return country;
         }
-        throw new RiskException(customExceptionType, "Country not found");
+        throw new RiskException(CUSTOM_EXCEPTION_TYPE, "Country not found");
     }
 }
