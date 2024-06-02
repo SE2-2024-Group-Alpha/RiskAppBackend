@@ -7,4 +7,9 @@ public class CustomWebsocketMessage implements ICustomWebsocketMessage {
     private CustomWebsocketMessageType type;
 
 
+
+
+    public void setType(CustomWebsocketMessageType type) {
+        this.type = type;
+    }
 }
