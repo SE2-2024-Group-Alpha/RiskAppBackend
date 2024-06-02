@@ -10,6 +10,7 @@ import se.alpha.riskappbackend.model.exception.RiskException;
 import se.alpha.riskappbackend.util.GameSetupFactory;
 
 import org.springframework.web.socket.WebSocketSession;
+import se.alpha.riskappbackend.websocket.GameWebSocketHandler;
 
 import java.security.SecureRandom;
 import java.util.*;
@@ -26,6 +27,7 @@ public class GameSession {
     @Getter
     private GameState state;
     private final Map<String, UserState> userStates;
+    @Getter
     private RiskController riskController;
 
     public GameSession(String name) {
@@ -68,6 +70,10 @@ public class GameSession {
             default:
                 throw new RiskException("custom", "there must be between 3 and 6 players");
         }
+    }
+
+    public void sendGameSync() {
+
     }
 
     public Player endTurn()

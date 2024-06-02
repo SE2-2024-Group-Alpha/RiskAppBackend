@@ -8,23 +8,7 @@ import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import se.alpha.riskappbackend.model.exception.RiskException;
-import se.alpha.riskappbackend.model.websocket.AttackWebsocketMessage;
-import se.alpha.riskappbackend.model.websocket.CountryChangedWebsocketMessage;
-import se.alpha.riskappbackend.model.websocket.CreateGameWebsocketMessage;
-import se.alpha.riskappbackend.model.websocket.EndTurnWebsocketMessage;
-import se.alpha.riskappbackend.model.websocket.GameStartedWebsocketMessage;
-import se.alpha.riskappbackend.model.websocket.GameWebsocketMessage;
-import se.alpha.riskappbackend.model.websocket.IGameWebsocketMessage;
-import se.alpha.riskappbackend.model.websocket.JoinWebsocketMessage;
-import se.alpha.riskappbackend.model.websocket.MoveTroopsWebsocketMessage;
-import se.alpha.riskappbackend.model.websocket.NewTurnWebsocketMessage;
-import se.alpha.riskappbackend.model.websocket.PlayerEliminatedWebsocketMessage;
-import se.alpha.riskappbackend.model.websocket.PlayerWonWebsocketMessage;
-import se.alpha.riskappbackend.model.websocket.SeizeCountryWebsocketMessage;
-import se.alpha.riskappbackend.model.websocket.StrengthenCountryWebsocketMessage;
-import se.alpha.riskappbackend.model.websocket.UserLeaveWebsocketMessage;
-import se.alpha.riskappbackend.model.websocket.UserReadyWebsocketMessage;
-import se.alpha.riskappbackend.model.websocket.UserSyncWebsocketMessage;
+import se.alpha.riskappbackend.model.websocket.*;
 import se.alpha.riskappbackend.service.GameService;
 import se.alpha.riskappbackend.model.db.Country;
 import se.alpha.riskappbackend.model.db.Player;
@@ -38,13 +22,13 @@ public class GameWebSocketHandler {
 
     private GameService gameService;
     private static final Logger logger = LoggerFactory.getLogger(GameWebSocketHandler.class);
-    private final Gson gson = new Gson();
+    private static final Gson gson = new Gson();
 
     public GameWebSocketHandler(GameService gameService) {
         this.gameService = gameService;
     }
 
-    private void sendMessageToAll(GameSession gameSession, IGameWebsocketMessage message) {
+    private static void sendMessageToAll(GameSession gameSession, IGameWebsocketMessage message) {
         String messageContent = gson.toJson(message);
         TextMessage textMessage = new TextMessage(messageContent);
 
@@ -106,6 +90,9 @@ public class GameWebSocketHandler {
         gameSession.createGame(createGameWebsocketMessage.getPlayers());
         GameStartedWebsocketMessage gameStartedWebsocketMessage = new GameStartedWebsocketMessage(new ArrayList<>(gameSession.getPlayers()), gameSession.getActivePlayer());
         sendMessageToAll(gameSession, gameStartedWebsocketMessage);
+
+        GameSyncWebsocketMessage gameSync = new GameSyncWebsocketMessage(gameSession.getRiskController().getBoard());
+        sendMessageToAll(gameSession, gameSync);
     }
 
     public void handleEndTurn(WebSocketMessage<?> message) throws Exception {
