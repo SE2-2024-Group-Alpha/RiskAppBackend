@@ -11,10 +11,13 @@ import lombok.Getter;
 public class Country extends Area implements Serializable {
     @JsonIgnore
     private ArrayList<Country> attackableCountries;
+    @JsonIgnore
+    private Continent continent;
     private int numberOfTroops;
 
-    public Country(String name, Player owner) {
+    public Country(String name, Player owner, Continent continent) {
         super(name, owner);
+        this.continent = continent;
         numberOfTroops = 0;
         attackableCountries = new ArrayList<>();
     }
