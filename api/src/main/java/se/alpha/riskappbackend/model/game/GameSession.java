@@ -10,6 +10,7 @@ import se.alpha.riskappbackend.model.exception.RiskException;
 import se.alpha.riskappbackend.util.GameSetupFactory;
 
 import org.springframework.web.socket.WebSocketSession;
+import se.alpha.riskappbackend.websocket.GameWebSocketHandler;
 
 import java.security.SecureRandom;
 import java.util.*;
@@ -26,12 +27,13 @@ public class GameSession {
     @Getter
     private GameState state;
     private final Map<String, UserState> userStates;
+    @Getter
     private RiskController riskController;
 
     public GameSession(String name) {
         this.name = name;
         this.sessionId = UUID.randomUUID();
-        this.shortId = new SecureRandom().nextInt(9000) + 1000; //gets a random number between 1000 and 9999
+        this.shortId = new SecureRandom().nextInt(9000) + 1000;
         this.userStates = new HashMap<>();
         this.state = GameState.LOBBY;
         users = 0;
@@ -53,6 +55,9 @@ public class GameSession {
     {
         switch(players.size())
         {
+            case 1:
+                riskController = GameSetupFactory.setupThreePlayerGame(players);
+                break;
             case 3:
                 riskController = GameSetupFactory.setupThreePlayerGame(players);
                 break;
@@ -68,6 +73,10 @@ public class GameSession {
             default:
                 throw new RiskException("custom", "there must be between 3 and 6 players");
         }
+    }
+
+    public void sendGameSync() {
+
     }
 
     public Player endTurn()

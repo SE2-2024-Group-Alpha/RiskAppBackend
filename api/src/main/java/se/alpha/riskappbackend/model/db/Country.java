@@ -2,21 +2,19 @@ package se.alpha.riskappbackend.model.db;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import lombok.Getter;
 
 @Getter
-public class Country extends Area{
+public class Country extends Area implements Serializable {
     @JsonIgnore
     private ArrayList<Country> attackableCountries;
-    @JsonIgnore
-    private Continent continent;
     private int numberOfTroops;
 
-    public Country(String name, Player owner, Continent continent) {
+    public Country(String name, Player owner) {
         super(name, owner);
-        this.continent = continent;
         numberOfTroops = 0;
         attackableCountries = new ArrayList<>();
     }

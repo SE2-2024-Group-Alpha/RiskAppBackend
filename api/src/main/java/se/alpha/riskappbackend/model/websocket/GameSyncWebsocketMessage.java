@@ -1,20 +1,20 @@
 package se.alpha.riskappbackend.model.websocket;
 
-import java.util.UUID;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import se.alpha.riskappbackend.model.db.Board;
 
-@AllArgsConstructor
+import java.util.Map;
+
 @Getter
-public class MoveTroopsWebsocketMessage implements IGameWebsocketMessage {
+public class GameSyncWebsocketMessage implements IGameWebsocketMessage {
     private final CustomWebsocketMessageType type = CustomWebsocketMessageType.GAME;
-    private final GameWebsocketMessageAction action = GameWebsocketMessageAction.MOVE_TROOPS;
-    private UUID gameSessionId;
-    private String playerId;
-    private String moveFromCountryName;
-    private String moveToCountryName;
-    private int numberOfTroops;
+    private final GameWebsocketMessageAction action = GameWebsocketMessageAction.GAME_SYNC;
+    private final Board board;
+
+    public GameSyncWebsocketMessage(Board board) {
+        this.board = board;
+    }
 
     @Override
     public CustomWebsocketMessageType getType() {

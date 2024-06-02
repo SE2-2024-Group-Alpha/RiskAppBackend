@@ -1,5 +1,6 @@
 package se.alpha.riskappbackend.model.db;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
@@ -206,8 +207,8 @@ public class RiskController {
 
         if(country.getNumberOfTroops() == 0) {
             player.loseControlOverCountry(country);
-            if(player.equals(country.getContinent().getOwner()))
-                player.loseControlOverContinent(country.getContinent());
+//            if(player.equals(country.getContinent().getOwner()))
+//                player.loseControlOverContinent(country.getContinent());
         }
 
         return country.getNumberOfTroops() == 0;
@@ -229,8 +230,8 @@ public class RiskController {
                 player.controlCountry(defendingCountry);
             }
 
-            if(isContinentOwnedByPlayer(defendingCountry.getContinent(), player))
-                player.controlContinent(defendingCountry.getContinent());
+//            if(isContinentOwnedByPlayer(defendingCountry.getContinent(), player))
+//                player.controlContinent(defendingCountry.getContinent());
         }
     }
     private boolean isContinentOwnedByPlayer(Continent continent, Player player)
