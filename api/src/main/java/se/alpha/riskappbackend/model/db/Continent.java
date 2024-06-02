@@ -1,12 +1,13 @@
 package se.alpha.riskappbackend.model.db;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
 
 @Getter
-public class Continent extends Area{
+public class Continent extends Area implements Serializable {
     private List<Country> countries;
 
     public Continent(String name, Player owner) {

@@ -1,6 +1,8 @@
 package se.alpha.riskappbackend.model.db;
 
-public class RiskCard {
+import java.io.Serializable;
+
+public class RiskCard implements Serializable {
     private RiskCardType type;
     private Country country;
 

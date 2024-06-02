@@ -55,6 +55,9 @@ public class GameSession {
     {
         switch(players.size())
         {
+            case 1:
+                riskController = GameSetupFactory.setupThreePlayerGame(players);
+                break;
             case 3:
                 riskController = GameSetupFactory.setupThreePlayerGame(players);
                 break;

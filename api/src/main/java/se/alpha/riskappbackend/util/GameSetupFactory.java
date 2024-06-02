@@ -30,8 +30,8 @@ public class GameSetupFactory {
     }
 
     public static RiskController setupThreePlayerGame(List<Player> players) throws RiskException {
-        if (players.size() != 3)
-            throw new RiskException(customExceptionType, "there must be 3 players");
+//        if (players.size() != 3)
+//            throw new RiskException(customExceptionType, "there must be 3 players");
         for (Player player : players)
             player.addArmy(numberOfTroopsThreePlayerGame);
         Board board = new Board(getContinents(), getRiskCards());
@@ -137,7 +137,7 @@ public class GameSetupFactory {
 
     private static void setupCountry(TerritoryNode territoryNode, String territoryName) throws RiskException {
         Continent continent = getContinentByName(territoryNode.getContinent());
-        continent.addCountry(new Country(territoryName, null, continent));
+        continent.addCountry(new Country(territoryName, null));
     }
 
     private static boolean isNewContinent(String name) {
