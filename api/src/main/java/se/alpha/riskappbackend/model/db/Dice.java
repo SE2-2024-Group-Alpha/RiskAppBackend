@@ -42,9 +42,10 @@ public class Dice {
     }
 
     public int[] rollMultiple(int numRolls) {
+        Random rand = new Random();
         int[] results = new int[numRolls];
         for (int i = 0; i < numRolls; i++) {
-            results[i] = roll();
+            results[i] = rand.nextInt(NUM_SIDES) + 1;
         }
         return results;
     }

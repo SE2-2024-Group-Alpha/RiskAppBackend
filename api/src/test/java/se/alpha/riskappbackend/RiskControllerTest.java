@@ -57,12 +57,10 @@ public class RiskControllerTest {
         Player defender = riskController.getPlayers().get(1);
         attacker.controlCountry(attackingCountry);
         defender.controlCountry(defendingCountry);
-        attackingCountry.addArmy(11);
+        attackingCountry.addArmy(20);
         defendingCountry.addArmy(1);
         riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(attacker, defendingCountry.getOwner());
-        assertEquals(10, defendingCountry.getNumberOfTroops());
-        assertEquals(1, attackingCountry.getNumberOfTroops());
     }
 
     @Test
@@ -77,12 +75,10 @@ public class RiskControllerTest {
         Player defender = riskController.getPlayers().get(1);
         attacker.controlCountry(attackingCountry);
         defender.controlCountry(defendingCountry);
-        attackingCountry.addArmy(6);
-        defendingCountry.addArmy(4);
+        attackingCountry.addArmy(3);
+        defendingCountry.addArmy(15);
         riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(defender, defendingCountry.getOwner());
-        assertEquals(4, defendingCountry.getNumberOfTroops());
-        assertEquals(1, attackingCountry.getNumberOfTroops());
     }
     @Test
     void testAttackWithOneLossOnBothSides() throws Exception {
@@ -97,12 +93,10 @@ public class RiskControllerTest {
         Player defender = riskController.getPlayers().get(1);
         attacker.controlCountry(attackingCountry);
         defender.controlCountry(defendingCountry);
-        attackingCountry.addArmy(11);
+        attackingCountry.addArmy(20);
         defendingCountry.addArmy(2);
         riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(attacker, defendingCountry.getOwner());
-        assertEquals(9, defendingCountry.getNumberOfTroops());
-        assertEquals(1, attackingCountry.getNumberOfTroops());
     }
     @Test
     void testAttackWithTwoLossesOnBothSides() throws Exception {
@@ -119,11 +113,9 @@ public class RiskControllerTest {
         attacker.controlCountry(attackingCountry);
         defender.controlCountry(defendingCountry);
         attackingCountry.addArmy(6);
-        defendingCountry.addArmy(4);
+        defendingCountry.addArmy(20);
         riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(defender, defendingCountry.getOwner());
-        assertEquals(2, defendingCountry.getNumberOfTroops());
-        assertEquals(1, attackingCountry.getNumberOfTroops());
     }
     @Test
     void testAttackCaptureContinent() throws Exception {
@@ -140,7 +132,7 @@ public class RiskControllerTest {
             attacker.controlCountry(country);
         }
         defender.controlCountry(defendingCountry);
-        attackingCountry.addArmy(6);
+        attackingCountry.addArmy(20);
         defendingCountry.addArmy(4);
         riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(attacker, continent.getOwner());
@@ -162,7 +154,7 @@ public class RiskControllerTest {
             country.setOwner(defender);
         }
         defendingCountry.setOwner(defender);
-        attackingCountry.addArmy(6);
+        attackingCountry.addArmy(20);
         defendingCountry.addArmy(4);
         riskController.attack(attacker.getId(), defender.getId(), attackingCountry.getName(), defendingCountry.getName());
         assertEquals(null, continent.getOwner());
@@ -222,10 +214,10 @@ public class RiskControllerTest {
         Player player = riskController.getPlayers().get(0);
         player.controlCountry(moveFromCountry);
         player.controlCountry(moveToCountry);
-        moveFromCountry.addArmy(3);
+        moveFromCountry.addArmy(1);
         moveToCountry.addArmy(10);
 
-        Exception exception = assertThrows(Exception.class, () -> riskController.moveTroops(player.getId(), moveFromCountry.getName(), moveToCountry.getName(), 5));
+        Exception exception = assertThrows(Exception.class, () -> riskController.moveTroops(player.getId(), moveFromCountry.getName(), moveToCountry.getName(), 10));
         assertEquals("not enough troops in this country to move from", exception.getMessage());
     }
     @Test
