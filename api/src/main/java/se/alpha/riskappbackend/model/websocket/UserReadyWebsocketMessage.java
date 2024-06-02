@@ -6,8 +6,8 @@ import java.util.UUID;
 
 @Getter
 public class UserReadyWebsocketMessage implements IGameWebsocketMessage {
-    private static final CustomWebsocketMessageType type = CustomWebsocketMessageType.GAME;
-    private static final GameWebsocketMessageAction action = GameWebsocketMessageAction.JOIN;
+    private final CustomWebsocketMessageType type = CustomWebsocketMessageType.GAME;
+    private final GameWebsocketMessageAction action = GameWebsocketMessageAction.JOIN;
     private UUID gameSessionId;
     private Boolean isReady;
 

@@ -31,7 +31,7 @@ public class GameSession {
     public GameSession(String name) {
         this.name = name;
         this.sessionId = UUID.randomUUID();
-        this.shortId = new SecureRandom().nextInt(9000) + 1000; //gets a random number between 1000 and 9999
+        this.shortId = new SecureRandom().nextInt(9000) + 1000;
         this.userStates = new HashMap<>();
         this.state = GameState.LOBBY;
         users = 0;
