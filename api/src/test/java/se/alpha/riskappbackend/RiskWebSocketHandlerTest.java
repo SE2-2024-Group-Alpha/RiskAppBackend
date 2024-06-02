@@ -37,7 +37,7 @@ public class RiskWebSocketHandlerTest {
     @InjectMocks
     private RiskWebSocketHandler riskWebSocketHandler;
 
-    private final Gson gson = new Gson();
+
 
     @BeforeEach
     void setUp() {
