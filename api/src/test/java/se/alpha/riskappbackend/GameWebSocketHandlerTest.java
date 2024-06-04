@@ -17,7 +17,7 @@ import se.alpha.riskappbackend.model.db.Player;
 
 import se.alpha.riskappbackend.model.game.GameSession;
 import se.alpha.riskappbackend.model.websocket.GameWebsocketMessage;
-;
+
 import se.alpha.riskappbackend.service.GameService;
 import se.alpha.riskappbackend.websocket.GameWebSocketHandler;
 
@@ -31,8 +31,7 @@ public class GameWebSocketHandlerTest {
 
     @Mock
     private GameService gameService;
-    @Mock
-    private Gson mockGson;
+
     @Mock
     private WebSocketSession mockSession;
 
@@ -43,7 +42,7 @@ public class GameWebSocketHandlerTest {
     private Gson gson;
 
     @BeforeEach
-    public void setUp() throws NoSuchFieldException, IllegalAccessException {
+    public void setUp()  {
         gameWebSocketHandler = new GameWebSocketHandler(gameService);
 
 
@@ -112,7 +111,7 @@ public class GameWebSocketHandlerTest {
 
 
     @Test
-    public void testHandleNullSession() throws Exception {
+    public void testHandleNullSession() {
         String jsonMessage = "{\"action\":\"JOIN\"}";
         WebSocketMessage<String> message = new TextMessage(jsonMessage);
 
@@ -120,7 +119,7 @@ public class GameWebSocketHandlerTest {
     }
 
     @Test
-    public void testHandleNullMessage() throws Exception {
+    public void testHandleNullMessage()  {
         Assertions.assertThrows(NullPointerException.class, () -> gameWebSocketHandler.handleMessage(mockSession, null));
     }
 
