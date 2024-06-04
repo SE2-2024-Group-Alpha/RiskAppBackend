@@ -91,7 +91,10 @@ public class GameWebSocketHandler {
         GameStartedWebsocketMessage gameStartedWebsocketMessage = new GameStartedWebsocketMessage(new ArrayList<>(gameSession.getPlayers()), gameSession.getActivePlayer());
         sendMessageToAll(gameSession, gameStartedWebsocketMessage);
 
-        GameSyncWebsocketMessage gameSync = new GameSyncWebsocketMessage(gameSession.getRiskController().getBoard());
+        GameSyncWebsocketMessage gameSync = new GameSyncWebsocketMessage(
+                gameSession.getRiskController().getBoard().getCountries(),
+                gameSession.getRiskController().getBoard().getCards()
+        );
         sendMessageToAll(gameSession, gameSync);
     }
 

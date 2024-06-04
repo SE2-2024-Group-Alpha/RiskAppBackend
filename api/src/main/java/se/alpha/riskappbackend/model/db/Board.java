@@ -1,6 +1,7 @@
 package se.alpha.riskappbackend.model.db;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -22,6 +23,16 @@ public class Board implements Serializable {
         if(cards.isEmpty())
             cards = GameSetupFactory.getRiskCards();
         return cards.remove(0);
+    }
+
+    public List<Country> getCountries() {
+        List<Country> countries = new ArrayList<>();
+
+        for(Continent continent : continents) {
+            countries.addAll(continent.getCountries());
+        }
+
+        return countries;
     }
 
 
