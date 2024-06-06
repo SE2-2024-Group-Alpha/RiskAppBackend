@@ -15,14 +15,14 @@ public class GameSyncWebsocketMessage implements IGameWebsocketMessage {
     private final GameWebsocketMessageAction action = GameWebsocketMessageAction.GAME_SYNC;
 
     private final List<Country> countries;
-    private final Player activePlayerName;
+    private final Player activePlayer;
     private final List<Player> players;
 
 
     public GameSyncWebsocketMessage(GameSession session) {
         this.countries = session.getRiskController().getBoard().getCountries();
         this.players = session.getPlayers();
-        this.activePlayerName = session.getActivePlayer();
+        this.activePlayer = session.getActivePlayer();
     }
 
     @Override
