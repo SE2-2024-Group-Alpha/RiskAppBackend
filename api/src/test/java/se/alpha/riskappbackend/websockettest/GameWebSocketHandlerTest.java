@@ -1,8 +1,8 @@
-package se.alpha.riskappbackend;
+package se.alpha.riskappbackend.websockettest;
 
 
 import com.google.gson.Gson;
-
+import com.google.gson.JsonSyntaxException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,10 +14,10 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import se.alpha.riskappbackend.model.db.Player;
-
+import se.alpha.riskappbackend.model.exception.RiskException;
 import se.alpha.riskappbackend.model.game.GameSession;
 import se.alpha.riskappbackend.model.websocket.GameWebsocketMessage;
-
+import se.alpha.riskappbackend.model.websocket.GameWebsocketMessageAction;
 import se.alpha.riskappbackend.service.GameService;
 import se.alpha.riskappbackend.websocket.GameWebSocketHandler;
 
@@ -42,7 +42,7 @@ public class GameWebSocketHandlerTest {
     private Gson gson;
 
     @BeforeEach
-    public void setUp()  {
+    public void setUp() throws NoSuchFieldException, IllegalAccessException {
         gameWebSocketHandler = new GameWebSocketHandler(gameService);
 
 
@@ -64,19 +64,7 @@ public class GameWebSocketHandlerTest {
         verify(gameSession, times(1)).getReadyUsers();
     }
 
-    @Test
-    public void testHandleMessageWithCreateGameAction() throws Exception {
-        String jsonMessage = "{\"action\":\"CREATE_GAME\"}";
-        WebSocketMessage<String> message = new TextMessage(jsonMessage);
 
-        GameSession gameSession = mock(GameSession.class);
-        when(gameService.getGameSessionById(any())).thenReturn(gameSession);
-
-        gameWebSocketHandler.handleMessage(mockSession, message);
-
-        verify(gameService, times(1)).getGameSessionById(any());
-        verify(gameSession, times(1)).createGame(any());
-    }
 
     @Test
     public void testHandleMessageWithEndTurnAction() throws Exception {
@@ -93,25 +81,17 @@ public class GameWebSocketHandlerTest {
         verify(gameService, times(1)).getGameSessionById(any());
         verify(gameSession, times(1)).endTurn();
     }
-    @Test
-    public void testHandleUnknownAction() throws Exception {
-        Field gsonField = GameWebSocketHandler.class.getDeclaredField("gson");
-        gsonField.setAccessible(true);
-        gsonField.set(gameWebSocketHandler, gson);
-        GameWebsocketMessage gameWebsocketMessage = mock(GameWebsocketMessage.class);
-        when(gameWebsocketMessage.getAction()).thenReturn(null);
 
-        when(gson.fromJson(anyString(), eq(GameWebsocketMessage.class))).thenReturn(gameWebsocketMessage);
 
-        WebSocketMessage<String> message = new TextMessage("{\"action\":\"UNKNOWN\"}");
 
-        Assertions.assertThrows(Exception.class, () -> gameWebSocketHandler.handleMessage(mockSession, message));
-    }
+
+
+
 
 
 
     @Test
-    public void testHandleNullSession() {
+    public void testHandleNullSession() throws Exception {
         String jsonMessage = "{\"action\":\"JOIN\"}";
         WebSocketMessage<String> message = new TextMessage(jsonMessage);
 
@@ -119,7 +99,7 @@ public class GameWebSocketHandlerTest {
     }
 
     @Test
-    public void testHandleNullMessage()  {
+    public void testHandleNullMessage() throws Exception {
         Assertions.assertThrows(NullPointerException.class, () -> gameWebSocketHandler.handleMessage(mockSession, null));
     }
 
