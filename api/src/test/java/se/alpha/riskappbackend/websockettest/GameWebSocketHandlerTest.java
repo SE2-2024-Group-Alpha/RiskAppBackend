@@ -37,8 +37,7 @@ public class GameWebSocketHandlerTest {
     @InjectMocks
     private GameWebSocketHandler gameWebSocketHandler;
 
-    @Mock
-    private Gson gson;
+
 
     @BeforeEach
     public void setUp() throws NoSuchFieldException, IllegalAccessException {
@@ -80,10 +79,6 @@ public class GameWebSocketHandlerTest {
         verify(gameService, times(1)).getGameSessionById(any());
         verify(gameSession, times(1)).endTurn();
     }
-
-
-
-
 
 
 
