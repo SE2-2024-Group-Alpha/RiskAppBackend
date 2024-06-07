@@ -2,7 +2,7 @@ package se.alpha.riskappbackend.websockettest;
 
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,14 +14,13 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import se.alpha.riskappbackend.model.db.Player;
-import se.alpha.riskappbackend.model.exception.RiskException;
+
 import se.alpha.riskappbackend.model.game.GameSession;
-import se.alpha.riskappbackend.model.websocket.GameWebsocketMessage;
-import se.alpha.riskappbackend.model.websocket.GameWebsocketMessageAction;
+
 import se.alpha.riskappbackend.service.GameService;
 import se.alpha.riskappbackend.websocket.GameWebSocketHandler;
 
-import java.lang.reflect.Field;
+
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -91,7 +90,7 @@ public class GameWebSocketHandlerTest {
 
 
     @Test
-    public void testHandleNullSession() throws Exception {
+    public void testHandleNullSession()  {
         String jsonMessage = "{\"action\":\"JOIN\"}";
         WebSocketMessage<String> message = new TextMessage(jsonMessage);
 
@@ -99,7 +98,7 @@ public class GameWebSocketHandlerTest {
     }
 
     @Test
-    public void testHandleNullMessage() throws Exception {
+    public void testHandleNullMessage() {
         Assertions.assertThrows(NullPointerException.class, () -> gameWebSocketHandler.handleMessage(mockSession, null));
     }
 
