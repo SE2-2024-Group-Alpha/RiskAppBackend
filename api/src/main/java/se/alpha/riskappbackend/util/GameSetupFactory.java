@@ -166,7 +166,7 @@ public class GameSetupFactory {
             else if (i < countries.size() / 3 * 2)
                 riskCards.add(setupCavalryRiskCard(countries.get(i)));
             else
-                riskCards.add(setuInfantryRiskCard(countries.get(i)));
+                riskCards.add(setupInfantryRiskCard(countries.get(i)));
         }
 
         setupJokerRiskCards();
@@ -185,7 +185,7 @@ public class GameSetupFactory {
         return new RiskCard(RiskCardType.ARTILLERY, country);
     }
 
-    private static RiskCard setuInfantryRiskCard(Country country) {
+    private static RiskCard setupInfantryRiskCard(Country country) {
         return new RiskCard(RiskCardType.INFANTRY, country);
     }
 
