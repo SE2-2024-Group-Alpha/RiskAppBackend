@@ -198,9 +198,11 @@ class RiskControllerTest {
         player.controlCountry(moveToCountry);
         moveFromCountry.addArmy(10);
         moveToCountry.addArmy(10);
+        int cntArmyMoveFromCountry = moveFromCountry.getNumberOfTroops();
+        int cntArmyMoveToCountry = moveToCountry.getNumberOfTroops();
         riskController.moveTroops(player.getId(), moveFromCountry.getName(), moveToCountry.getName(), 5);
-        assertEquals(5, moveFromCountry.getNumberOfTroops());
-        assertEquals(15, moveToCountry.getNumberOfTroops());
+        assertEquals(cntArmyMoveFromCountry - 5, moveFromCountry.getNumberOfTroops());
+        assertEquals(cntArmyMoveToCountry + 5, moveToCountry.getNumberOfTroops());
     }
     @Test
     void testMoveTroopsNotEnoughTroops() {
@@ -213,7 +215,7 @@ class RiskControllerTest {
         moveFromCountry.addArmy(1);
         moveToCountry.addArmy(10);
 
-        Exception exception = assertThrows(Exception.class, () -> riskController.moveTroops(player.getId(), moveFromCountry.getName(), moveToCountry.getName(), 10));
+        RiskException exception = assertThrows(RiskException.class, () -> riskController.moveTroops(player.getId(), moveFromCountry.getName(), moveToCountry.getName(), 10));
         assertEquals("not enough troops in this country to move from", exception.getMessage());
     }
     @Test
@@ -225,7 +227,7 @@ class RiskControllerTest {
         moveFromCountry.addArmy(10);
         moveToCountry.addArmy(10);
 
-        Exception exception = assertThrows(Exception.class, () -> riskController.moveTroops(player.getId(), moveFromCountry.getName(), moveToCountry.getName(), 5));
+        RiskException exception = assertThrows(RiskException.class, () -> riskController.moveTroops(player.getId(), moveFromCountry.getName(), moveToCountry.getName(), 5));
         assertEquals("countries must be owned by player", exception.getMessage());
     }
     @Test
@@ -239,7 +241,7 @@ class RiskControllerTest {
         moveFromCountry.addArmy(10);
         moveToCountry.addArmy(10);
 
-        Exception exception = assertThrows(Exception.class, () -> riskController.moveTroops(player.getId(), moveFromCountry.getName(), moveToCountry.getName(), 5));
+        RiskException exception = assertThrows(RiskException.class, () -> riskController.moveTroops(player.getId(), moveFromCountry.getName(), moveToCountry.getName(), 5));
         assertEquals("moving troops between those 2 countries not allowed", exception.getMessage());
     }
     @Test
@@ -293,7 +295,18 @@ class RiskControllerTest {
     @Test
     void testSeizeCountry() throws Exception {
         Player player = riskController.getPlayers().get(0);
-        Country country = riskController.getBoard().getContinents().get(0).getCountries().get(0);
+        Country country = null;
+        for(Continent continent : riskController.getBoard().getContinents())
+        {
+            for(Country currentCountry : continent.getCountries())
+            {
+                if(currentCountry.getOwner() == null)
+                {
+                    country = currentCountry;
+                    break;
+                }
+            }
+        }
         riskController.seizeCountry(player.getId(), country.getName(), 5);
         assertEquals(player, country.getOwner());
         assertEquals(PLAYERNUMBEROFTROOPS - 5, player.getFreeNumberOfTroops());
@@ -306,7 +319,7 @@ class RiskControllerTest {
         Player player = riskController.getPlayers().get(0);
         Country country = riskController.getBoard().getContinents().get(0).getCountries().get(0);
         riskController.getPlayers().get(1).controlCountry(country);
-        Exception exception = assertThrows(Exception.class, () -> riskController.seizeCountry(player.getId(), country.getName(), 5));
+        RiskException exception = assertThrows(RiskException.class, () -> riskController.seizeCountry(player.getId(), country.getName(), 5));
         assertEquals("Country cannot be seized while being owned by another player", exception.getMessage());
     }
 
