@@ -451,6 +451,8 @@ class RiskControllerTest {
     void testIsPlayerEliminated() {
         Player player = riskController.getActivePlayer();
         assertFalse(player.isEliminated());
+        player.setEliminated(true);
+        assertTrue(player.isEliminated());
     }
 
     @Test
