@@ -333,6 +333,16 @@ class RiskControllerTest {
     }
 
     @Test
+    void testGetNewRiskCardNewStack() throws Exception {
+        Player player = riskController.getPlayers().get(0);
+        for(int i = 0; i < 100; i++)
+        {
+            riskController.getNewRiskCard(player.getId());
+        }
+        assertFalse(riskController.getBoard().getCards().isEmpty());
+    }
+
+    @Test
     void testGetRiskCardsByPlayer() throws Exception {
         Player player = riskController.getPlayers().get(0);
         riskController.getNewRiskCard(player.getId());
