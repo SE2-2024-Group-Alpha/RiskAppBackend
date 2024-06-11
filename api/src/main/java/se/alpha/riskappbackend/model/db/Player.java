@@ -126,7 +126,6 @@ public class Player {
     {
         controlCountry(country);
         country.addArmy(cntTroops);
-        this.freeNumberOfTroops -= cntTroops;
     }
 
     public TradeType canTradeRiskCards()
