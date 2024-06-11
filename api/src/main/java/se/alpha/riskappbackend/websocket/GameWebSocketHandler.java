@@ -145,12 +145,14 @@ public class GameWebSocketHandler {
         AttackWebsocketMessage attackWebsocketMessage = gson.fromJson((String) message.getPayload(), AttackWebsocketMessage.class);
         GameSession gameSession = gameService.getGameSessionById(attackWebsocketMessage.getGameSessionId());
         gameSession.attack(attackWebsocketMessage.getAttackerPlayerId(), attackWebsocketMessage.getDefenderPlayerId(), attackWebsocketMessage.getAttackingCountryName(), attackWebsocketMessage.getDefendingCountryName());
-        Country attackingCountry = gameSession.getCountryByName(attackWebsocketMessage.getAttackingCountryName());
+        /*Country attackingCountry = gameSession.getCountryByName(attackWebsocketMessage.getAttackingCountryName());
         CountryChangedWebsocketMessage moveFromCountryChangedWebsocketMessage = new CountryChangedWebsocketMessage(attackingCountry.getOwner().getId(), attackingCountry.getName(), attackingCountry.getNumberOfTroops());
         sendMessageToAll(gameSession, moveFromCountryChangedWebsocketMessage);
         Country defendingCountry = gameSession.getCountryByName(attackWebsocketMessage.getDefendingCountryName());
         CountryChangedWebsocketMessage moveToCountryChangedWebsocketMessage = new CountryChangedWebsocketMessage(defendingCountry.getOwner().getId(), defendingCountry.getName(), defendingCountry.getNumberOfTroops());
-        sendMessageToAll(gameSession, moveToCountryChangedWebsocketMessage);
+        sendMessageToAll(gameSession, moveToCountryChangedWebsocketMessage);*/
+        GameSyncWebsocketMessage gameSyncWebsocketMessage = new GameSyncWebsocketMessage(gameSession);
+        sendMessageToAll(gameSession, gameSyncWebsocketMessage);
 
         if(attackWebsocketMessage.getDefenderPlayerId() != null &&gameSession.isPlayerEliminated(attackWebsocketMessage.getDefenderPlayerId())) {
             if(gameSession.hasPlayerWon(attackWebsocketMessage.getAttackerPlayerId()))
