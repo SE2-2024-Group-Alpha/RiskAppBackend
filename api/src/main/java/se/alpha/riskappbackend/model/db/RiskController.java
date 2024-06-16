@@ -187,6 +187,11 @@ public class RiskController {
             if(player.getId().equals(id))
                 return player;
         }
+        for(Player player : players)
+        {
+            if(player.getName().equals(id))
+                return player;
+        }
         throw new RiskException(CUSTOM_EXCEPTION_TYPE, "no player with this id found");
     }
 

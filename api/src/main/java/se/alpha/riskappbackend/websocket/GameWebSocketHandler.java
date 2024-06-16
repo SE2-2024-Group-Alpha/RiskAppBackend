@@ -118,9 +118,10 @@ public class GameWebSocketHandler {
     public void handleStrengthenCountry(WebSocketMessage<?> message) throws Exception {
         StrengthenCountryWebsocketMessage strengthenCountryWebsocketMessage = gson.fromJson((String) message.getPayload(), StrengthenCountryWebsocketMessage.class);
         GameSession gameSession = gameService.getGameSessionById(strengthenCountryWebsocketMessage.getGameSessionId());
-        int numberOfTroops = gameSession.strengthenCountry(strengthenCountryWebsocketMessage.getPlayerId(), strengthenCountryWebsocketMessage.getCountryName(), strengthenCountryWebsocketMessage.getNumberOfTroops());
-        CountryChangedWebsocketMessage countryChangedWebsocketMessage = new CountryChangedWebsocketMessage(strengthenCountryWebsocketMessage.getPlayerId(), strengthenCountryWebsocketMessage.getCountryName(), numberOfTroops);
-        sendMessageToAll(gameSession, countryChangedWebsocketMessage);
+        gameSession.strengthenCountry(strengthenCountryWebsocketMessage.getPlayerId(), strengthenCountryWebsocketMessage.getCountryName(), strengthenCountryWebsocketMessage.getNumberOfTroops());
+
+        GameSyncWebsocketMessage gameSync = new GameSyncWebsocketMessage(gameSession);
+        sendMessageToAll(gameSession, gameSync);
     }
 
     public void handleMoveTroops(WebSocketMessage<?> message) throws Exception {
