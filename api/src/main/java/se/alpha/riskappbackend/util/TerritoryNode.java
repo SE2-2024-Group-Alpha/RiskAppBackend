@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString(of = "name")
 public class TerritoryNode {
     private final String name;
     private final String continent;
@@ -25,8 +27,6 @@ public class TerritoryNode {
         this.adjTerritories.addAll(territory);
     }
 
-    @Override
-    public String toString() {
-        return this.name;
-    }
+
+
 }
