@@ -1,4 +1,4 @@
-package se.alpha.riskappbackend;
+package se.alpha.riskappbackend.websockettest;
 
 import static org.mockito.Mockito.*;
 

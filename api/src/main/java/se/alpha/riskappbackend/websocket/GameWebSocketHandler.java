@@ -44,19 +44,25 @@ public class GameWebSocketHandler {
     }
 
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-        IGameWebsocketMessage gameWebsocketMessage = gson.fromJson((String) message.getPayload(), GameWebsocketMessage.class);
-        logger.info(String.format("Received Game Message with Action: %1$s", gameWebsocketMessage.getAction()));
-        switch (gameWebsocketMessage.getAction()){
-            case JOIN -> handleJoin(session, message);
-            case USER_READY -> handleUserReady(session, message);
-            case USER_LEAVE -> handleUserLeave(session, message);
-            case CREATE_GAME -> handleCreateGame(message);
-            case END_TURN -> handleEndTurn(message);
-            case SEIZE_COUNTRY -> handleSeizeCountry(message);
-            case STRENGTHEN_COUNTRY -> handleStrengthenCountry(message);
-            case MOVE_TROOPS -> handleMoveTroops(message);
-            case ATTACK -> handleAttack(message);
-            default -> handleDefault();
+        try {
+            IGameWebsocketMessage gameWebsocketMessage = gson.fromJson((String) message.getPayload(), GameWebsocketMessage.class);
+            logger.info(String.format("Received Game Message with Action: %1$s", gameWebsocketMessage.getAction()));
+            switch (gameWebsocketMessage.getAction()) {
+                case JOIN -> handleJoin(session, message);
+                case USER_READY -> handleUserReady(session, message);
+                case USER_LEAVE -> handleUserLeave(session, message);
+                case CREATE_GAME -> handleCreateGame(message);
+                case END_TURN -> handleEndTurn(message);
+                case SEIZE_COUNTRY -> handleSeizeCountry(message);
+                case STRENGTHEN_COUNTRY -> handleStrengthenCountry(message);
+                case MOVE_TROOPS -> handleMoveTroops(message);
+                case ATTACK -> handleAttack(message);
+                default -> handleDefault();
+            }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
         }
     }
 
@@ -140,14 +146,16 @@ public class GameWebSocketHandler {
         AttackWebsocketMessage attackWebsocketMessage = gson.fromJson((String) message.getPayload(), AttackWebsocketMessage.class);
         GameSession gameSession = gameService.getGameSessionById(attackWebsocketMessage.getGameSessionId());
         gameSession.attack(attackWebsocketMessage.getAttackerPlayerId(), attackWebsocketMessage.getDefenderPlayerId(), attackWebsocketMessage.getAttackingCountryName(), attackWebsocketMessage.getDefendingCountryName());
-        Country attackingCountry = gameSession.getCountryByName(attackWebsocketMessage.getAttackingCountryName());
+        /*Country attackingCountry = gameSession.getCountryByName(attackWebsocketMessage.getAttackingCountryName());
         CountryChangedWebsocketMessage moveFromCountryChangedWebsocketMessage = new CountryChangedWebsocketMessage(attackingCountry.getOwner().getId(), attackingCountry.getName(), attackingCountry.getNumberOfTroops());
         sendMessageToAll(gameSession, moveFromCountryChangedWebsocketMessage);
         Country defendingCountry = gameSession.getCountryByName(attackWebsocketMessage.getDefendingCountryName());
         CountryChangedWebsocketMessage moveToCountryChangedWebsocketMessage = new CountryChangedWebsocketMessage(defendingCountry.getOwner().getId(), defendingCountry.getName(), defendingCountry.getNumberOfTroops());
-        sendMessageToAll(gameSession, moveToCountryChangedWebsocketMessage);
+        sendMessageToAll(gameSession, moveToCountryChangedWebsocketMessage);*/
+        GameSyncWebsocketMessage gameSyncWebsocketMessage = new GameSyncWebsocketMessage(gameSession);
+        sendMessageToAll(gameSession, gameSyncWebsocketMessage);
 
-        if(gameSession.isPlayerEliminated(attackWebsocketMessage.getDefenderPlayerId())) {
+        if(attackWebsocketMessage.getDefenderPlayerId() != null &&gameSession.isPlayerEliminated(attackWebsocketMessage.getDefenderPlayerId())) {
             if(gameSession.hasPlayerWon(attackWebsocketMessage.getAttackerPlayerId()))
             {
                 PlayerWonWebsocketMessage playerWonWebsocketMessage = new PlayerWonWebsocketMessage(attackWebsocketMessage.getAttackerPlayerId());

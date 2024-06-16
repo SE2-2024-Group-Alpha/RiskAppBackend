@@ -120,37 +120,41 @@ public class RiskController {
         Dice dice = new Dice();
         int attackerLosses = 0;
         int defenderLosses = 0;
+        System.out.println("attacker: " + attackerPlayerId);
+        System.out.println("defender: " + defenderPlayerId);
         Player attacker = getPlayerById(attackerPlayerId);
-        Player defender = getPlayerById(defenderPlayerId);
         Country attackingCountry = getCountryByName(attackingCountryName);
         Country defendingCountry = getCountryByName(defendingCountryName);
-
-        if(!attackingCountry.getAttackableCountries().contains(defendingCountry))
-            throw new RiskException(CUSTOM_EXCEPTION_TYPE, "Cannot attack this country");
-
-        if(attackingCountry.getNumberOfTroops() < 2)
-            throw new RiskException(CUSTOM_EXCEPTION_TYPE, "Attacking Country must have at least 2 troops");
-
-        int[] attackerRolls = dice.rollMultiple( (attackingCountry.getNumberOfTroops() - 1));
-        int[] defenderRolls = dice.rollMultiple( defendingCountry.getNumberOfTroops());
-
-        for(int i = 0; i < Math.min(defenderRolls.length, attackerRolls.length); i++)
-        {
-            if(attackerRolls[i] > defenderRolls[i])
-            {
-                defenderLosses++;
-            }
-            else
-            {
-                attackerLosses++;
-            }
+        if(defenderPlayerId == null) {
+            seizeCountry(attackerPlayerId, defendingCountryName, attackingCountry.getNumberOfTroops() - 1);
+            attackingCountry.removeArmy(attackingCountry.getNumberOfTroops() - 1);
         }
+        else {
+            Player defender = getPlayerById(defenderPlayerId);
 
-        boolean attackSuccessful = processDefender(defender, defendingCountry, defenderLosses);
-        processAttacker(attacker, attackingCountry, defendingCountry, attackerLosses, attackSuccessful);
+            if (!attackingCountry.getAttackableCountries().contains(defendingCountry))
+                throw new RiskException(CUSTOM_EXCEPTION_TYPE, "Cannot attack this country");
 
-        if(!attackSuccessful && attackingCountry.getNumberOfTroops() > 1)
-            attack(attackerPlayerId, defenderPlayerId, attackingCountryName, defendingCountryName);
+            if (attackingCountry.getNumberOfTroops() < 2)
+                throw new RiskException(CUSTOM_EXCEPTION_TYPE, "Attacking Country must have at least 2 troops");
+
+            int[] attackerRolls = dice.rollMultiple((attackingCountry.getNumberOfTroops() - 1));
+            int[] defenderRolls = dice.rollMultiple(defendingCountry.getNumberOfTroops());
+
+            for (int i = 0; i < Math.min(defenderRolls.length, attackerRolls.length); i++) {
+                if (attackerRolls[i] > defenderRolls[i]) {
+                    defenderLosses++;
+                } else {
+                    attackerLosses++;
+                }
+            }
+
+            boolean attackSuccessful = processDefender(defender, defendingCountry, defenderLosses);
+            processAttacker(attacker, attackingCountry, defendingCountry, attackerLosses, attackSuccessful);
+
+            if (!attackSuccessful && attackingCountry.getNumberOfTroops() > 1)
+                attack(attackerPlayerId, defenderPlayerId, attackingCountryName, defendingCountryName);
+        }
     }
 
     public Player getActivePlayer()
