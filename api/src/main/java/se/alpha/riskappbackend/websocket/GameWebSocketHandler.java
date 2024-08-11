@@ -57,6 +57,7 @@ public class GameWebSocketHandler {
                 case STRENGTHEN_COUNTRY -> handleStrengthenCountry(message);
                 case MOVE_TROOPS -> handleMoveTroops(message);
                 case ATTACK -> handleAttack(message);
+                case FORFEIT_GAME -> handleForfeitGame(session, message);
                 default -> handleDefault();
             }
         }
@@ -76,6 +77,20 @@ public class GameWebSocketHandler {
     public void handleJoin(WebSocketSession session, WebSocketMessage<?> message) {
         JoinWebsocketMessage joinWebsocketMessage = gson.fromJson((String) message.getPayload(), JoinWebsocketMessage.class);
         GameSession gameSession = gameService.joinSession(joinWebsocketMessage.getGameSessionId(), session);
+        UserSyncWebsocketMessage userSyncWebsocketMessage = new UserSyncWebsocketMessage(gameSession.getReadyUsers());
+        sendMessageToAll(gameSession, userSyncWebsocketMessage);
+    }
+
+    public void handleForfeitGame(WebSocketSession session, WebSocketMessage<?> message) {
+       ForfeitGameWebSocketMessage forfeitGameWebsocketMessage = gson.fromJson((String) message.getPayload(),
+                ForfeitGameWebSocketMessage.class);
+        GameSession gameSession = gameService.leaveSession(forfeitGameWebsocketMessage.getGameSessionId(), session);
+
+        if(gameSession == null){
+            System.out.println("gameSession is null!");
+            sendMessageToAll(null, forfeitGameWebsocketMessage);
+            return;
+        }
         UserSyncWebsocketMessage userSyncWebsocketMessage = new UserSyncWebsocketMessage(gameSession.getReadyUsers());
         sendMessageToAll(gameSession, userSyncWebsocketMessage);
     }
